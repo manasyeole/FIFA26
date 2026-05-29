@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.2.0] — 2026-05-30
+
+### Added
+- `src/data/countries.ts` — All 48 FIFA 2026 nations with star players, managers, ISO codes, neon colors
+- `src/lib/timezones.ts` — Venue-to-IANA timezone map + DST-aware UTC conversion using Intl API
+- `src/hooks/useLocalTime.ts` — Hydration-safe hook converting venue match time to user's browser timezone
+- `src/components/features/countries/CountryCard.tsx` — Enhanced card with flag (flagcdn.com), group/conf badges, star player avatar (initials), manager info, hover animations
+- `src/components/features/countries/AllCountriesGrid.tsx` — Filterable grid (group A–L + search) showing all 48 nations
+- `src/components/features/countries/index.ts` — Barrel export
+- `docs/features/ui-enhancing.md` — Feature documentation
+
+### Changed
+- `src/components/ui/MatchCard.tsx` — Adds "your time" local timezone row (cyan, `useLocalTime` hook)
+- `src/app/page.tsx` — Adds `<AllCountriesGrid />` section between Featured Matches and Final Teaser
+- `next.config.ts` — Adds `flagcdn.com` to allowed image remote patterns
+
+---
+
 ## [1.1.0] — 2026-05-30
 
 ### Added
