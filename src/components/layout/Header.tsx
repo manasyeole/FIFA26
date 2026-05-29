@@ -4,12 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Menu, X, Trophy } from "lucide-react";
-
-const NAV = [
-  { label: "Home",     href: "/" },
-  { label: "Schedule", href: "/schedule" },
-  { label: "Gallery",  href: "/gallery" },
-];
+import { NAV_ITEMS } from "@/constants/routes";
+import { SITE_CONFIG } from "@/constants/config";
 
 export default function Header() {
   const pathname = usePathname();
@@ -60,7 +56,7 @@ export default function Header() {
 
             {/* Desktop nav */}
             <nav className="hidden md:flex items-center gap-1">
-              {NAV.map((item) => {
+              {NAV_ITEMS.map((item) => {
                 const active = pathname === item.href;
                 return (
                   <Link
@@ -92,7 +88,7 @@ export default function Header() {
               })}
 
               <a
-                href="https://www.fifa.com/fifaplus/en/tournaments/mens/worldcup/canadamexicousa2026"
+                href={SITE_CONFIG.officialUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-neon ml-4 text-xs"
@@ -122,7 +118,7 @@ export default function Header() {
             }}
           >
             <div className="px-4 py-4 flex flex-col gap-2">
-              {NAV.map((item) => {
+              {NAV_ITEMS.map((item) => {
                 const active = pathname === item.href;
                 return (
                   <Link

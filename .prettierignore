@@ -1,0 +1,8 @@
+.next/
+out/
+build/
+node_modules/
+public/
+*.lock
+*.tsbuildinfo
+next-env.d.ts
