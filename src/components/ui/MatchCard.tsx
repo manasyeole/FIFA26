@@ -1,23 +1,8 @@
 "use client";
 
-import { Match, formatMatchDate } from "@/data/matches";
+import type { Match } from "@/types";
+import { formatMatchDate, STAGE_COLORS, COUNTRY_FLAG } from "@/lib/utils";
 import { MapPin, Clock, Calendar } from "lucide-react";
-
-const STAGE_COLORS: Record<string, string> = {
-  "Group Stage":  "#00ff88",
-  "Round of 32":  "#00d4ff",
-  "Round of 16":  "#bf5fff",
-  "Quarterfinal": "#ff9900",
-  "Semifinal":    "#ff3366",
-  "Third Place":  "#7070a0",
-  "Final":        "#ffd700",
-};
-
-const COUNTRY_FLAG: Record<string, string> = {
-  USA:    "🇺🇸",
-  Canada: "🇨🇦",
-  Mexico: "🇲🇽",
-};
 
 interface Props {
   match: Match;

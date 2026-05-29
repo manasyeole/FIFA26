@@ -1,29 +1,12 @@
-export type Stage =
-  | "Group Stage"
-  | "Round of 32"
-  | "Round of 16"
-  | "Quarterfinal"
-  | "Semifinal"
-  | "Third Place"
-  | "Final";
+/**
+ * FIFA 2026 match data — single source of truth for all 104 matches.
+ * Types are imported from @/types to keep this file focused on data only.
+ */
+import type { Match, Stage, Venue } from "@/types";
 
-export interface Match {
-  id: number;
-  matchNumber: number;
-  group?: string;
-  homeTeam: string;
-  awayTeam: string;
-  venue: string;
-  city: string;
-  country: "USA" | "Canada" | "Mexico";
-  date: string;
-  time: string;
-  stage: Stage;
-  homeFlag?: string;
-  awayFlag?: string;
-}
+export type { Match, Stage };
 
-export const VENUES: Record<string, { stadium: string; city: string; country: "USA" | "Canada" | "Mexico" }> = {
+export const VENUES: Record<string, Venue> = {
   NYC:  { stadium: "MetLife Stadium",      city: "New York / New Jersey", country: "USA" },
   LA:   { stadium: "SoFi Stadium",         city: "Los Angeles",           country: "USA" },
   DAL:  { stadium: "AT&T Stadium",         city: "Dallas",                country: "USA" },
@@ -203,7 +186,5 @@ export function getMatchesByStage(stage: Stage) {
   return matches.filter(m => m.stage === stage);
 }
 
-export function formatMatchDate(dateStr: string): string {
-  const date = new Date(dateStr + "T12:00:00");
-  return date.toLocaleDateString("en-US", { weekday:"short", month:"short", day:"numeric" });
-}
+// Re-export from lib/utils to keep API stable for existing consumers.
+export { formatMatchDate } from "@/lib/utils";

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { matches, GROUPS, STAGES, type Stage } from "@/data/matches";
+import { matches, GROUPS, STAGES } from "@/data/matches";
 import MatchCard from "@/components/ui/MatchCard";
 import { Search, Filter, Trophy, Calendar } from "lucide-react";
 

@@ -1,0 +1,14 @@
+# CODEOWNERS — assigns reviewers automatically on PRs
+# See https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owner for everything
+*                               @manasyeole
+
+# Core source
+/web/src/                       @manasyeole
+/web/src/data/                  @manasyeole
+
+# CI / deployment config
+/.github/                       @manasyeole
+/web/next.config.ts             @manasyeole
+/web/package.json               @manasyeole
