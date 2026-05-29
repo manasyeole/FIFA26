@@ -4,6 +4,7 @@ import Link from "next/link";
 import { matches } from "@/data/matches";
 import CountdownTimer from "@/components/ui/CountdownTimer";
 import MatchCard from "@/components/ui/MatchCard";
+import AllCountriesGrid from "@/components/features/countries/AllCountriesGrid";
 import { Trophy, Calendar, MapPin, Users, ArrowRight, Zap, Globe } from "lucide-react";
 
 const STATS = [
@@ -147,6 +148,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ─── ALL 48 NATIONS ──────────────────────────────────────────── */}
+      <AllCountriesGrid />
 
       {/* ─── FINAL TEASER ─────────────────────────────────────────── */}
       <section className="py-16 px-4 sm:px-6 lg:px-8">

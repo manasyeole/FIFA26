@@ -2,6 +2,7 @@
 
 import type { Match } from "@/types";
 import { formatMatchDate, STAGE_COLORS, COUNTRY_FLAG } from "@/lib/utils";
+import { useLocalTime } from "@/hooks/useLocalTime";
 import { MapPin, Clock, Calendar } from "lucide-react";
 
 interface Props {
@@ -12,6 +13,7 @@ interface Props {
 export default function MatchCard({ match, compact = false }: Props) {
   const stageColor = STAGE_COLORS[match.stage] ?? "#7070a0";
   const isKnockout = match.stage !== "Group Stage";
+  const { localTime, isMounted } = useLocalTime(match.date, match.time, match.venue);
 
   return (
     <div
@@ -113,6 +115,14 @@ export default function MatchCard({ match, compact = false }: Props) {
                 {match.time} local
               </span>
             </div>
+            {isMounted && localTime && (
+              <div className="flex items-center gap-1.5">
+                <Clock size={11} color="#00d4ff" />
+                <span className="text-xs" style={{ color: "#00d4ff" }} title="Your local time">
+                  {localTime} your time
+                </span>
+              </div>
+            )}
             <div className="flex items-center gap-1.5">
               <MapPin size={11} color="#7070a0" />
               <span className="text-xs" style={{ color: "#7070a0" }}>
