@@ -4,9 +4,11 @@ const nextConfig: NextConfig = {
   // Allow images from Supabase Storage and Cloudinary (Phase 2)
   images: {
     remotePatterns: [
-      { protocol: "https", hostname: "flagcdn.com" },          // Country flags — free, MIT
-      { protocol: "https", hostname: "*.supabase.co" },        // Phase 2: fan uploads
-      { protocol: "https", hostname: "res.cloudinary.com" },   // Phase 2: image CDN
+      { protocol: "https", hostname: "flagcdn.com" },               // Country flags — free, MIT
+      { protocol: "https", hostname: "www.thesportsdb.com" },       // Player headshots
+      { protocol: "https", hostname: "r2.thesportsdb.com" },        // Player cutouts (CDN)
+      { protocol: "https", hostname: "*.supabase.co" },             // Phase 2: fan uploads
+      { protocol: "https", hostname: "res.cloudinary.com" },        // Phase 2: image CDN
     ],
   },
 

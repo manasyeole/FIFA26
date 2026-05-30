@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import type { Match } from "@/types";
-import { getCountryByName, getFlagUrl } from "@/data/countries";
+import { getCountryByName, getFlagUrl, type Country } from "@/data/countries";
 import { matchFullIST } from "@/lib/ist";
-import { getPlayerCutout, getPlayerThumb } from "@/lib/thesportsdb";
-import { X, MapPin, Shield } from "lucide-react";
+import { getPlayerThumb } from "@/lib/thesportsdb";
+import { X, MapPin } from "lucide-react";
 
 interface Props {
   match: Match | null;
@@ -23,39 +23,197 @@ const STAGE_COLORS: Record<string, string> = {
   Final: "#ffd700",
 };
 
+// ── Player card (one side of the poster) ────────────────────────────────────
+function PlayerSide({
+  country,
+  teamName,
+  photoUrl,
+  loading,
+  mirror,
+}: {
+  country: Country | null;
+  teamName: string;
+  photoUrl: string | null;
+  loading: boolean;
+  mirror?: boolean;
+}) {
+  const color = country?.neonColor ?? "#7070a0";
+
+  return (
+    <div
+      className="flex-1 relative flex flex-col items-center justify-between overflow-hidden"
+      style={{
+        background: country
+          ? `linear-gradient(${mirror ? "225deg" : "135deg"}, ${color}22 0%, #030308 70%)`
+          : "#030308",
+      }}
+    >
+      {/* Flag — large, clear, faded backdrop */}
+      {country && (
+        <div className="absolute inset-0">
+          <Image
+            src={getFlagUrl(country.isoCode)}
+            alt={teamName}
+            fill
+            className={`object-cover ${mirror ? "scale-x-[-1]" : ""}`}
+            style={{ opacity: 0.18 }}
+            unoptimized
+          />
+          {/* Inner vignette so player stands out */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: `radial-gradient(ellipse 70% 80% at 50% 50%, transparent 30%, #030308 100%)`,
+            }}
+          />
+        </div>
+      )}
+
+      {/* Top: player photo */}
+      <div className="relative z-10 flex flex-col items-center pt-8 pb-2">
+        {loading ? (
+          <div className="rounded-full shimmer" style={{ width: 120, height: 120 }} />
+        ) : photoUrl ? (
+          <div
+            className="rounded-full overflow-hidden relative"
+            style={{
+              width: 120,
+              height: 120,
+              border: `3px solid ${color}`,
+              boxShadow: `0 0 30px ${color}60, 0 0 60px ${color}20`,
+              flexShrink: 0,
+            }}
+          >
+            <Image
+              src={photoUrl}
+              alt={country?.starPlayer.name ?? teamName}
+              fill
+              sizes="120px"
+              className="object-cover object-top"
+              unoptimized
+            />
+          </div>
+        ) : (
+          /* Fallback — jersey number circle */
+          <div
+            className="rounded-full flex items-center justify-center font-orbitron font-black"
+            style={{
+              width: 120,
+              height: 120,
+              background: `${color}15`,
+              border: `3px solid ${color}80`,
+              color: color,
+              fontSize: "2.5rem",
+              boxShadow: `0 0 30px ${color}40`,
+            }}
+          >
+            {country?.starPlayer.number ? `#${country.starPlayer.number}` : "?"}
+          </div>
+        )}
+
+        {/* Player name + position */}
+        {country && (
+          <div className="text-center mt-3 px-2">
+            <p
+              className="font-orbitron font-black text-sm leading-tight"
+              style={{ color: "#ffffff" }}
+            >
+              {country.starPlayer.name}
+            </p>
+            <p
+              className="font-orbitron text-[10px] tracking-widest uppercase mt-1"
+              style={{ color: color }}
+            >
+              {country.starPlayer.position}
+              {country.starPlayer.number ? ` · #${country.starPlayer.number}` : ""}
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Bottom: team name + flag badge */}
+      <div className="relative z-10 flex flex-col items-center pb-4 gap-2">
+        {/* Mini flag */}
+        {country && (
+          <div
+            className="relative rounded overflow-hidden"
+            style={{
+              width: 44,
+              height: 30,
+              border: `1px solid ${color}60`,
+              boxShadow: `0 0 10px ${color}30`,
+            }}
+          >
+            <Image
+              src={getFlagUrl(country.isoCode)}
+              alt={teamName}
+              fill
+              className="object-cover"
+              unoptimized
+            />
+          </div>
+        )}
+        <p
+          className="font-orbitron font-black text-base tracking-wide"
+          style={{ color: color, textShadow: `0 0 15px ${color}80` }}
+        >
+          {teamName}
+        </p>
+        {country && (
+          <div className="flex gap-3 text-[10px] font-orbitron" style={{ color: "#7070a0" }}>
+            <span>
+              <span style={{ color: color }}>{country.starPlayer.caps}</span> caps
+            </span>
+            <span>
+              <span style={{ color: color }}>{country.starPlayer.goals}</span> goals
+            </span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ── Main modal ───────────────────────────────────────────────────────────────
 export default function MatchPosterModal({ match, onClose }: Props) {
-  const [homeCutout, setHomeCutout] = useState<string | null>(null);
-  const [awayCutout, setAwayCutout] = useState<string | null>(null);
   const [homeThumb, setHomeThumb] = useState<string | null>(null);
   const [awayThumb, setAwayThumb] = useState<string | null>(null);
+  const [loadingHome, setLoadingHome] = useState(false);
+  const [loadingAway, setLoadingAway] = useState(false);
 
-  const homeCountry = match ? getCountryByName(match.homeTeam) : null;
-  const awayCountry = match ? getCountryByName(match.awayTeam) : null;
+  const homeCountry = match ? (getCountryByName(match.homeTeam) ?? null) : null;
+  const awayCountry = match ? (getCountryByName(match.awayTeam) ?? null) : null;
   const stageColor = match ? (STAGE_COLORS[match.stage] ?? "#00ff88") : "#00ff88";
   const istDisplay = match
-    ? (matchFullIST(match.date, match.time, match.venue) ?? `${match.date} ${match.time}`)
+    ? (matchFullIST(match.date, match.time, match.venue) ?? `${match.date} · ${match.time}`)
     : "";
 
   useEffect(() => {
     if (!match) return;
-    // Defer state resets to satisfy set-state-in-effect rule
+    // Only set loading=true for sides that will actually fetch
     const resetId = setTimeout(() => {
-      setHomeCutout(null);
-      setAwayCutout(null);
       setHomeThumb(null);
       setAwayThumb(null);
+      if (homeCountry) setLoadingHome(true);
+      if (awayCountry) setLoadingAway(true);
     }, 0);
 
     if (homeCountry) {
-      const searchName = homeCountry.starPlayer.tsdbName ?? homeCountry.starPlayer.name;
-      getPlayerCutout(searchName).then((url) => setHomeCutout(url ?? null));
-      getPlayerThumb(searchName).then((url) => setHomeThumb(url ?? null));
+      const name = homeCountry.starPlayer.tsdbName ?? homeCountry.starPlayer.name;
+      getPlayerThumb(name).then((url) => {
+        setHomeThumb(url ?? null);
+        setLoadingHome(false);
+      });
     }
+
     if (awayCountry) {
-      const searchName = awayCountry.starPlayer.tsdbName ?? awayCountry.starPlayer.name;
-      getPlayerCutout(searchName).then((url) => setAwayCutout(url ?? null));
-      getPlayerThumb(searchName).then((url) => setAwayThumb(url ?? null));
+      const name = awayCountry.starPlayer.tsdbName ?? awayCountry.starPlayer.name;
+      getPlayerThumb(name).then((url) => {
+        setAwayThumb(url ?? null);
+        setLoadingAway(false);
+      });
     }
+
     return () => clearTimeout(resetId);
   }, [match, homeCountry, awayCountry]);
 
@@ -69,307 +227,136 @@ export default function MatchPosterModal({ match, onClose }: Props) {
 
   if (!match) return null;
 
+  const homeColor = homeCountry?.neonColor ?? stageColor;
+  const awayColor = awayCountry?.neonColor ?? stageColor;
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      style={{ background: "rgba(0,0,0,0.95)", backdropFilter: "blur(20px)" }}
+      style={{ background: "rgba(0,0,0,0.92)", backdropFilter: "blur(16px)" }}
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-2xl rounded-2xl overflow-hidden"
+        className="relative w-full max-w-xl rounded-2xl overflow-hidden"
         style={{
-          background: "#050510",
-          border: `2px solid ${stageColor}40`,
-          boxShadow: `0 0 60px ${stageColor}20`,
+          background: "#030308",
+          border: `1px solid ${stageColor}50`,
+          boxShadow: `0 0 80px ${stageColor}15, 0 0 40px rgba(0,0,0,0.8)`,
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 z-20 p-2 rounded-lg"
-          style={{ background: "rgba(0,0,0,0.7)", color: "#ffffff" }}
+        {/* ── Top bar ── */}
+        <div
+          className="relative flex items-center justify-between px-5 py-3 z-20"
+          style={{ borderBottom: `1px solid ${stageColor}20` }}
         >
-          <X size={18} />
-        </button>
-
-        {/* Stage badge — top center */}
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20">
+          {/* Stage badge */}
           <div
-            className="flex items-center gap-2 px-4 py-1.5 rounded-full font-orbitron text-xs tracking-widest uppercase"
+            className="flex items-center gap-2 px-3 py-1 rounded-full font-orbitron text-[11px] tracking-widest uppercase"
             style={{
-              background: `${stageColor}20`,
-              border: `1px solid ${stageColor}60`,
+              background: `${stageColor}15`,
+              border: `1px solid ${stageColor}50`,
               color: stageColor,
-              boxShadow: `0 0 15px ${stageColor}30`,
             }}
           >
-            <Shield size={10} />
             {match.group ? `Group ${match.group}` : match.stage}
           </div>
+          {/* Match number */}
+          <span className="font-orbitron text-xs" style={{ color: "#404060" }}>
+            Match #{match.matchNumber}
+          </span>
+          {/* Close */}
+          <button
+            onClick={onClose}
+            className="p-1.5 rounded-lg transition-colors"
+            style={{ color: "#7070a0", background: "rgba(255,255,255,0.04)" }}
+            onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#ffffff")}
+            onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#7070a0")}
+          >
+            <X size={16} />
+          </button>
         </div>
 
-        {/* Main poster area */}
-        <div className="relative h-80 sm:h-96 flex">
-          {/* Home side — blue gradient */}
+        {/* ── Two player sides + VS divider ── */}
+        <div className="flex" style={{ minHeight: 320 }}>
+          <PlayerSide
+            country={homeCountry}
+            teamName={match.homeTeam}
+            photoUrl={homeThumb}
+            loading={loadingHome}
+          />
+
+          {/* ── VS Centre ── */}
           <div
-            className="flex-1 relative overflow-hidden flex flex-col items-center justify-end pb-4"
-            style={{
-              background: homeCountry
-                ? `linear-gradient(135deg, ${homeCountry.neonColor}15 0%, #050510 60%)`
-                : "linear-gradient(135deg, #0a0a22 0%, #050510 60%)",
-            }}
+            className="relative z-10 flex flex-col items-center justify-center flex-shrink-0"
+            style={{ width: 56 }}
           >
-            {/* Home flag background */}
-            {homeCountry && (
-              <div className="absolute inset-0 opacity-10">
-                <Image
-                  src={getFlagUrl(homeCountry.isoCode)}
-                  alt={match.homeTeam}
-                  fill
-                  className="object-cover"
-                  unoptimized
-                />
-              </div>
-            )}
-            {/* Player cutout — national jersey tint via mix-blend-mode: color */}
-            {homeCutout ? (
-              <div className="absolute bottom-0 left-0 right-0 flex justify-center">
-                {/*
-                  isolation: isolate creates a new compositing context so the
-                  color blend only affects pixels inside this container, not the
-                  poster background behind transparent cutout areas.
-                  mix-blend-mode: color shifts jersey hue/saturation to national
-                  team color while keeping the player's luminosity (shadows/highlights).
-                */}
-                <div
-                  style={{ position: "relative", display: "inline-block", isolation: "isolate" }}
-                >
-                  <img
-                    src={homeCutout}
-                    alt={homeCountry?.starPlayer.name ?? match.homeTeam}
-                    className="object-contain"
-                    style={{ height: "260px", maxWidth: "100%", display: "block" }}
-                  />
-                  {homeCountry && (
-                    <div
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        background: homeCountry.neonColor,
-                        opacity: 0.65,
-                        mixBlendMode: "color",
-                        pointerEvents: "none",
-                      }}
-                    />
-                  )}
-                </div>
-              </div>
-            ) : homeThumb ? (
-              <div
-                className="absolute bottom-8 rounded-full overflow-hidden"
-                style={{
-                  width: "100px",
-                  height: "100px",
-                  border: `3px solid ${homeCountry?.neonColor ?? stageColor}`,
-                  boxShadow: `0 0 20px ${homeCountry?.neonColor ?? stageColor}60`,
-                }}
-              >
-                <img
-                  src={homeThumb}
-                  alt={homeCountry?.starPlayer.name ?? match.homeTeam}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            ) : (
-              <div
-                className="absolute bottom-8 rounded-full flex items-center justify-center font-orbitron font-black text-2xl"
-                style={{
-                  width: "90px",
-                  height: "90px",
-                  background: `${homeCountry?.neonColor ?? stageColor}20`,
-                  border: `2px solid ${homeCountry?.neonColor ?? stageColor}60`,
-                  color: homeCountry?.neonColor ?? stageColor,
-                }}
-              >
-                {homeCountry?.starPlayer.number ?? "#"}
-              </div>
-            )}
-            {/* Team name + flag bottom */}
-            <div className="relative z-10 text-center mt-auto">
-              {homeCountry && (
-                <div className="flex justify-center mb-1">
-                  <div className="w-10 h-7 relative rounded overflow-hidden">
-                    <Image
-                      src={getFlagUrl(homeCountry.isoCode)}
-                      alt={match.homeTeam}
-                      fill
-                      className="object-cover"
-                      unoptimized
-                    />
-                  </div>
-                </div>
-              )}
-              <p
-                className="font-orbitron font-black text-sm"
-                style={{ color: homeCountry?.neonColor ?? "#ffffff" }}
-              >
-                {match.homeTeam}
-              </p>
-              {homeCountry && (
-                <p className="text-[10px] mt-0.5" style={{ color: "#7070a0" }}>
-                  {homeCountry.starPlayer.name}
-                </p>
-              )}
+            {/* Vertical glow line */}
+            <div
+              className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-px"
+              style={{
+                background: `linear-gradient(to bottom, transparent, ${stageColor}80, ${stageColor}80, transparent)`,
+              }}
+            />
+            {/* VS circle */}
+            <div
+              className="relative flex items-center justify-center rounded-full font-orbitron font-black text-sm"
+              style={{
+                width: 44,
+                height: 44,
+                background: "#030308",
+                border: `2px solid ${stageColor}`,
+                color: stageColor,
+                boxShadow: `0 0 20px ${stageColor}60`,
+              }}
+            >
+              VS
             </div>
           </div>
 
-          {/* VS center divider */}
+          <PlayerSide
+            country={awayCountry}
+            teamName={match.awayTeam}
+            photoUrl={awayThumb}
+            loading={loadingAway}
+            mirror
+          />
+        </div>
+
+        {/* ── Bottom — IST time + venue ── */}
+        <div
+          className="relative z-10 px-5 py-4 text-center space-y-2"
+          style={{
+            borderTop: `1px solid rgba(255,255,255,0.06)`,
+            background: "rgba(0,0,0,0.4)",
+          }}
+        >
+          {/* Diagonal colour bar */}
           <div
-            className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-px z-10"
+            className="absolute top-0 left-0 right-0 h-[2px]"
             style={{
-              background: `linear-gradient(to bottom, transparent, ${stageColor}, ${stageColor}, transparent)`,
-              boxShadow: `0 0 15px ${stageColor}`,
+              background: `linear-gradient(90deg, ${homeColor}, ${stageColor}, ${awayColor})`,
             }}
           />
-          <div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex items-center justify-center rounded-full font-orbitron font-black text-base"
-            style={{
-              width: "52px",
-              height: "52px",
-              background: "#050510",
-              border: `2px solid ${stageColor}`,
-              color: stageColor,
-              boxShadow: `0 0 20px ${stageColor}80`,
-            }}
-          >
-            VS
-          </div>
 
-          {/* Away side — mirror */}
-          <div
-            className="flex-1 relative overflow-hidden flex flex-col items-center justify-end pb-4"
-            style={{
-              background: awayCountry
-                ? `linear-gradient(225deg, ${awayCountry.neonColor}15 0%, #050510 60%)`
-                : "linear-gradient(225deg, #220a0a 0%, #050510 60%)",
-            }}
-          >
-            {awayCountry && (
-              <div className="absolute inset-0 opacity-10">
-                <Image
-                  src={getFlagUrl(awayCountry.isoCode)}
-                  alt={match.awayTeam}
-                  fill
-                  className="object-cover scale-x-[-1]"
-                  unoptimized
-                />
-              </div>
-            )}
-            {awayCutout ? (
-              <div className="absolute bottom-0 left-0 right-0 flex justify-center">
-                <div
-                  style={{ position: "relative", display: "inline-block", isolation: "isolate" }}
-                >
-                  <img
-                    src={awayCutout}
-                    alt={awayCountry?.starPlayer.name ?? match.awayTeam}
-                    className="object-contain scale-x-[-1]"
-                    style={{ height: "260px", maxWidth: "100%", display: "block" }}
-                  />
-                  {awayCountry && (
-                    <div
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        background: awayCountry.neonColor,
-                        opacity: 0.65,
-                        mixBlendMode: "color",
-                        pointerEvents: "none",
-                      }}
-                    />
-                  )}
-                </div>
-              </div>
-            ) : awayThumb ? (
-              <div
-                className="absolute bottom-8 rounded-full overflow-hidden"
-                style={{
-                  width: "100px",
-                  height: "100px",
-                  border: `3px solid ${awayCountry?.neonColor ?? stageColor}`,
-                  boxShadow: `0 0 20px ${awayCountry?.neonColor ?? stageColor}60`,
-                }}
-              >
-                <img
-                  src={awayThumb}
-                  alt={awayCountry?.starPlayer.name ?? match.awayTeam}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            ) : (
-              <div
-                className="absolute bottom-8 rounded-full flex items-center justify-center font-orbitron font-black text-2xl"
-                style={{
-                  width: "90px",
-                  height: "90px",
-                  background: `${awayCountry?.neonColor ?? stageColor}20`,
-                  border: `2px solid ${awayCountry?.neonColor ?? stageColor}60`,
-                  color: awayCountry?.neonColor ?? stageColor,
-                }}
-              >
-                {awayCountry?.starPlayer.number ?? "#"}
-              </div>
-            )}
-            <div className="relative z-10 text-center mt-auto">
-              {awayCountry && (
-                <div className="flex justify-center mb-1">
-                  <div className="w-10 h-7 relative rounded overflow-hidden">
-                    <Image
-                      src={getFlagUrl(awayCountry.isoCode)}
-                      alt={match.awayTeam}
-                      fill
-                      className="object-cover"
-                      unoptimized
-                    />
-                  </div>
-                </div>
-              )}
-              <p
-                className="font-orbitron font-black text-sm"
-                style={{ color: awayCountry?.neonColor ?? "#ffffff" }}
-              >
-                {match.awayTeam}
-              </p>
-              {awayCountry && (
-                <p className="text-[10px] mt-0.5" style={{ color: "#7070a0" }}>
-                  {awayCountry.starPlayer.name}
-                </p>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Footer — date + IST + venue */}
-        <div
-          className="px-6 py-4 text-center space-y-2"
-          style={{ borderTop: `1px solid ${stageColor}20` }}
-        >
           <p
-            className="font-orbitron text-xs tracking-widest uppercase"
+            className="font-orbitron text-[10px] tracking-[0.3em] uppercase"
             style={{ color: "#7070a0" }}
           >
             Kick Off
           </p>
+
+          {/* IST time — the big number */}
           <p
-            className="font-orbitron font-black text-2xl tracking-wider"
+            className="font-orbitron font-black text-2xl sm:text-3xl tracking-wide"
             style={{
               color: "#00d4ff",
-              textShadow: "0 0 20px rgba(0,212,255,0.8)",
+              textShadow: "0 0 20px rgba(0,212,255,0.7)",
             }}
           >
             🇮🇳 {istDisplay}
           </p>
+
           <div className="flex items-center justify-center gap-2">
             <MapPin size={12} color="#7070a0" />
             <p className="text-sm" style={{ color: "#a0a0c0" }}>
