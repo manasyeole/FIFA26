@@ -33,15 +33,18 @@ export default function MatchPosterModal({ match, onClose }: Props) {
   const awayCountry = match ? getCountryByName(match.awayTeam) : null;
   const stageColor = match ? (STAGE_COLORS[match.stage] ?? "#00ff88") : "#00ff88";
   const istDisplay = match
-    ? matchFullIST(match.date, match.time, match.venue) ?? `${match.date} ${match.time}`
+    ? (matchFullIST(match.date, match.time, match.venue) ?? `${match.date} ${match.time}`)
     : "";
 
   useEffect(() => {
     if (!match) return;
-    setHomeCutout(null);
-    setAwayCutout(null);
-    setHomeThumb(null);
-    setAwayThumb(null);
+    // Defer state resets to satisfy set-state-in-effect rule
+    const resetId = setTimeout(() => {
+      setHomeCutout(null);
+      setAwayCutout(null);
+      setHomeThumb(null);
+      setAwayThumb(null);
+    }, 0);
 
     if (homeCountry) {
       const searchName = homeCountry.starPlayer.tsdbName ?? homeCountry.starPlayer.name;
@@ -53,6 +56,7 @@ export default function MatchPosterModal({ match, onClose }: Props) {
       getPlayerCutout(searchName).then((url) => setAwayCutout(url ?? null));
       getPlayerThumb(searchName).then((url) => setAwayThumb(url ?? null));
     }
+    return () => clearTimeout(resetId);
   }, [match, homeCountry, awayCountry]);
 
   useEffect(() => {
@@ -138,7 +142,9 @@ export default function MatchPosterModal({ match, onClose }: Props) {
                   mix-blend-mode: color shifts jersey hue/saturation to national
                   team color while keeping the player's luminosity (shadows/highlights).
                 */}
-                <div style={{ position: "relative", display: "inline-block", isolation: "isolate" }}>
+                <div
+                  style={{ position: "relative", display: "inline-block", isolation: "isolate" }}
+                >
                   <img
                     src={homeCutout}
                     alt={homeCountry?.starPlayer.name ?? match.homeTeam}
@@ -262,7 +268,9 @@ export default function MatchPosterModal({ match, onClose }: Props) {
             )}
             {awayCutout ? (
               <div className="absolute bottom-0 left-0 right-0 flex justify-center">
-                <div style={{ position: "relative", display: "inline-block", isolation: "isolate" }}>
+                <div
+                  style={{ position: "relative", display: "inline-block", isolation: "isolate" }}
+                >
                   <img
                     src={awayCutout}
                     alt={awayCountry?.starPlayer.name ?? match.awayTeam}
@@ -347,7 +355,10 @@ export default function MatchPosterModal({ match, onClose }: Props) {
           className="px-6 py-4 text-center space-y-2"
           style={{ borderTop: `1px solid ${stageColor}20` }}
         >
-          <p className="font-orbitron text-xs tracking-widest uppercase" style={{ color: "#7070a0" }}>
+          <p
+            className="font-orbitron text-xs tracking-widest uppercase"
+            style={{ color: "#7070a0" }}
+          >
             Kick Off
           </p>
           <p

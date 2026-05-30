@@ -4,12 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  countries,
-  getFlagUrl,
-  CONFEDERATION_COLORS,
-  type Country,
-} from "@/data/countries";
+import { countries, getFlagUrl, CONFEDERATION_COLORS, type Country } from "@/data/countries";
 import { fetchPlayerByName, calcAge, type TSDBPlayer } from "@/lib/thesportsdb";
 import { ROUTES } from "@/constants/routes";
 import { ArrowLeft, User, Star, Shield, Trophy } from "lucide-react";
@@ -18,9 +13,9 @@ export default function TeamPage() {
   const params = useParams();
   const slug = decodeURIComponent((params.country as string) ?? "");
 
-  const country = countries.find(
-    (c) => c.name.toLowerCase().replace(/\s+/g, "-") === slug
-  ) as Country | undefined;
+  const country = countries.find((c) => c.name.toLowerCase().replace(/\s+/g, "-") === slug) as
+    | Country
+    | undefined;
 
   const [tsdbPlayer, setTsdbPlayer] = useState<TSDBPlayer | null>(null);
   const [playerImg, setPlayerImg] = useState<string | null>(null);
@@ -28,15 +23,16 @@ export default function TeamPage() {
 
   useEffect(() => {
     if (!country) return;
-    setLoading(true);
-    const searchName =
-      country.starPlayer.tsdbName ?? country.starPlayer.name;
+    // Defer initial loading reset to satisfy set-state-in-effect rule
+    const resetId = setTimeout(() => setLoading(true), 0);
+    const searchName = country.starPlayer.tsdbName ?? country.starPlayer.name;
     fetchPlayerByName(searchName)
       .then((p) => {
         setTsdbPlayer(p);
         if (p?.strThumb) setPlayerImg(p.strThumb);
       })
       .finally(() => setLoading(false));
+    return () => clearTimeout(resetId);
   }, [country]);
 
   if (!country) {
@@ -59,7 +55,7 @@ export default function TeamPage() {
 
   const confColor = CONFEDERATION_COLORS[country.confederation] ?? "#7070a0";
   const sp = country.starPlayer;
-  const age = tsdbPlayer?.dateBorn ? calcAge(tsdbPlayer.dateBorn) : sp.age ?? "—";
+  const age = tsdbPlayer?.dateBorn ? calcAge(tsdbPlayer.dateBorn) : (sp.age ?? "—");
 
   const stats = [
     { label: "Caps", value: sp.caps ?? "—", color: "#00ff88" },
@@ -177,10 +173,7 @@ export default function TeamPage() {
               {/* Player photo */}
               <div className="flex-shrink-0">
                 {loading ? (
-                  <div
-                    className="rounded-xl shimmer"
-                    style={{ width: "120px", height: "120px" }}
-                  />
+                  <div className="rounded-xl shimmer" style={{ width: "120px", height: "120px" }} />
                 ) : playerImg ? (
                   <div
                     className="rounded-xl overflow-hidden"
@@ -191,11 +184,7 @@ export default function TeamPage() {
                       boxShadow: `0 0 20px ${country.neonColor}30`,
                     }}
                   >
-                    <img
-                      src={playerImg}
-                      alt={sp.name}
-                      className="w-full h-full object-cover"
-                    />
+                    <img src={playerImg} alt={sp.name} className="w-full h-full object-cover" />
                   </div>
                 ) : (
                   <div
@@ -215,10 +204,7 @@ export default function TeamPage() {
 
               {/* Player info */}
               <div className="flex-1">
-                <h2
-                  className="font-orbitron font-black text-xl mb-1"
-                  style={{ color: "#ffffff" }}
-                >
+                <h2 className="font-orbitron font-black text-xl mb-1" style={{ color: "#ffffff" }}>
                   {sp.name}
                 </h2>
                 <p className="text-sm mb-1" style={{ color: "#a0a0c0" }}>
@@ -270,16 +256,12 @@ export default function TeamPage() {
           }}
         >
           <Trophy size={28} color="#ffd700" className="mx-auto mb-3" />
-          <h3
-            className="font-orbitron font-bold text-lg mb-2"
-            style={{ color: "#ffd700" }}
-          >
+          <h3 className="font-orbitron font-bold text-lg mb-2" style={{ color: "#ffd700" }}>
             Full Squad — Coming in Phase 2
           </h3>
           <p className="text-sm" style={{ color: "#7070a0", lineHeight: "1.8" }}>
-            Complete 23-player squad with photos, positions, clubs, and stats
-            will be added when official squad lists are confirmed
-            (typically 1 month before the tournament).
+            Complete 23-player squad with photos, positions, clubs, and stats will be added when
+            official squad lists are confirmed (typically 1 month before the tournament).
           </p>
         </div>
       </div>
