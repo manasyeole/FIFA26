@@ -75,7 +75,7 @@ export const matches: Match[] = [
     city: "Mexico City",
     country: "Mexico",
     date: "2026-06-11",
-    time: "14:00",
+    time: "13:00",
     stage: "Group Stage",
   },
   {
@@ -88,7 +88,7 @@ export const matches: Match[] = [
     city: "Guadalajara",
     country: "Mexico",
     date: "2026-06-11",
-    time: "21:00",
+    time: "20:00",
     stage: "Group Stage",
   },
   // Group B
@@ -220,7 +220,7 @@ export const matches: Match[] = [
     city: "Monterrey",
     country: "Mexico",
     date: "2026-06-14",
-    time: "21:00",
+    time: "20:00",
     stage: "Group Stage",
   },
   // Group G/H
@@ -379,7 +379,7 @@ export const matches: Match[] = [
     city: "Mexico City",
     country: "Mexico",
     date: "2026-06-17",
-    time: "21:00",
+    time: "20:00",
     stage: "Group Stage",
   },
 
@@ -433,7 +433,7 @@ export const matches: Match[] = [
     city: "Guadalajara",
     country: "Mexico",
     date: "2026-06-18",
-    time: "20:00",
+    time: "19:00",
     stage: "Group Stage",
   },
   {
@@ -537,7 +537,7 @@ export const matches: Match[] = [
     city: "Monterrey",
     country: "Mexico",
     date: "2026-06-20",
-    time: "23:00",
+    time: "22:00",
     stage: "Group Stage",
   },
   {
@@ -693,7 +693,7 @@ export const matches: Match[] = [
     city: "Guadalajara",
     country: "Mexico",
     date: "2026-06-23",
-    time: "21:00",
+    time: "20:00",
     stage: "Group Stage",
   },
 
@@ -760,7 +760,7 @@ export const matches: Match[] = [
     city: "Mexico City",
     country: "Mexico",
     date: "2026-06-24",
-    time: "20:00",
+    time: "19:00",
     stage: "Group Stage",
   },
   {
@@ -773,7 +773,7 @@ export const matches: Match[] = [
     city: "Monterrey",
     country: "Mexico",
     date: "2026-06-24",
-    time: "20:00",
+    time: "19:00",
     stage: "Group Stage",
   },
   {
@@ -903,7 +903,7 @@ export const matches: Match[] = [
     city: "Guadalajara",
     country: "Mexico",
     date: "2026-06-26",
-    time: "19:00",
+    time: "18:00",
     stage: "Group Stage",
   },
   {
@@ -1045,7 +1045,7 @@ export const matches: Match[] = [
     city: "Monterrey",
     country: "Mexico",
     date: "2026-06-29",
-    time: "19:00",
+    time: "18:00",
     stage: "Round of 32",
   },
   {
@@ -1093,7 +1093,7 @@ export const matches: Match[] = [
     city: "Mexico City",
     country: "Mexico",
     date: "2026-06-30",
-    time: "19:00",
+    time: "18:00",
     stage: "Round of 32",
   },
   {
@@ -1251,7 +1251,7 @@ export const matches: Match[] = [
     city: "Mexico City",
     country: "Mexico",
     date: "2026-07-05",
-    time: "20:00",
+    time: "19:00",
     stage: "Round of 16",
   },
   {
