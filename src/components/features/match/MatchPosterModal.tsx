@@ -128,15 +128,36 @@ export default function MatchPosterModal({ match, onClose }: Props) {
                 />
               </div>
             )}
-            {/* Player cutout or avatar */}
+            {/* Player cutout — national jersey tint via mix-blend-mode: color */}
             {homeCutout ? (
               <div className="absolute bottom-0 left-0 right-0 flex justify-center">
-                <img
-                  src={homeCutout}
-                  alt={homeCountry?.starPlayer.name ?? match.homeTeam}
-                  className="object-contain"
-                  style={{ height: "260px", maxWidth: "100%" }}
-                />
+                {/*
+                  isolation: isolate creates a new compositing context so the
+                  color blend only affects pixels inside this container, not the
+                  poster background behind transparent cutout areas.
+                  mix-blend-mode: color shifts jersey hue/saturation to national
+                  team color while keeping the player's luminosity (shadows/highlights).
+                */}
+                <div style={{ position: "relative", display: "inline-block", isolation: "isolate" }}>
+                  <img
+                    src={homeCutout}
+                    alt={homeCountry?.starPlayer.name ?? match.homeTeam}
+                    className="object-contain"
+                    style={{ height: "260px", maxWidth: "100%", display: "block" }}
+                  />
+                  {homeCountry && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        background: homeCountry.neonColor,
+                        opacity: 0.65,
+                        mixBlendMode: "color",
+                        pointerEvents: "none",
+                      }}
+                    />
+                  )}
+                </div>
               </div>
             ) : homeThumb ? (
               <div
@@ -241,12 +262,26 @@ export default function MatchPosterModal({ match, onClose }: Props) {
             )}
             {awayCutout ? (
               <div className="absolute bottom-0 left-0 right-0 flex justify-center">
-                <img
-                  src={awayCutout}
-                  alt={awayCountry?.starPlayer.name ?? match.awayTeam}
-                  className="object-contain scale-x-[-1]"
-                  style={{ height: "260px", maxWidth: "100%" }}
-                />
+                <div style={{ position: "relative", display: "inline-block", isolation: "isolate" }}>
+                  <img
+                    src={awayCutout}
+                    alt={awayCountry?.starPlayer.name ?? match.awayTeam}
+                    className="object-contain scale-x-[-1]"
+                    style={{ height: "260px", maxWidth: "100%", display: "block" }}
+                  />
+                  {awayCountry && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        background: awayCountry.neonColor,
+                        opacity: 0.65,
+                        mixBlendMode: "color",
+                        pointerEvents: "none",
+                      }}
+                    />
+                  )}
+                </div>
               </div>
             ) : awayThumb ? (
               <div
