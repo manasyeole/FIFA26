@@ -8,10 +8,80 @@ import { countries, getFlagUrl, CONFEDERATION_COLORS, type Country } from "@/dat
 import { getSquad, POSITION_ORDER, type SquadPlayer } from "@/data/squads";
 import { fetchPlayerByName, calcAge, type TSDBPlayer } from "@/lib/thesportsdb";
 import { ROUTES } from "@/constants/routes";
-import { ArrowLeft, Star, Shield, User, Crown } from "lucide-react";
+import { ArrowLeft, Star, Shield, User, Crown, Users } from "lucide-react";
 
-// ── Player card in squad grid ─────────────────────────────────────────────────
-function SquadCard({ player, countryColor }: { player: SquadPlayer; countryColor: string }) {
+// ── Formation row config ─────────────────────────────────────────────────────
+const FORMATION_ROWS: { positions: string[]; order: string[] }[] = [
+  { positions: ["ST", "CF"], order: ["LW", "ST", "CF", "RW"] },
+  { positions: ["LW", "CAM", "RW"], order: ["LW", "CAM", "RW"] },
+  { positions: ["CDM", "CM"], order: ["CDM", "CM"] },
+  { positions: ["LB", "CB", "RB"], order: ["LB", "CB", "RB"] },
+  { positions: ["GK"], order: ["GK"] },
+];
+
+// ── Formation player node ─────────────────────────────────────────────────────
+function FormationNode({
+  player,
+  backups,
+  color,
+}: {
+  player: SquadPlayer;
+  backups: SquadPlayer[];
+  color: string;
+}) {
+  const lastName = player.name.split(" ").slice(-1)[0];
+  return (
+    <div className="flex flex-col items-center gap-0.5 min-w-0 px-1">
+      {/* Circle */}
+      <div
+        className="w-10 h-10 sm:w-11 sm:h-11 rounded-full flex items-center justify-center font-orbitron font-black text-sm flex-shrink-0 relative"
+        style={{
+          background: `radial-gradient(circle, ${color}30, ${color}10)`,
+          border: `2px solid ${color}80`,
+          boxShadow: `0 0 12px ${color}40`,
+          color: color,
+        }}
+      >
+        {player.isCaptain && (
+          <div className="absolute -top-1 -right-1">
+            <Crown size={10} color="#ffd700" />
+          </div>
+        )}
+        {player.number}
+      </div>
+      {/* Starter name */}
+      <p
+        className="font-orbitron font-bold text-[10px] text-center leading-tight max-w-[72px] truncate"
+        style={{ color: "#ffffff" }}
+        title={player.name}
+      >
+        {lastName}
+      </p>
+      {/* Backup names */}
+      {backups.slice(0, 2).map((b) => (
+        <p
+          key={b.name}
+          className="font-orbitron text-[8px] text-center leading-tight max-w-[72px] truncate"
+          style={{ color: "#7070a0" }}
+          title={b.name}
+        >
+          {b.name.split(" ").slice(-1)[0]}
+        </p>
+      ))}
+    </div>
+  );
+}
+
+// ── Squad card (used in full roster grid) ────────────────────────────────────
+function SquadCard({
+  player,
+  countryColor,
+  isStarter,
+}: {
+  player: SquadPlayer;
+  countryColor: string;
+  isStarter: boolean;
+}) {
   const [photo, setPhoto] = useState<string | null>(null);
   const [tsdbData, setTsdbData] = useState<TSDBPlayer | null>(null);
 
@@ -29,8 +99,10 @@ function SquadCard({ player, countryColor }: { player: SquadPlayer; countryColor
     <div
       className="rounded-xl overflow-hidden transition-all duration-300"
       style={{
-        background: `radial-gradient(ellipse at top, ${countryColor}10, rgba(13,13,34,0.9))`,
-        border: `1px solid ${countryColor}20`,
+        background: isStarter
+          ? `radial-gradient(ellipse at top, ${countryColor}15, rgba(13,13,34,0.95))`
+          : "rgba(13,13,34,0.7)",
+        border: `1px solid ${isStarter ? countryColor + "30" : "rgba(255,255,255,0.06)"}`,
       }}
       onMouseEnter={(e) => {
         const el = e.currentTarget as HTMLElement;
@@ -40,7 +112,7 @@ function SquadCard({ player, countryColor }: { player: SquadPlayer; countryColor
       }}
       onMouseLeave={(e) => {
         const el = e.currentTarget as HTMLElement;
-        el.style.borderColor = `${countryColor}20`;
+        el.style.borderColor = isStarter ? `${countryColor}30` : "rgba(255,255,255,0.06)";
         el.style.transform = "translateY(0)";
         el.style.boxShadow = "none";
       }}
@@ -48,7 +120,7 @@ function SquadCard({ player, countryColor }: { player: SquadPlayer; countryColor
       {/* Photo */}
       <div
         className="relative overflow-hidden"
-        style={{ height: "120px", background: `${countryColor}08` }}
+        style={{ height: "110px", background: `${countryColor}08` }}
       >
         {photo ? (
           <Image
@@ -62,17 +134,30 @@ function SquadCard({ player, countryColor }: { player: SquadPlayer; countryColor
         ) : (
           <div
             className="w-full h-full flex items-center justify-center font-orbitron font-black text-3xl"
-            style={{ color: `${countryColor}50` }}
+            style={{ color: `${countryColor}40` }}
           >
             {player.number}
           </div>
         )}
+        {/* Starter badge */}
+        {isStarter && (
+          <div
+            className="absolute top-1.5 right-1.5 px-1.5 py-0.5 rounded font-orbitron text-[7px] tracking-widest uppercase"
+            style={{
+              background: `${countryColor}25`,
+              border: `1px solid ${countryColor}50`,
+              color: countryColor,
+            }}
+          >
+            XI
+          </div>
+        )}
         {/* Jersey number badge */}
         <div
-          className="absolute top-2 left-2 w-7 h-7 rounded-full flex items-center justify-center font-orbitron font-black text-[10px]"
+          className="absolute top-1.5 left-1.5 w-6 h-6 rounded-full flex items-center justify-center font-orbitron font-black text-[10px]"
           style={{
             background: "rgba(0,0,0,0.75)",
-            border: `1px solid ${countryColor}60`,
+            border: `1px solid ${countryColor}50`,
             color: countryColor,
           }}
         >
@@ -80,47 +165,42 @@ function SquadCard({ player, countryColor }: { player: SquadPlayer; countryColor
         </div>
         {/* Captain badge */}
         {player.isCaptain && (
-          <div className="absolute top-2 right-2">
-            <Crown size={14} color="#ffd700" />
+          <div className="absolute bottom-1.5 right-1.5">
+            <Crown size={12} color="#ffd700" />
           </div>
         )}
         {/* Gradient overlay */}
         <div
           className="absolute inset-0"
           style={{
-            background: "linear-gradient(to bottom, transparent 50%, rgba(13,13,34,0.95) 100%)",
+            background: "linear-gradient(to bottom, transparent 55%, rgba(13,13,34,0.95) 100%)",
           }}
         />
       </div>
 
       {/* Info */}
-      <div className="p-3">
+      <div className="p-2.5">
         <p
-          className="font-orbitron font-bold text-xs leading-tight mb-0.5"
+          className="font-orbitron font-bold text-[10px] leading-tight mb-0.5 truncate"
           style={{ color: "#ffffff" }}
         >
           {player.name}
         </p>
-        <p className="text-[10px] mb-2" style={{ color: countryColor }}>
+        <p className="text-[9px] mb-1.5 truncate" style={{ color: countryColor }}>
           {player.position} · {player.club}
         </p>
-        {/* Mini stats */}
-        <div className="grid grid-cols-3 gap-1 text-center">
+        <div className="grid grid-cols-3 gap-0.5 text-center">
           {[
             { label: "Age", val: age },
             { label: "Caps", val: player.caps },
             { label: "Goals", val: player.goals },
           ].map((s) => (
-            <div
-              key={s.label}
-              className="rounded-lg py-1"
-              style={{ background: "rgba(0,0,0,0.3)" }}
-            >
-              <p className="font-orbitron font-black text-xs" style={{ color: countryColor }}>
+            <div key={s.label} className="rounded py-0.5" style={{ background: "rgba(0,0,0,0.3)" }}>
+              <p className="font-orbitron font-black text-[10px]" style={{ color: countryColor }}>
                 {s.val}
               </p>
               <p
-                className="font-orbitron text-[7px] tracking-widest uppercase"
+                className="font-orbitron text-[6px] tracking-widest uppercase"
                 style={{ color: "#404060" }}
               >
                 {s.label}
@@ -145,6 +225,7 @@ export default function TeamPage() {
   const [starPhoto, setStarPhoto] = useState<string | null>(null);
   const [starTsdb, setStarTsdb] = useState<TSDBPlayer | null>(null);
   const [loadingStar, setLoadingStar] = useState(true);
+  const [activeTab, setActiveTab] = useState<"formation" | "squad">("formation");
 
   useEffect(() => {
     if (!country) return;
@@ -182,7 +263,10 @@ export default function TeamPage() {
   const squad = getSquad(country.name);
   const starAge = starTsdb?.dateBorn ? calcAge(starTsdb.dateBorn) : (sp.age ?? "—");
 
-  // Group squad by position
+  const starters = squad?.filter((p) => p.isStarter) ?? [];
+  const bench = squad?.filter((p) => !p.isStarter) ?? [];
+
+  // Group all players by position
   const grouped = squad
     ? POSITION_ORDER.reduce<Record<string, SquadPlayer[]>>((acc, pos) => {
         const players = squad.filter((p) => p.position === pos);
@@ -204,6 +288,14 @@ export default function TeamPage() {
     ST: "Strikers",
     CF: "Centre Forwards",
   };
+
+  // Build formation rows from starters
+  const formationRows = FORMATION_ROWS.map((row) => {
+    const rowPlayers = starters
+      .filter((p) => row.positions.includes(p.position))
+      .sort((a, b) => row.order.indexOf(a.position) - row.order.indexOf(b.position));
+    return { ...row, players: rowPlayers };
+  }).filter((r) => r.players.length > 0);
 
   return (
     <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
@@ -267,7 +359,10 @@ export default function TeamPage() {
             <div className="absolute bottom-4 left-5">
               <h1
                 className="font-orbitron font-black text-3xl sm:text-5xl"
-                style={{ color: country.neonColor, textShadow: `0 0 20px ${country.neonColor}80` }}
+                style={{
+                  color: country.neonColor,
+                  textShadow: `0 0 20px ${country.neonColor}80`,
+                }}
               >
                 {country.name}
               </h1>
@@ -362,7 +457,11 @@ export default function TeamPage() {
                   { label: "Caps", val: sp.caps ?? "—", color: "#00ff88" },
                   { label: "Goals", val: sp.goals ?? "—", color: "#ff3366" },
                   { label: "Age", val: starAge, color: "#00d4ff" },
-                  { label: "Number", val: sp.number ? `#${sp.number}` : "—", color: "#ffd700" },
+                  {
+                    label: "Number",
+                    val: sp.number ? `#${sp.number}` : "—",
+                    color: "#ffd700",
+                  },
                 ].map((s) => (
                   <div
                     key={s.label}
@@ -388,38 +487,47 @@ export default function TeamPage() {
           </div>
         </div>
 
-        {/* ── Full Squad ── */}
+        {/* ── Squad section ── */}
         <div className="neon-divider mb-8" />
-        <div className="flex items-center gap-2 mb-6">
-          <Shield size={14} color="#00ff88" />
-          <h2 className="font-orbitron font-black text-xl" style={{ color: "#ffffff" }}>
-            {squad ? "Squad" : "Squad — Coming Soon"}
-          </h2>
-          {squad && <span className="neon-badge">{squad.length} players</span>}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-2">
+            <Users size={14} color="#00ff88" />
+            <h2 className="font-orbitron font-black text-xl" style={{ color: "#ffffff" }}>
+              {squad ? "Squad" : "Squad — Coming Soon"}
+            </h2>
+            {squad && <span className="neon-badge">{squad.length} players</span>}
+          </div>
+          {/* Tab toggle */}
+          {squad && (
+            <div
+              className="flex rounded-lg overflow-hidden"
+              style={{ border: "1px solid rgba(255,255,255,0.1)" }}
+            >
+              {(["formation", "squad"] as const).map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className="px-4 py-1.5 font-orbitron text-[10px] tracking-widest uppercase transition-all"
+                  style={{
+                    background: activeTab === tab ? `${country.neonColor}20` : "rgba(13,13,34,0.8)",
+                    color: activeTab === tab ? country.neonColor : "#7070a0",
+                    borderRight: tab === "formation" ? "1px solid rgba(255,255,255,0.1)" : "none",
+                  }}
+                >
+                  {tab === "formation" ? "Formation" : "Full Squad"}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
-        {squad && grouped ? (
-          <div className="space-y-8">
-            {POSITION_ORDER.filter((pos) => grouped[pos]).map((pos) => (
-              <div key={pos}>
-                <p
-                  className="font-orbitron text-xs tracking-widest uppercase mb-3"
-                  style={{ color: country.neonColor }}
-                >
-                  {posLabel[pos] ?? pos}
-                </p>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-                  {grouped[pos].map((player) => (
-                    <SquadCard key={player.name} player={player} countryColor={country.neonColor} />
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
+        {!squad ? (
           <div
             className="rounded-xl p-8 text-center"
-            style={{ background: "rgba(13,13,34,0.8)", border: "1px solid rgba(255,255,255,0.06)" }}
+            style={{
+              background: "rgba(13,13,34,0.8)",
+              border: "1px solid rgba(255,255,255,0.06)",
+            }}
           >
             <p className="font-orbitron font-bold text-lg mb-2" style={{ color: "#ffd700" }}>
               Full Squad — Coming Soon
@@ -429,6 +537,103 @@ export default function TeamPage() {
               is confirmed.
             </p>
           </div>
+        ) : activeTab === "formation" ? (
+          /* ── Formation / Depth View ── */
+          <div
+            className="rounded-2xl overflow-hidden"
+            style={{
+              background:
+                "radial-gradient(ellipse at center, rgba(0,80,40,0.35) 0%, rgba(0,50,25,0.2) 50%, rgba(13,13,34,0.95) 100%)",
+              border: `1px solid ${country.neonColor}20`,
+            }}
+          >
+            {/* Pitch lines hint */}
+            <div className="relative px-4 py-8">
+              {/* Center circle hint */}
+              <div
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full pointer-events-none"
+                style={{ border: "1px solid rgba(255,255,255,0.06)" }}
+              />
+              {/* Halfway line */}
+              <div
+                className="absolute left-4 right-4 pointer-events-none"
+                style={{
+                  top: "50%",
+                  height: "1px",
+                  background: "rgba(255,255,255,0.05)",
+                }}
+              />
+
+              {/* Formation rows */}
+              <div className="relative z-10 flex flex-col gap-6">
+                {formationRows.map((row, ri) => (
+                  <div key={ri} className="flex justify-around items-start">
+                    {row.players.map((player) => {
+                      const posBackups = bench.filter((b) => b.position === player.position);
+                      return (
+                        <FormationNode
+                          key={player.name}
+                          player={player}
+                          backups={posBackups}
+                          color={country.neonColor}
+                        />
+                      );
+                    })}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Legend */}
+            <div
+              className="px-5 py-3 flex items-center gap-4 text-[9px] font-orbitron tracking-widest uppercase"
+              style={{
+                borderTop: "1px solid rgba(255,255,255,0.06)",
+                color: "#7070a0",
+              }}
+            >
+              <span>
+                <span style={{ color: country.neonColor }}>●</span> Starter
+              </span>
+              <span>Gray names = depth options</span>
+              <span className="ml-auto">
+                {starters.length} starters · {bench.length} bench
+              </span>
+            </div>
+          </div>
+        ) : (
+          /* ── Full Squad Grid ── */
+          grouped && (
+            <div className="space-y-7">
+              {POSITION_ORDER.filter((pos) => grouped[pos]).map((pos) => (
+                <div key={pos}>
+                  <div className="flex items-center gap-2 mb-3">
+                    <p
+                      className="font-orbitron text-xs tracking-widest uppercase"
+                      style={{ color: country.neonColor }}
+                    >
+                      {posLabel[pos] ?? pos}
+                    </p>
+                    <span className="text-[9px] font-orbitron" style={{ color: "#404060" }}>
+                      {grouped[pos].length}
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2.5">
+                    {grouped[pos]
+                      .sort((a, b) => (b.isStarter ? 1 : 0) - (a.isStarter ? 1 : 0))
+                      .map((player) => (
+                        <SquadCard
+                          key={player.name}
+                          player={player}
+                          countryColor={country.neonColor}
+                          isStarter={player.isStarter}
+                        />
+                      ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )
         )}
       </div>
     </div>
