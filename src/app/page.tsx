@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { matches } from "@/data/matches";
-import CountdownTimer from "@/components/ui/CountdownTimer";
 import MatchCard from "@/components/ui/MatchCard";
 import AllCountriesGrid from "@/components/features/countries/AllCountriesGrid";
+import HeroSection from "@/components/sections/HeroSection";
 import { Trophy, Calendar, MapPin, Users, ArrowRight, Zap, Globe } from "lucide-react";
 
 const STATS = [
@@ -21,81 +21,8 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen">
-      {/* ─── HERO ─────────────────────────────────────────────────── */}
-      <section
-        className="relative min-h-[90vh] flex flex-col items-center justify-center text-center px-4 bg-grid-animated overflow-hidden"
-        style={{ paddingTop: "4rem", paddingBottom: "4rem" }}
-      >
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              "radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,255,136,0.06) 0%, transparent 70%)",
-          }}
-        />
-        <div
-          className="absolute bottom-0 left-0 w-96 h-96 pointer-events-none"
-          style={{
-            background: "radial-gradient(circle, rgba(255,51,102,0.08) 0%, transparent 70%)",
-          }}
-        />
-        <div
-          className="absolute top-0 right-0 w-80 h-80 pointer-events-none"
-          style={{
-            background: "radial-gradient(circle, rgba(0,212,255,0.06) 0%, transparent 70%)",
-          }}
-        />
-
-        <div className="relative z-10 max-w-5xl mx-auto">
-          <div className="flex justify-center mb-6">
-            <span className="neon-badge neon-badge-cyan flex items-center gap-2">
-              <Zap size={10} />
-              Official Tournament Starts June 11, 2026
-            </span>
-          </div>
-
-          <h1
-            className="font-orbitron font-black leading-none mb-4"
-            style={{ fontSize: "clamp(2.5rem, 8vw, 6rem)" }}
-          >
-            <span className="text-glow-green">FIFA</span>
-            <br />
-            <span style={{ color: "#ffffff" }}>WORLD CUP</span>
-            <br />
-            <span style={{ color: "#ff3366", textShadow: "0 0 20px #ff3366, 0 0 40px #ff336680" }}>
-              2026
-            </span>
-          </h1>
-
-          <p
-            className="text-base sm:text-lg max-w-xl mx-auto mb-10"
-            style={{ color: "#7070a0", lineHeight: "1.8" }}
-          >
-            48 teams. 3 countries. 104 matches. One trophy.
-            <br />
-            The biggest World Cup in history.
-          </p>
-
-          <div className="flex flex-wrap gap-4 justify-center mb-14">
-            <Link href="/schedule" className="btn-neon flex items-center gap-2">
-              <Calendar size={14} />
-              View All Matches
-            </Link>
-            <Link href="/gallery" className="btn-neon btn-neon-pink flex items-center gap-2">
-              <Zap size={14} />
-              Fan Gallery
-            </Link>
-          </div>
-
-          <p
-            className="font-orbitron text-xs tracking-[0.3em] uppercase mb-6"
-            style={{ color: "#404060" }}
-          >
-            ⚡ Kickoff Countdown
-          </p>
-          <CountdownTimer />
-        </div>
-      </section>
+      {/* ─── HERO — cinematic multi-player poster ─────────────── */}
+      <HeroSection />
 
       {/* ─── STATS ────────────────────────────────────────────────── */}
       <section className="py-16 px-4 sm:px-6 lg:px-8">
