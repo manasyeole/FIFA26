@@ -10,7 +10,7 @@ const ALL = "All";
 export default function SchedulePage() {
   const [activeGroup, setActiveGroup] = useState<string>(ALL);
   const [activeStage, setActiveStage] = useState<string>(ALL);
-  const [search, setSearch]           = useState("");
+  const [search, setSearch] = useState("");
 
   const filtered = useMemo(() => {
     return matches.filter((m) => {
@@ -46,7 +46,6 @@ export default function SchedulePage() {
   return (
     <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-
         {/* ─── Page Header ──────────────────────────────────────── */}
         <div className="text-center mb-12">
           <div className="flex justify-center mb-4">
@@ -55,7 +54,10 @@ export default function SchedulePage() {
               June 11 — July 19, 2026
             </span>
           </div>
-          <h1 className="font-orbitron font-black text-3xl sm:text-5xl mb-4" style={{ color: "#ffffff" }}>
+          <h1
+            className="font-orbitron font-black text-3xl sm:text-5xl mb-4"
+            style={{ color: "#ffffff" }}
+          >
             <span className="text-glow-green">Full</span> Schedule
           </h1>
           <p className="text-sm" style={{ color: "#7070a0" }}>
@@ -77,8 +79,14 @@ export default function SchedulePage() {
               border: "1px solid rgba(0,255,136,0.2)",
               color: "#ffffff",
             }}
-            onFocus={(e) => { (e.target as HTMLInputElement).style.borderColor = "rgba(0,255,136,0.6)"; (e.target as HTMLInputElement).style.boxShadow = "0 0 20px rgba(0,255,136,0.1)"; }}
-            onBlur={(e)  => { (e.target as HTMLInputElement).style.borderColor = "rgba(0,255,136,0.2)"; (e.target as HTMLInputElement).style.boxShadow = "none"; }}
+            onFocus={(e) => {
+              (e.target as HTMLInputElement).style.borderColor = "rgba(0,255,136,0.6)";
+              (e.target as HTMLInputElement).style.boxShadow = "0 0 20px rgba(0,255,136,0.1)";
+            }}
+            onBlur={(e) => {
+              (e.target as HTMLInputElement).style.borderColor = "rgba(0,255,136,0.2)";
+              (e.target as HTMLInputElement).style.boxShadow = "none";
+            }}
           />
         </div>
 
@@ -86,14 +94,24 @@ export default function SchedulePage() {
         <div className="mb-6">
           <div className="flex items-center gap-2 mb-3">
             <Trophy size={12} color="#ffd700" />
-            <span className="font-orbitron text-[10px] tracking-[0.2em] uppercase" style={{ color: "#7070a0" }}>Stage</span>
+            <span
+              className="font-orbitron text-[10px] tracking-[0.2em] uppercase"
+              style={{ color: "#7070a0" }}
+            >
+              Stage
+            </span>
           </div>
           <div className="flex flex-wrap gap-2">
             {[ALL, ...STAGES].map((stage) => {
               const active = activeStage === stage;
               const stageColors: Record<string, string> = {
-                "Group Stage":"#00ff88","Round of 32":"#00d4ff","Round of 16":"#bf5fff",
-                "Quarterfinal":"#ff9900","Semifinal":"#ff3366","Third Place":"#7070a0","Final":"#ffd700",
+                "Group Stage": "#00ff88",
+                "Round of 32": "#00d4ff",
+                "Round of 16": "#bf5fff",
+                Quarterfinal: "#ff9900",
+                Semifinal: "#ff3366",
+                "Third Place": "#7070a0",
+                Final: "#ffd700",
               };
               const color = stage === ALL ? "#7070a0" : (stageColors[stage] ?? "#7070a0");
               return (
@@ -120,7 +138,12 @@ export default function SchedulePage() {
           <div className="mb-10">
             <div className="flex items-center gap-2 mb-3">
               <Filter size={12} color="#00ff88" />
-              <span className="font-orbitron text-[10px] tracking-[0.2em] uppercase" style={{ color: "#7070a0" }}>Group</span>
+              <span
+                className="font-orbitron text-[10px] tracking-[0.2em] uppercase"
+                style={{ color: "#7070a0" }}
+              >
+                Group
+              </span>
             </div>
             <div className="flex flex-wrap gap-2">
               <button
@@ -163,7 +186,11 @@ export default function SchedulePage() {
           </p>
           {(search || activeGroup !== ALL || activeStage !== ALL) && (
             <button
-              onClick={() => { setSearch(""); setActiveGroup(ALL); setActiveStage(ALL); }}
+              onClick={() => {
+                setSearch("");
+                setActiveGroup(ALL);
+                setActiveStage(ALL);
+              }}
               className="font-orbitron text-[10px] tracking-widest uppercase transition-colors duration-200"
               style={{ color: "#7070a0" }}
               onMouseEnter={(e) => (e.currentTarget.style.color = "#ff3366")}
@@ -177,8 +204,12 @@ export default function SchedulePage() {
         {/* ─── Grid ─────────────────────────────────────────────── */}
         {filtered.length === 0 ? (
           <div className="text-center py-24">
-            <p className="font-orbitron text-4xl mb-4" style={{ color: "#404060" }}>404</p>
-            <p className="font-orbitron text-sm tracking-widest" style={{ color: "#7070a0" }}>No matches found</p>
+            <p className="font-orbitron text-4xl mb-4" style={{ color: "#404060" }}>
+              404
+            </p>
+            <p className="font-orbitron text-sm tracking-widest" style={{ color: "#7070a0" }}>
+              No matches found
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -189,51 +220,64 @@ export default function SchedulePage() {
         )}
 
         {/* ─── Group Summary Table ──────────────────────────────── */}
-        {(activeStage === ALL || activeStage === "Group Stage") && activeGroup === ALL && !search && (
-          <div className="mt-16">
-            <div className="neon-divider mb-8" />
-            <h2 className="font-orbitron font-black text-xl mb-6 text-center" style={{ color: "#ffffff" }}>
-              Group Overview
-            </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-              {GROUPS.map((g) => {
-                const groupMatches = matches.filter((m) => m.group === g);
-                const teams = Array.from(new Set(groupMatches.flatMap((m) => [m.homeTeam, m.awayTeam])));
-                return (
-                  <button
-                    key={g}
-                    onClick={() => handleGroupClick(g)}
-                    className="rounded-xl p-4 text-left transition-all duration-200"
-                    style={{
-                      background: "rgba(13,13,34,0.8)",
-                      border: "1px solid rgba(0,255,136,0.15)",
-                    }}
-                    onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLElement).style.borderColor = "rgba(0,255,136,0.5)";
-                      (e.currentTarget as HTMLElement).style.boxShadow = "0 0 15px rgba(0,255,136,0.1)";
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLElement).style.borderColor = "rgba(0,255,136,0.15)";
-                      (e.currentTarget as HTMLElement).style.boxShadow = "none";
-                    }}
-                  >
-                    <p className="font-orbitron font-black text-lg mb-2" style={{ color: "#00ff88" }}>
-                      Group {g}
-                    </p>
-                    <div className="space-y-1">
-                      {teams.map((t) => (
-                        <p key={t} className="text-[10px]" style={{ color: "#7070a0" }}>{t}</p>
-                      ))}
-                    </div>
-                    <p className="mt-3 text-[10px] font-orbitron" style={{ color: "#404060" }}>
-                      {groupCount[g]} matches
-                    </p>
-                  </button>
-                );
-              })}
+        {(activeStage === ALL || activeStage === "Group Stage") &&
+          activeGroup === ALL &&
+          !search && (
+            <div className="mt-16">
+              <div className="neon-divider mb-8" />
+              <h2
+                className="font-orbitron font-black text-xl mb-6 text-center"
+                style={{ color: "#ffffff" }}
+              >
+                Group Overview
+              </h2>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                {GROUPS.map((g) => {
+                  const groupMatches = matches.filter((m) => m.group === g);
+                  const teams = Array.from(
+                    new Set(groupMatches.flatMap((m) => [m.homeTeam, m.awayTeam]))
+                  );
+                  return (
+                    <button
+                      key={g}
+                      onClick={() => handleGroupClick(g)}
+                      className="rounded-xl p-4 text-left transition-all duration-200"
+                      style={{
+                        background: "rgba(13,13,34,0.8)",
+                        border: "1px solid rgba(0,255,136,0.15)",
+                      }}
+                      onMouseEnter={(e) => {
+                        (e.currentTarget as HTMLElement).style.borderColor = "rgba(0,255,136,0.5)";
+                        (e.currentTarget as HTMLElement).style.boxShadow =
+                          "0 0 15px rgba(0,255,136,0.1)";
+                      }}
+                      onMouseLeave={(e) => {
+                        (e.currentTarget as HTMLElement).style.borderColor = "rgba(0,255,136,0.15)";
+                        (e.currentTarget as HTMLElement).style.boxShadow = "none";
+                      }}
+                    >
+                      <p
+                        className="font-orbitron font-black text-lg mb-2"
+                        style={{ color: "#00ff88" }}
+                      >
+                        Group {g}
+                      </p>
+                      <div className="space-y-1">
+                        {teams.map((t) => (
+                          <p key={t} className="text-[10px]" style={{ color: "#7070a0" }}>
+                            {t}
+                          </p>
+                        ))}
+                      </div>
+                      <p className="mt-3 text-[10px] font-orbitron" style={{ color: "#404060" }}>
+                        {groupCount[g]} matches
+                      </p>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        )}
+          )}
       </div>
     </div>
   );

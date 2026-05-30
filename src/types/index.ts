@@ -26,8 +26,8 @@ export interface Match {
   venue: string;
   city: string;
   country: HostCountry;
-  date: string;   // ISO date string: "YYYY-MM-DD"
-  time: string;   // "HH:MM" local time
+  date: string; // ISO date string: "YYYY-MM-DD"
+  time: string; // "HH:MM" local time
   stage: Stage;
   homeFlag?: string;
   awayFlag?: string;

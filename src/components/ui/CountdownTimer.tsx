@@ -6,7 +6,15 @@ import { padZero } from "@/lib/utils";
 
 const KICKOFF = new Date(SITE_CONFIG.tournament.kickoff);
 
-function Segment({ value, label, color = "#00ff88" }: { value: number; label: string; color?: string }) {
+function Segment({
+  value,
+  label,
+  color = "#00ff88",
+}: {
+  value: number;
+  label: string;
+  color?: string;
+}) {
   const display = padZero(value);
 
   return (
@@ -19,10 +27,22 @@ function Segment({ value, label, color = "#00ff88" }: { value: number; label: st
           boxShadow: `0 0 20px ${color}20, inset 0 0 20px ${color}08`,
         }}
       >
-        <span className="absolute top-1 left-1 w-2 h-2 border-t border-l" style={{ borderColor: color }} />
-        <span className="absolute top-1 right-1 w-2 h-2 border-t border-r" style={{ borderColor: color }} />
-        <span className="absolute bottom-1 left-1 w-2 h-2 border-b border-l" style={{ borderColor: color }} />
-        <span className="absolute bottom-1 right-1 w-2 h-2 border-b border-r" style={{ borderColor: color }} />
+        <span
+          className="absolute top-1 left-1 w-2 h-2 border-t border-l"
+          style={{ borderColor: color }}
+        />
+        <span
+          className="absolute top-1 right-1 w-2 h-2 border-t border-r"
+          style={{ borderColor: color }}
+        />
+        <span
+          className="absolute bottom-1 left-1 w-2 h-2 border-b border-l"
+          style={{ borderColor: color }}
+        />
+        <span
+          className="absolute bottom-1 right-1 w-2 h-2 border-b border-r"
+          style={{ borderColor: color }}
+        />
         <span
           className="font-orbitron text-3xl sm:text-4xl font-black tabular-nums"
           style={{ color, textShadow: `0 0 20px ${color}` }}
@@ -30,7 +50,10 @@ function Segment({ value, label, color = "#00ff88" }: { value: number; label: st
           {display}
         </span>
       </div>
-      <span className="mt-2 font-orbitron text-[10px] tracking-[0.2em] uppercase" style={{ color: "#7070a0" }}>
+      <span
+        className="mt-2 font-orbitron text-[10px] tracking-[0.2em] uppercase"
+        style={{ color: "#7070a0" }}
+      >
         {label}
       </span>
     </div>
@@ -47,7 +70,10 @@ export default function CountdownTimer() {
         {["Days", "Hours", "Mins", "Secs"].map((l) => (
           <div key={l} className="flex flex-col items-center">
             <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl shimmer" />
-            <span className="mt-2 font-orbitron text-[10px] tracking-[0.2em] uppercase" style={{ color: "#7070a0" }}>
+            <span
+              className="mt-2 font-orbitron text-[10px] tracking-[0.2em] uppercase"
+              style={{ color: "#7070a0" }}
+            >
               {l}
             </span>
           </div>
@@ -68,8 +94,8 @@ export default function CountdownTimer() {
 
   return (
     <div className="flex gap-3 sm:gap-6 justify-center">
-      <Segment value={days}    label="Days"    color="#00ff88" />
-      <Segment value={hours}   label="Hours"   color="#00d4ff" />
+      <Segment value={days} label="Days" color="#00ff88" />
+      <Segment value={hours} label="Hours" color="#00d4ff" />
       <Segment value={minutes} label="Minutes" color="#ff3366" />
       <Segment value={seconds} label="Seconds" color="#ffd700" />
     </div>

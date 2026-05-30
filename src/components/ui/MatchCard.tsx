@@ -38,7 +38,8 @@ function TeamCol({ teamName, showPlayer }: { teamName: string; showPlayer: boole
         <div
           className="rounded-md flex items-center justify-center"
           style={{
-            width: "66px", height: "44px",
+            width: "66px",
+            height: "44px",
             background: "rgba(255,255,255,0.02)",
             border: "1px dashed rgba(255,255,255,0.1)",
           }}
@@ -61,7 +62,8 @@ function TeamCol({ teamName, showPlayer }: { teamName: string; showPlayer: boole
           <div
             className="flex-shrink-0 flex items-center justify-center rounded-full font-orbitron font-black"
             style={{
-              width: "18px", height: "18px",
+              width: "18px",
+              height: "18px",
               background: `${country.neonColor}20`,
               border: `1px solid ${country.neonColor}55`,
               color: country.neonColor,
@@ -70,7 +72,10 @@ function TeamCol({ teamName, showPlayer }: { teamName: string; showPlayer: boole
           >
             {initials}
           </div>
-          <span className="text-[9px]" style={{ color: "#7070a0", maxWidth: "58px", overflow: "hidden", whiteSpace: "nowrap" }}>
+          <span
+            className="text-[9px]"
+            style={{ color: "#7070a0", maxWidth: "58px", overflow: "hidden", whiteSpace: "nowrap" }}
+          >
             {country.starPlayer.name.split(" ").pop()}
           </span>
         </div>
@@ -80,29 +85,29 @@ function TeamCol({ teamName, showPlayer }: { teamName: string; showPlayer: boole
 }
 
 export default function MatchCard({ match, compact = false }: Props) {
-  const stageColor               = STAGE_COLORS[match.stage] ?? "#7070a0";
-  const isKnockout               = match.stage !== "Group Stage";
+  const stageColor = STAGE_COLORS[match.stage] ?? "#7070a0";
+  const isKnockout = match.stage !== "Group Stage";
   const { localTime, isMounted } = useLocalTime(match.date, match.time, match.venue);
 
   return (
     <div
       className="relative rounded-xl overflow-hidden transition-all duration-300 cursor-default"
       style={{
-        background:     "rgba(13,13,34,0.85)",
-        border:         `1px solid ${stageColor}25`,
+        background: "rgba(13,13,34,0.85)",
+        border: `1px solid ${stageColor}25`,
         backdropFilter: "blur(10px)",
       }}
       onMouseEnter={(e) => {
         const el = e.currentTarget as HTMLElement;
         el.style.borderColor = `${stageColor}60`;
-        el.style.boxShadow   = `0 0 25px ${stageColor}15, 0 8px 30px rgba(0,0,0,0.4)`;
-        el.style.transform   = "translateY(-3px)";
+        el.style.boxShadow = `0 0 25px ${stageColor}15, 0 8px 30px rgba(0,0,0,0.4)`;
+        el.style.transform = "translateY(-3px)";
       }}
       onMouseLeave={(e) => {
         const el = e.currentTarget as HTMLElement;
         el.style.borderColor = `${stageColor}25`;
-        el.style.boxShadow   = "none";
-        el.style.transform   = "translateY(0)";
+        el.style.boxShadow = "none";
+        el.style.transform = "translateY(0)";
       }}
     >
       {/* Neon top line */}
@@ -112,13 +117,16 @@ export default function MatchCard({ match, compact = false }: Props) {
       />
 
       <div className={compact ? "p-3" : "p-4"}>
-
         {/* Header: stage badge + match number */}
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             <span
               className="neon-badge"
-              style={{ borderColor: `${stageColor}50`, color: stageColor, background: `${stageColor}10` }}
+              style={{
+                borderColor: `${stageColor}50`,
+                color: stageColor,
+                background: `${stageColor}10`,
+              }}
             >
               {match.group ? `Group ${match.group}` : match.stage}
             </span>
@@ -176,7 +184,7 @@ export default function MatchCard({ match, compact = false }: Props) {
               className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg"
               style={{
                 background: "rgba(0,212,255,0.06)",
-                border:     "1px solid rgba(0,212,255,0.18)",
+                border: "1px solid rgba(0,212,255,0.18)",
               }}
             >
               <Clock size={10} color="#00d4ff" />
@@ -207,7 +215,9 @@ export default function MatchCard({ match, compact = false }: Props) {
             {isMounted && localTime && (
               <>
                 <span style={{ color: "#404060", fontSize: "9px" }}>·</span>
-                <span className="text-[9px]" style={{ color: "#00d4ff" }}>{localTime}</span>
+                <span className="text-[9px]" style={{ color: "#00d4ff" }}>
+                  {localTime}
+                </span>
               </>
             )}
           </div>

@@ -36,11 +36,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${orbitron.variable} ${inter.variable}`}
       style={{ scrollBehavior: "smooth" }}
     >
-      <body className="scanlines" style={{ background: "#050510", color: "#ffffff", fontFamily: "var(--font-inter)" }}>
+      <body
+        className="scanlines"
+        style={{ background: "#050510", color: "#ffffff", fontFamily: "var(--font-inter)" }}
+      >
         <Header />
-        <main style={{ paddingTop: "66px" }}>
-          {children}
-        </main>
+        <main style={{ paddingTop: "66px" }}>{children}</main>
         <Footer />
       </body>
     </html>

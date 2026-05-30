@@ -49,28 +49,28 @@ export function getTimeUntil(target: Date): {
     return { days: 0, hours: 0, minutes: 0, seconds: 0, isPast: true };
   }
   return {
-    days:    Math.floor(diff / (1000 * 60 * 60 * 24)),
-    hours:   Math.floor((diff / (1000 * 60 * 60)) % 24),
+    days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+    hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
     minutes: Math.floor((diff / 1000 / 60) % 60),
     seconds: Math.floor((diff / 1000) % 60),
-    isPast:  false,
+    isPast: false,
   };
 }
 
 // ─── Stage Helpers ────────────────────────────────────────────────────────────
 
 export const STAGE_COLORS: Record<Stage, string> = {
-  "Group Stage":  "#00ff88",
-  "Round of 32":  "#00d4ff",
-  "Round of 16":  "#bf5fff",
-  "Quarterfinal": "#ff9900",
-  "Semifinal":    "#ff3366",
-  "Third Place":  "#7070a0",
-  "Final":        "#ffd700",
+  "Group Stage": "#00ff88",
+  "Round of 32": "#00d4ff",
+  "Round of 16": "#bf5fff",
+  Quarterfinal: "#ff9900",
+  Semifinal: "#ff3366",
+  "Third Place": "#7070a0",
+  Final: "#ffd700",
 };
 
 export const COUNTRY_FLAG: Record<string, string> = {
-  USA:    "🇺🇸",
+  USA: "🇺🇸",
   Canada: "🇨🇦",
   Mexico: "🇲🇽",
 };

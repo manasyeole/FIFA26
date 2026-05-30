@@ -3,76 +3,156 @@
 /* ─── Custom Theme (Tailwind v4) ─────────────────────────────── */
 @theme {
   /* Colors */
-  --color-bg-primary:    #050510;
-  --color-bg-secondary:  #0a0a1e;
-  --color-bg-card:       #0d0d22;
-  --color-neon-green:    #00ff88;
-  --color-neon-pink:     #ff3366;
-  --color-neon-cyan:     #00d4ff;
-  --color-neon-gold:     #ffd700;
-  --color-neon-purple:   #bf5fff;
-  --color-text-primary:  #ffffff;
-  --color-text-muted:    #7070a0;
-  --color-border-glow:   rgba(0,255,136,0.25);
+  --color-bg-primary: #050510;
+  --color-bg-secondary: #0a0a1e;
+  --color-bg-card: #0d0d22;
+  --color-neon-green: #00ff88;
+  --color-neon-pink: #ff3366;
+  --color-neon-cyan: #00d4ff;
+  --color-neon-gold: #ffd700;
+  --color-neon-purple: #bf5fff;
+  --color-text-primary: #ffffff;
+  --color-text-muted: #7070a0;
+  --color-border-glow: rgba(0, 255, 136, 0.25);
 
   /* Fonts */
   --font-orbitron: "Orbitron", sans-serif;
-  --font-inter:    "Inter", sans-serif;
+  --font-inter: "Inter", sans-serif;
 
   /* Animations */
-  --animate-pulse-glow:  pulse-glow 2.5s ease-in-out infinite;
-  --animate-flicker:     flicker 3s linear infinite;
-  --animate-scanline:    scanline 8s linear infinite;
-  --animate-float:       float 4s ease-in-out infinite;
+  --animate-pulse-glow: pulse-glow 2.5s ease-in-out infinite;
+  --animate-flicker: flicker 3s linear infinite;
+  --animate-scanline: scanline 8s linear infinite;
+  --animate-float: float 4s ease-in-out infinite;
 }
 
 /* ─── Keyframes ───────────────────────────────────────────────── */
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 10px #00ff88, 0 0 20px #00ff8840, 0 0 40px #00ff8820; }
-  50%       { box-shadow: 0 0 20px #00ff88, 0 0 40px #00ff8880, 0 0 80px #00ff8840; }
+  0%,
+  100% {
+    box-shadow:
+      0 0 10px #00ff88,
+      0 0 20px #00ff8840,
+      0 0 40px #00ff8820;
+  }
+  50% {
+    box-shadow:
+      0 0 20px #00ff88,
+      0 0 40px #00ff8880,
+      0 0 80px #00ff8840;
+  }
 }
 
 @keyframes pulse-glow-pink {
-  0%, 100% { box-shadow: 0 0 10px #ff3366, 0 0 20px #ff336640, 0 0 40px #ff336620; }
-  50%       { box-shadow: 0 0 20px #ff3366, 0 0 40px #ff336680, 0 0 80px #ff336640; }
+  0%,
+  100% {
+    box-shadow:
+      0 0 10px #ff3366,
+      0 0 20px #ff336640,
+      0 0 40px #ff336620;
+  }
+  50% {
+    box-shadow:
+      0 0 20px #ff3366,
+      0 0 40px #ff336680,
+      0 0 80px #ff336640;
+  }
 }
 
 @keyframes pulse-glow-cyan {
-  0%, 100% { box-shadow: 0 0 10px #00d4ff, 0 0 20px #00d4ff40; }
-  50%       { box-shadow: 0 0 20px #00d4ff, 0 0 40px #00d4ff80; }
+  0%,
+  100% {
+    box-shadow:
+      0 0 10px #00d4ff,
+      0 0 20px #00d4ff40;
+  }
+  50% {
+    box-shadow:
+      0 0 20px #00d4ff,
+      0 0 40px #00d4ff80;
+  }
 }
 
 @keyframes flicker {
-  0%, 95%, 100% { opacity: 1; }
-  96%            { opacity: 0.8; }
-  97%            { opacity: 1; }
-  98%            { opacity: 0.6; }
-  99%            { opacity: 1; }
+  0%,
+  95%,
+  100% {
+    opacity: 1;
+  }
+  96% {
+    opacity: 0.8;
+  }
+  97% {
+    opacity: 1;
+  }
+  98% {
+    opacity: 0.6;
+  }
+  99% {
+    opacity: 1;
+  }
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50%       { transform: translateY(-8px); }
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
 }
 
 @keyframes slide-up {
-  from { transform: translateY(30px); opacity: 0; }
-  to   { transform: translateY(0);    opacity: 1; }
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 @keyframes glow-text {
-  0%, 100% { text-shadow: 0 0 10px #00ff88, 0 0 20px #00ff88, 0 0 40px #00ff88; }
-  50%       { text-shadow: 0 0 20px #00ff88, 0 0 40px #00ff88, 0 0 80px #00ff88, 0 0 120px #00ff88; }
+  0%,
+  100% {
+    text-shadow:
+      0 0 10px #00ff88,
+      0 0 20px #00ff88,
+      0 0 40px #00ff88;
+  }
+  50% {
+    text-shadow:
+      0 0 20px #00ff88,
+      0 0 40px #00ff88,
+      0 0 80px #00ff88,
+      0 0 120px #00ff88;
+  }
 }
 
 @keyframes glow-text-pink {
-  0%, 100% { text-shadow: 0 0 10px #ff3366, 0 0 20px #ff3366; }
-  50%       { text-shadow: 0 0 20px #ff3366, 0 0 40px #ff3366, 0 0 80px #ff3366; }
+  0%,
+  100% {
+    text-shadow:
+      0 0 10px #ff3366,
+      0 0 20px #ff3366;
+  }
+  50% {
+    text-shadow:
+      0 0 20px #ff3366,
+      0 0 40px #ff3366,
+      0 0 80px #ff3366;
+  }
 }
 
 @keyframes grid-move {
-  from { background-position: 0 0; }
-  to   { background-position: 40px 40px; }
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 40px 40px;
+  }
 }
 
 /* ─── Base Styles ─────────────────────────────────────────────── */
@@ -87,38 +167,63 @@ html {
 body {
   background-color: #050510;
   color: #ffffff;
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
   overflow-x: hidden;
   min-height: 100vh;
 }
 
 /* Scrollbar */
-::-webkit-scrollbar       { width: 6px; }
-::-webkit-scrollbar-track { background: #050510; }
-::-webkit-scrollbar-thumb { background: #00ff8850; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #00ff88; }
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #050510;
+}
+::-webkit-scrollbar-thumb {
+  background: #00ff8850;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #00ff88;
+}
 
 /* Selection */
-::selection { background: #00ff8830; color: #00ff88; }
+::selection {
+  background: #00ff8830;
+  color: #00ff88;
+}
 
 /* ─── Utility Classes ─────────────────────────────────────────── */
 
 /* Neon text glows */
 .text-glow-green {
   color: #00ff88;
-  text-shadow: 0 0 10px #00ff88, 0 0 20px #00ff8880, 0 0 40px #00ff8840;
+  text-shadow:
+    0 0 10px #00ff88,
+    0 0 20px #00ff8880,
+    0 0 40px #00ff8840;
 }
 .text-glow-pink {
   color: #ff3366;
-  text-shadow: 0 0 10px #ff3366, 0 0 20px #ff336680;
+  text-shadow:
+    0 0 10px #ff3366,
+    0 0 20px #ff336680;
 }
 .text-glow-cyan {
   color: #00d4ff;
-  text-shadow: 0 0 10px #00d4ff, 0 0 20px #00d4ff80;
+  text-shadow:
+    0 0 10px #00d4ff,
+    0 0 20px #00d4ff80;
 }
 .text-glow-gold {
   color: #ffd700;
-  text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd70080;
+  text-shadow:
+    0 0 10px #ffd700,
+    0 0 20px #ffd70080;
 }
 .text-animate-glow {
   animation: glow-text 2.5s ease-in-out infinite;
@@ -126,54 +231,61 @@ body {
 
 /* Neon card borders */
 .card-neon-green {
-  background: rgba(0,255,136,0.03);
-  border: 1px solid rgba(0,255,136,0.2);
+  background: rgba(0, 255, 136, 0.03);
+  border: 1px solid rgba(0, 255, 136, 0.2);
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
 }
 .card-neon-green:hover {
-  border-color: rgba(0,255,136,0.6);
-  box-shadow: 0 0 20px rgba(0,255,136,0.15), inset 0 0 20px rgba(0,255,136,0.05);
+  border-color: rgba(0, 255, 136, 0.6);
+  box-shadow:
+    0 0 20px rgba(0, 255, 136, 0.15),
+    inset 0 0 20px rgba(0, 255, 136, 0.05);
   transform: translateY(-2px);
 }
 .card-neon-pink {
-  background: rgba(255,51,102,0.03);
-  border: 1px solid rgba(255,51,102,0.2);
+  background: rgba(255, 51, 102, 0.03);
+  border: 1px solid rgba(255, 51, 102, 0.2);
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
 }
 .card-neon-pink:hover {
-  border-color: rgba(255,51,102,0.6);
-  box-shadow: 0 0 20px rgba(255,51,102,0.15), inset 0 0 20px rgba(255,51,102,0.05);
+  border-color: rgba(255, 51, 102, 0.6);
+  box-shadow:
+    0 0 20px rgba(255, 51, 102, 0.15),
+    inset 0 0 20px rgba(255, 51, 102, 0.05);
   transform: translateY(-2px);
 }
 
 /* Grid background */
 .bg-grid {
   background-image:
-    linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px);
+    linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px);
   background-size: 40px 40px;
 }
 .bg-grid-animated {
   background-image:
-    linear-gradient(rgba(0,255,136,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,255,136,0.04) 1px, transparent 1px);
+    linear-gradient(rgba(0, 255, 136, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 136, 0.04) 1px, transparent 1px);
   background-size: 40px 40px;
   animation: grid-move 20s linear infinite;
 }
 
 /* Scanline overlay */
 .scanlines::after {
-  content: '';
+  content: "";
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background: repeating-linear-gradient(
     0deg,
     transparent,
     transparent 2px,
-    rgba(0,0,0,0.03) 2px,
-    rgba(0,0,0,0.03) 4px
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
   );
   pointer-events: none;
   z-index: 9998;
@@ -199,7 +311,8 @@ body {
 .glitch::after {
   content: attr(data-text);
   position: absolute;
-  top: 0; left: 0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
 }
@@ -216,18 +329,38 @@ body {
   animation: glitch-anim2 5s infinite linear alternate-reverse;
 }
 @keyframes glitch-anim {
-  0%   { clip: rect(10px, 9999px, 50px, 0); }
-  25%  { clip: rect(60px, 9999px, 90px, 0); }
-  50%  { clip: rect(20px, 9999px, 40px, 0); }
-  75%  { clip: rect(80px, 9999px, 110px, 0); }
-  100% { clip: rect(5px,  9999px, 30px,  0); }
+  0% {
+    clip: rect(10px, 9999px, 50px, 0);
+  }
+  25% {
+    clip: rect(60px, 9999px, 90px, 0);
+  }
+  50% {
+    clip: rect(20px, 9999px, 40px, 0);
+  }
+  75% {
+    clip: rect(80px, 9999px, 110px, 0);
+  }
+  100% {
+    clip: rect(5px, 9999px, 30px, 0);
+  }
 }
 @keyframes glitch-anim2 {
-  0%   { clip: rect(40px, 9999px, 80px, 0); }
-  25%  { clip: rect(15px, 9999px, 45px, 0); }
-  50%  { clip: rect(70px, 9999px, 100px, 0); }
-  75%  { clip: rect(25px, 9999px, 55px, 0); }
-  100% { clip: rect(50px, 9999px, 85px, 0); }
+  0% {
+    clip: rect(40px, 9999px, 80px, 0);
+  }
+  25% {
+    clip: rect(15px, 9999px, 45px, 0);
+  }
+  50% {
+    clip: rect(70px, 9999px, 100px, 0);
+  }
+  75% {
+    clip: rect(25px, 9999px, 55px, 0);
+  }
+  100% {
+    clip: rect(50px, 9999px, 85px, 0);
+  }
 }
 
 /* Neon button */
@@ -246,27 +379,35 @@ body {
   overflow: hidden;
 }
 .btn-neon::before {
-  content: '';
+  content: "";
   position: absolute;
-  top: 0; left: -100%;
-  width: 100%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(0,255,136,0.1), transparent);
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.1), transparent);
   transition: left 0.5s ease;
 }
 .btn-neon:hover {
-  background: rgba(0,255,136,0.1);
-  box-shadow: 0 0 20px rgba(0,255,136,0.4), inset 0 0 20px rgba(0,255,136,0.1);
+  background: rgba(0, 255, 136, 0.1);
+  box-shadow:
+    0 0 20px rgba(0, 255, 136, 0.4),
+    inset 0 0 20px rgba(0, 255, 136, 0.1);
   transform: translateY(-1px);
 }
-.btn-neon:hover::before { left: 100%; }
+.btn-neon:hover::before {
+  left: 100%;
+}
 
 .btn-neon-pink {
   border-color: #ff3366;
   color: #ff3366;
 }
 .btn-neon-pink:hover {
-  background: rgba(255,51,102,0.1);
-  box-shadow: 0 0 20px rgba(255,51,102,0.4), inset 0 0 20px rgba(255,51,102,0.1);
+  background: rgba(255, 51, 102, 0.1);
+  box-shadow:
+    0 0 20px rgba(255, 51, 102, 0.4),
+    inset 0 0 20px rgba(255, 51, 102, 0.1);
 }
 
 /* Loading / shimmer */
@@ -276,35 +417,39 @@ body {
   animation: shimmer 1.5s infinite;
 }
 @keyframes shimmer {
-  0%   { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 /* Tag / badge */
 .neon-badge {
   display: inline-block;
   padding: 2px 10px;
-  border: 1px solid rgba(0,255,136,0.4);
+  border: 1px solid rgba(0, 255, 136, 0.4);
   border-radius: 999px;
   color: #00ff88;
   font-size: 0.7rem;
   font-family: "Orbitron", sans-serif;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  background: rgba(0,255,136,0.05);
+  background: rgba(0, 255, 136, 0.05);
 }
 .neon-badge-pink {
-  border-color: rgba(255,51,102,0.4);
+  border-color: rgba(255, 51, 102, 0.4);
   color: #ff3366;
-  background: rgba(255,51,102,0.05);
+  background: rgba(255, 51, 102, 0.05);
 }
 .neon-badge-cyan {
-  border-color: rgba(0,212,255,0.4);
+  border-color: rgba(0, 212, 255, 0.4);
   color: #00d4ff;
-  background: rgba(0,212,255,0.05);
+  background: rgba(0, 212, 255, 0.05);
 }
 .neon-badge-gold {
-  border-color: rgba(255,215,0,0.4);
+  border-color: rgba(255, 215, 0, 0.4);
   color: #ffd700;
-  background: rgba(255,215,0,0.05);
+  background: rgba(255, 215, 0, 0.05);
 }

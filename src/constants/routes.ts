@@ -5,16 +5,16 @@
  */
 
 export const ROUTES = {
-  home:     "/",
+  home: "/",
   schedule: "/schedule",
-  gallery:  "/gallery",
+  gallery: "/gallery",
   // Phase 2+
-  admin:    "/admin",
-  match:    (id: number | string) => `/match/${id}`,
+  admin: "/admin",
+  match: (id: number | string) => `/match/${id}`,
 } as const;
 
 export const NAV_ITEMS = [
-  { label: "Home",     href: ROUTES.home },
+  { label: "Home", href: ROUTES.home },
   { label: "Schedule", href: ROUTES.schedule },
-  { label: "Gallery",  href: ROUTES.gallery },
+  { label: "Gallery", href: ROUTES.gallery },
 ] as const;

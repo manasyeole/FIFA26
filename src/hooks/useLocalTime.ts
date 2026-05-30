@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { convertMatchTime } from "@/lib/timezones";
 
 interface LocalTimeState {
-  localTime: string | null;  // e.g. "02:30 IST"
+  localTime: string | null; // e.g. "02:30 IST"
   isMounted: boolean;
 }
 
@@ -16,11 +16,7 @@ interface LocalTimeState {
  * @param timeStr   "HH:MM" (venue local)
  * @param venueName Venue name matching VENUE_TIMEZONES keys in lib/timezones.ts
  */
-export function useLocalTime(
-  dateStr: string,
-  timeStr: string,
-  venueName: string
-): LocalTimeState {
+export function useLocalTime(dateStr: string, timeStr: string, venueName: string): LocalTimeState {
   const [state, setState] = useState<LocalTimeState>({
     localTime: null,
     isMounted: false,

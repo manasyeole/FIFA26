@@ -13,35 +13,38 @@ interface Props {
 export default function CountryCard({ country, compact = false }: Props) {
   const { name, isoCode, group, confederation, starPlayer, manager, neonColor } = country;
   const confColor = CONFEDERATION_COLORS[confederation] ?? "#7070a0";
-  const initials  = getPlayerInitials(starPlayer.name);
+  const initials = getPlayerInitials(starPlayer.name);
 
   return (
     <div
       className="rounded-2xl overflow-hidden transition-all duration-300 cursor-default"
       style={{
-        background:     `radial-gradient(ellipse at top, ${neonColor}08 0%, rgba(13,13,34,0.95) 60%)`,
-        border:         `1px solid ${neonColor}25`,
+        background: `radial-gradient(ellipse at top, ${neonColor}08 0%, rgba(13,13,34,0.95) 60%)`,
+        border: `1px solid ${neonColor}25`,
         backdropFilter: "blur(10px)",
       }}
       onMouseEnter={(e) => {
         const el = e.currentTarget as HTMLElement;
         el.style.borderColor = `${neonColor}70`;
-        el.style.boxShadow   = `0 0 30px ${neonColor}18, 0 8px 40px rgba(0,0,0,0.5)`;
-        el.style.transform   = "translateY(-4px)";
+        el.style.boxShadow = `0 0 30px ${neonColor}18, 0 8px 40px rgba(0,0,0,0.5)`;
+        el.style.transform = "translateY(-4px)";
         const flagImg = el.querySelector<HTMLImageElement>(".flag-img");
         if (flagImg) flagImg.style.transform = "scale(1.06)";
       }}
       onMouseLeave={(e) => {
         const el = e.currentTarget as HTMLElement;
         el.style.borderColor = `${neonColor}25`;
-        el.style.boxShadow   = "none";
-        el.style.transform   = "translateY(0)";
+        el.style.boxShadow = "none";
+        el.style.transform = "translateY(0)";
         const flagImg = el.querySelector<HTMLImageElement>(".flag-img");
         if (flagImg) flagImg.style.transform = "scale(1)";
       }}
     >
       {/* Neon top line */}
-      <div className="h-[2px]" style={{ background: `linear-gradient(90deg, transparent, ${neonColor}, transparent)` }} />
+      <div
+        className="h-[2px]"
+        style={{ background: `linear-gradient(90deg, transparent, ${neonColor}, transparent)` }}
+      />
 
       {/* Flag */}
       <div className="relative overflow-hidden" style={{ height: compact ? "90px" : "120px" }}>
@@ -57,7 +60,9 @@ export default function CountryCard({ country, compact = false }: Props) {
         {/* Bottom fade overlay */}
         <div
           className="absolute inset-0"
-          style={{ background: "linear-gradient(to bottom, transparent 40%, rgba(13,13,34,0.95) 100%)" }}
+          style={{
+            background: "linear-gradient(to bottom, transparent 40%, rgba(13,13,34,0.95) 100%)",
+          }}
         />
         {/* Group badge */}
         <div
@@ -85,8 +90,8 @@ export default function CountryCard({ country, compact = false }: Props) {
         <h3
           className="font-orbitron font-black tracking-wide mb-3"
           style={{
-            fontSize:   compact ? "0.8rem" : "0.95rem",
-            color:      "#ffffff",
+            fontSize: compact ? "0.8rem" : "0.95rem",
+            color: "#ffffff",
             textShadow: `0 0 12px ${neonColor}60`,
           }}
         >
@@ -104,18 +109,21 @@ export default function CountryCard({ country, compact = false }: Props) {
               <div
                 className="flex-shrink-0 flex items-center justify-center rounded-full font-orbitron font-black text-xs"
                 style={{
-                  width:      "36px",
-                  height:     "36px",
+                  width: "36px",
+                  height: "36px",
                   background: `radial-gradient(circle, ${neonColor}30, ${neonColor}08)`,
-                  border:     `1px solid ${neonColor}60`,
-                  boxShadow:  `0 0 10px ${neonColor}40`,
-                  color:      neonColor,
+                  border: `1px solid ${neonColor}60`,
+                  boxShadow: `0 0 10px ${neonColor}40`,
+                  color: neonColor,
                 }}
               >
                 {initials}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="font-orbitron font-bold text-[11px] truncate" style={{ color: "#ffffff" }}>
+                <p
+                  className="font-orbitron font-bold text-[11px] truncate"
+                  style={{ color: "#ffffff" }}
+                >
                   {starPlayer.name}
                 </p>
                 <p className="text-[10px] mt-0.5" style={{ color: "#7070a0" }}>
@@ -123,7 +131,10 @@ export default function CountryCard({ country, compact = false }: Props) {
                 </p>
               </div>
               {starPlayer.number !== undefined && (
-                <span className="flex-shrink-0 font-orbitron font-black text-sm ml-auto" style={{ color: `${neonColor}80` }}>
+                <span
+                  className="flex-shrink-0 font-orbitron font-black text-sm ml-auto"
+                  style={{ color: `${neonColor}80` }}
+                >
                   #{starPlayer.number}
                 </span>
               )}

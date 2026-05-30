@@ -15,7 +15,6 @@ export default function Footer() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-
           {/* Brand */}
           <div>
             <div className="flex items-center gap-3 mb-4">
@@ -33,8 +32,8 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-sm" style={{ color: "#7070a0", lineHeight: "1.7" }}>
-              The ultimate fan hub for the 2026 FIFA World Cup. Schedules, fan art,
-              and pure football madness.
+              The ultimate fan hub for the 2026 FIFA World Cup. Schedules, fan art, and pure
+              football madness.
             </p>
           </div>
 
@@ -48,9 +47,9 @@ export default function Footer() {
             </h3>
             <ul className="space-y-2">
               {[
-                { label: "Home",      href: "/" },
-                { label: "Schedule",  href: "/schedule" },
-                { label: "Gallery",   href: "/gallery" },
+                { label: "Home", href: "/" },
+                { label: "Schedule", href: "/schedule" },
+                { label: "Gallery", href: "/gallery" },
               ].map((l) => (
                 <li key={l.href}>
                   <Link
@@ -76,8 +75,8 @@ export default function Footer() {
               About
             </h3>
             <p className="text-sm mb-4" style={{ color: "#7070a0", lineHeight: "1.7" }}>
-              Fan-made project. Not affiliated with FIFA. Match data is based on the
-              confirmed 2026 FIFA World Cup schedule.
+              Fan-made project. Not affiliated with FIFA. Match data is based on the confirmed 2026
+              FIFA World Cup schedule.
             </p>
             <div className="flex gap-3">
               <a
@@ -133,7 +132,9 @@ export default function Footer() {
         >
           <p className="text-xs font-orbitron tracking-widest" style={{ color: "#4040608" }}>
             <span style={{ color: "#404060" }}>© 2026</span>
-            <span className="mx-2" style={{ color: "#00ff88" }}>FIFA 2026 FAN HUB</span>
+            <span className="mx-2" style={{ color: "#00ff88" }}>
+              FIFA 2026 FAN HUB
+            </span>
             <span style={{ color: "#404060" }}>— Fan Made Project</span>
           </p>
           <p className="text-xs" style={{ color: "#404060" }}>
