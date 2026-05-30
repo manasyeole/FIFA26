@@ -108,7 +108,7 @@ export const countries: Country[] = [
       goals: 28,
       tsdbName: "Patrik Schick",
     },
-    manager: { name: "Ivan Hašek", nationality: "Czech" },
+    manager: { name: "Miroslav Koubek", nationality: "Czech" },
     neonColor: "#cc0022",
   },
 
@@ -173,7 +173,7 @@ export const countries: Country[] = [
     starPlayer: {
       name: "Granit Xhaka",
       position: "CDM",
-      club: "Bayer Leverkusen",
+      club: "Sunderland",
       number: 10,
       age: 33,
       caps: 125,
@@ -216,7 +216,7 @@ export const countries: Country[] = [
       caps: 85,
       goals: 13,
     },
-    manager: { name: "Walid Regragui", nationality: "Moroccan" },
+    manager: { name: "Mohamed Ouahbi", nationality: "Moroccan" },
     neonColor: "#cc1122",
   },
   {
@@ -450,7 +450,7 @@ export const countries: Country[] = [
       goals: 15,
       tsdbName: "Viktor Gyokeres",
     },
-    manager: { name: "Jon Dahl Tomasson", nationality: "Danish" },
+    manager: { name: "Graham Potter", nationality: "English" },
     neonColor: "#0088dd",
   },
   {
@@ -480,7 +480,7 @@ export const countries: Country[] = [
     starPlayer: {
       name: "Kevin De Bruyne",
       position: "CM",
-      club: "Manchester City",
+      club: "Napoli",
       number: 7,
       age: 34,
       caps: 102,
@@ -663,7 +663,7 @@ export const countries: Country[] = [
       caps: 42,
       goals: 18,
     },
-    manager: { name: "Jesús Casas", nationality: "Spanish" },
+    manager: { name: "Graham Arnold", nationality: "Australian" },
     neonColor: "#009933",
   },
   {
@@ -806,7 +806,7 @@ export const countries: Country[] = [
       goals: 22,
       tsdbName: "Eldor Shomurodov",
     },
-    manager: { name: "Srecko Katanec", nationality: "Slovenian" },
+    manager: { name: "Fabio Cannavaro", nationality: "Italian" },
     neonColor: "#1ea1ff",
   },
   {
@@ -878,7 +878,7 @@ export const countries: Country[] = [
       caps: 40,
       goals: 12,
     },
-    manager: { name: "Otto Addo", nationality: "Ghanaian" },
+    manager: { name: "Carlos Queiroz", nationality: "Portuguese" },
     neonColor: "#ffcc00",
   },
   {
