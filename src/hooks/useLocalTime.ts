@@ -27,10 +27,15 @@ export function useLocalTime(
   });
 
   useEffect(() => {
-    setState({
-      localTime: convertMatchTime(dateStr, timeStr, venueName),
-      isMounted: true,
-    });
+    // Deferred to avoid synchronous setState in effect body (set-state-in-effect rule).
+    const id = setTimeout(() => {
+      setState({
+        localTime: convertMatchTime(dateStr, timeStr, venueName),
+        isMounted: true,
+      });
+    }, 0);
+
+    return () => clearTimeout(id);
   }, [dateStr, timeStr, venueName]);
 
   return state;

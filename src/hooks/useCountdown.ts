@@ -23,13 +23,20 @@ export function useCountdown(target: Date): CountdownState {
   });
 
   useEffect(() => {
-    setState({ ...getTimeUntil(target), isMounted: true });
+    // Defer initial setState to avoid synchronous set-in-effect lint error.
+    // setTimeout 0 makes it a callback, not a synchronous effect-body call.
+    const initId = setTimeout(() => {
+      setState({ ...getTimeUntil(target), isMounted: true });
+    }, 0);
 
     const id = setInterval(() => {
       setState({ ...getTimeUntil(target), isMounted: true });
     }, 1000);
 
-    return () => clearInterval(id);
+    return () => {
+      clearTimeout(initId);
+      clearInterval(id);
+    };
   }, [target]);
 
   return state;

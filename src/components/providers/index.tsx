@@ -11,5 +11,6 @@
 export function Providers({ children }: { children: React.ReactNode }) {
   // Phase 2: wrap with SupabaseProvider
   // Phase 3: wrap with AuthProvider
-  return <>{children}</>;
+  // eslint-disable-next-line react/jsx-no-useless-fragment
+  return <>{children}</>; // intentional — future providers wrap here
 }
