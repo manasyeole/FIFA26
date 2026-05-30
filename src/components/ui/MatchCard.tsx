@@ -5,21 +5,26 @@ import type { Match } from "@/types";
 import { formatMatchDate, STAGE_COLORS, COUNTRY_FLAG } from "@/lib/utils";
 import { useLocalTime } from "@/hooks/useLocalTime";
 import { getCountryByName, getFlagUrl, getPlayerInitials } from "@/data/countries";
-import { MapPin, Clock, Calendar } from "lucide-react";
+import { MapPin, Calendar, ExternalLink } from "lucide-react";
 
 interface Props {
   match: Match;
   compact?: boolean;
+  onPoster?: (match: Match) => void;
 }
 
-// Sub-component: one side of the VS matchup (flag + name + player avatar)
-function TeamCol({ teamName, showPlayer }: { teamName: string; showPlayer: boolean }) {
+function TeamCol({
+  teamName,
+  showPlayer,
+}: {
+  teamName: string;
+  showPlayer: boolean;
+}) {
   const country = getCountryByName(teamName);
   const initials = country ? getPlayerInitials(country.starPlayer.name) : null;
 
   return (
     <div className="flex-1 flex flex-col items-center gap-1.5">
-      {/* Flag image */}
       {country ? (
         <div
           className="relative rounded-md overflow-hidden"
@@ -48,7 +53,6 @@ function TeamCol({ teamName, showPlayer }: { teamName: string; showPlayer: boole
         </div>
       )}
 
-      {/* Team name */}
       <p
         className="font-orbitron font-bold text-center text-xs leading-tight"
         style={{ color: "#ffffff" }}
@@ -56,7 +60,6 @@ function TeamCol({ teamName, showPlayer }: { teamName: string; showPlayer: boole
         {teamName}
       </p>
 
-      {/* Star player initials avatar */}
       {showPlayer && country && initials && (
         <div className="flex items-center gap-1">
           <div
@@ -74,7 +77,12 @@ function TeamCol({ teamName, showPlayer }: { teamName: string; showPlayer: boole
           </div>
           <span
             className="text-[9px]"
-            style={{ color: "#7070a0", maxWidth: "58px", overflow: "hidden", whiteSpace: "nowrap" }}
+            style={{
+              color: "#7070a0",
+              maxWidth: "58px",
+              overflow: "hidden",
+              whiteSpace: "nowrap",
+            }}
           >
             {country.starPlayer.name.split(" ").pop()}
           </span>
@@ -84,10 +92,10 @@ function TeamCol({ teamName, showPlayer }: { teamName: string; showPlayer: boole
   );
 }
 
-export default function MatchCard({ match, compact = false }: Props) {
+export default function MatchCard({ match, compact = false, onPoster }: Props) {
   const stageColor = STAGE_COLORS[match.stage] ?? "#7070a0";
   const isKnockout = match.stage !== "Group Stage";
-  const { localTime, isMounted } = useLocalTime(match.date, match.time, match.venue);
+  const { istTime, isMounted } = useLocalTime(match.date, match.time, match.venue);
 
   return (
     <div
@@ -110,14 +118,15 @@ export default function MatchCard({ match, compact = false }: Props) {
         el.style.transform = "translateY(0)";
       }}
     >
-      {/* Neon top line */}
       <div
         className="h-[2px]"
-        style={{ background: `linear-gradient(90deg, transparent, ${stageColor}, transparent)` }}
+        style={{
+          background: `linear-gradient(90deg, transparent, ${stageColor}, transparent)`,
+        }}
       />
 
       <div className={compact ? "p-3" : "p-4"}>
-        {/* Header: stage badge + match number */}
+        {/* Header */}
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             <span
@@ -130,45 +139,63 @@ export default function MatchCard({ match, compact = false }: Props) {
             >
               {match.group ? `Group ${match.group}` : match.stage}
             </span>
-            {isKnockout && <span className="neon-badge neon-badge-gold">{match.stage}</span>}
+            {isKnockout && (
+              <span className="neon-badge neon-badge-gold">{match.stage}</span>
+            )}
           </div>
-          <span className="text-xs font-orbitron" style={{ color: "#404060" }}>
-            #{match.matchNumber}
-          </span>
+          <div className="flex items-center gap-2">
+            {onPoster && !compact && (
+              <button
+                onClick={() => onPoster(match)}
+                className="flex items-center gap-1 px-2 py-1 rounded-lg font-orbitron text-[9px] tracking-widest uppercase transition-all duration-200"
+                style={{
+                  background: "rgba(255,215,0,0.08)",
+                  border: "1px solid rgba(255,215,0,0.3)",
+                  color: "#ffd700",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.background =
+                    "rgba(255,215,0,0.18)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.background =
+                    "rgba(255,215,0,0.08)";
+                }}
+                title="View match poster"
+              >
+                <ExternalLink size={9} />
+                Poster
+              </button>
+            )}
+            <span className="text-xs font-orbitron" style={{ color: "#404060" }}>
+              #{match.matchNumber}
+            </span>
+          </div>
         </div>
 
-        {/* Teams row: [flag+name+player] VS [flag+name+player] */}
+        {/* Teams */}
         <div className="flex items-center justify-between gap-1 my-3">
           <TeamCol teamName={match.homeTeam} showPlayer={!compact} />
-
           <div
             className="font-orbitron font-black text-xs tracking-widest flex-shrink-0 px-1"
             style={{ color: stageColor, textShadow: `0 0 10px ${stageColor}` }}
           >
             VS
           </div>
-
           <TeamCol teamName={match.awayTeam} showPlayer={!compact} />
         </div>
 
-        {/* Full meta (non-compact) */}
+        {/* Meta */}
         {!compact && (
           <div
             className="pt-3 mt-1 space-y-2"
             style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
           >
-            {/* Date / venue time / city */}
             <div className="flex flex-wrap gap-x-3 gap-y-1">
               <div className="flex items-center gap-1.5">
                 <Calendar size={10} color="#7070a0" />
                 <span className="text-[11px]" style={{ color: "#7070a0" }}>
                   {formatMatchDate(match.date)}
-                </span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <Clock size={10} color="#7070a0" />
-                <span className="text-[11px]" style={{ color: "#7070a0" }}>
-                  {match.time} venue time
                 </span>
               </div>
               <div className="flex items-center gap-1.5">
@@ -179,27 +206,33 @@ export default function MatchCard({ match, compact = false }: Props) {
               </div>
             </div>
 
-            {/* User local time — always visible after mount */}
+            {/* IST Time — prominent */}
             <div
-              className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg"
+              className="flex items-center gap-2 px-3 py-2 rounded-lg"
               style={{
-                background: "rgba(0,212,255,0.06)",
-                border: "1px solid rgba(0,212,255,0.18)",
+                background: "rgba(0,212,255,0.07)",
+                border: "1px solid rgba(0,212,255,0.25)",
               }}
             >
-              <Clock size={10} color="#00d4ff" />
-              <span className="text-[11px] font-orbitron" style={{ color: "#00d4ff" }}>
+              <span style={{ fontSize: "14px" }}>🇮🇳</span>
+              <span
+                className="font-orbitron font-bold tracking-wide"
+                style={{
+                  color: "#00d4ff",
+                  fontSize: "13px",
+                  textShadow: "0 0 10px rgba(0,212,255,0.6)",
+                }}
+              >
                 {isMounted
-                  ? localTime
-                    ? `${localTime} — your local time`
-                    : `${match.time} (calculating...)`
-                  : "Your local time loading..."}
+                  ? istTime
+                    ? istTime
+                    : `${match.time} (local)`
+                  : "Loading IST..."}
               </span>
             </div>
           </div>
         )}
 
-        {/* Compact meta */}
         {compact && (
           <div className="flex flex-wrap items-center gap-x-2 mt-1.5">
             <div className="flex items-center gap-1">
@@ -212,11 +245,11 @@ export default function MatchCard({ match, compact = false }: Props) {
             <span className="text-[9px]" style={{ color: "#404060" }}>
               {COUNTRY_FLAG[match.country]} {match.city}
             </span>
-            {isMounted && localTime && (
+            {isMounted && istTime && (
               <>
                 <span style={{ color: "#404060", fontSize: "9px" }}>·</span>
-                <span className="text-[9px]" style={{ color: "#00d4ff" }}>
-                  {localTime}
+                <span className="text-[9px] font-orbitron" style={{ color: "#00d4ff" }}>
+                  🇮🇳 {istTime}
                 </span>
               </>
             )}

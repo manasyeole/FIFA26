@@ -1,7 +1,7 @@
 /**
  * FIFA 2026 — All 48 participating nations.
- * Star players + managers compiled from confirmed 2026 squads.
- * ISO codes used for flagcdn.com flag images.
+ * Star players with caps/goals/age as of 2026.
+ * tsdbName = search name for TheSportsDB API (when different from display name).
  */
 
 export interface StarPlayer {
@@ -9,6 +9,10 @@ export interface StarPlayer {
   position: string;
   club: string;
   number?: number;
+  age?: number;
+  caps?: number;
+  goals?: number;
+  tsdbName?: string;
 }
 
 export interface Manager {
@@ -18,12 +22,12 @@ export interface Manager {
 
 export interface Country {
   name: string;
-  isoCode: string; // ISO 3166-1 alpha-2, e.g. "us", "fr", "gb-eng" for England
-  group: string; // "A" through "L"
-  confederation: string; // UEFA | CONMEBOL | CONCACAF | CAF | AFC | OFC
+  isoCode: string;
+  group: string;
+  confederation: string;
   starPlayer: StarPlayer;
   manager: Manager;
-  neonColor: string; // Hex color matching team identity
+  neonColor: string;
 }
 
 export const CONFEDERATION_COLORS: Record<string, string> = {
@@ -42,7 +46,7 @@ export const countries: Country[] = [
     isoCode: "mx",
     group: "A",
     confederation: "CONCACAF",
-    starPlayer: { name: "Santiago Giménez", position: "ST", club: "AC Milan", number: 7 },
+    starPlayer: { name: "Santiago Giménez", position: "ST", club: "AC Milan", number: 7, age: 24, caps: 32, goals: 18, tsdbName: "Santiago Gimenez" },
     manager: { name: "Javier Aguirre", nationality: "Mexican" },
     neonColor: "#00ff6a",
   },
@@ -51,7 +55,7 @@ export const countries: Country[] = [
     isoCode: "pl",
     group: "A",
     confederation: "UEFA",
-    starPlayer: { name: "Robert Lewandowski", position: "ST", club: "FC Barcelona", number: 9 },
+    starPlayer: { name: "Robert Lewandowski", position: "ST", club: "FC Barcelona", number: 9, age: 37, caps: 148, goals: 82 },
     manager: { name: "Michał Probierz", nationality: "Polish" },
     neonColor: "#ff1a44",
   },
@@ -60,7 +64,7 @@ export const countries: Country[] = [
     isoCode: "ar",
     group: "A",
     confederation: "CONMEBOL",
-    starPlayer: { name: "Lionel Messi", position: "CAM", club: "Inter Miami CF", number: 10 },
+    starPlayer: { name: "Lionel Messi", position: "CAM", club: "Inter Miami CF", number: 10, age: 38, caps: 191, goals: 112 },
     manager: { name: "Lionel Scaloni", nationality: "Argentine" },
     neonColor: "#74d4ff",
   },
@@ -69,7 +73,7 @@ export const countries: Country[] = [
     isoCode: "sa",
     group: "A",
     confederation: "AFC",
-    starPlayer: { name: "Salem Al-Dawsari", position: "LW", club: "Al-Hilal", number: 10 },
+    starPlayer: { name: "Salem Al-Dawsari", position: "LW", club: "Al-Hilal", number: 10, age: 32, caps: 80, goals: 15, tsdbName: "Salem Al Dawsari" },
     manager: { name: "Georgios Donis", nationality: "Greek" },
     neonColor: "#00ff55",
   },
@@ -80,7 +84,7 @@ export const countries: Country[] = [
     isoCode: "us",
     group: "B",
     confederation: "CONCACAF",
-    starPlayer: { name: "Christian Pulisic", position: "CAM", club: "AC Milan", number: 10 },
+    starPlayer: { name: "Christian Pulisic", position: "CAM", club: "AC Milan", number: 10, age: 27, caps: 82, goals: 29 },
     manager: { name: "Mauricio Pochettino", nationality: "Argentine" },
     neonColor: "#ff3355",
   },
@@ -89,7 +93,7 @@ export const countries: Country[] = [
     isoCode: "co",
     group: "B",
     confederation: "CONMEBOL",
-    starPlayer: { name: "Luis Díaz", position: "LW", club: "Bayern Munich", number: 7 },
+    starPlayer: { name: "Luis Díaz", position: "LW", club: "Bayern Munich", number: 7, age: 27, caps: 55, goals: 15, tsdbName: "Luis Diaz" },
     manager: { name: "Néstor Lorenzo", nationality: "Argentine" },
     neonColor: "#ffe800",
   },
@@ -98,7 +102,7 @@ export const countries: Country[] = [
     isoCode: "ca",
     group: "B",
     confederation: "CONCACAF",
-    starPlayer: { name: "Alphonso Davies", position: "LB", club: "Bayern Munich", number: 19 },
+    starPlayer: { name: "Alphonso Davies", position: "LB", club: "Bayern Munich", number: 19, age: 25, caps: 58, goals: 14 },
     manager: { name: "Jesse Marsch", nationality: "American" },
     neonColor: "#ff2200",
   },
@@ -107,7 +111,7 @@ export const countries: Country[] = [
     isoCode: "ma",
     group: "B",
     confederation: "CAF",
-    starPlayer: { name: "Achraf Hakimi", position: "RB", club: "Paris Saint-Germain", number: 2 },
+    starPlayer: { name: "Achraf Hakimi", position: "RB", club: "Paris Saint-Germain", number: 2, age: 27, caps: 85, goals: 13 },
     manager: { name: "Walid Regragui", nationality: "Moroccan" },
     neonColor: "#cc1122",
   },
@@ -118,7 +122,7 @@ export const countries: Country[] = [
     isoCode: "fr",
     group: "C",
     confederation: "UEFA",
-    starPlayer: { name: "Kylian Mbappé", position: "ST", club: "Real Madrid", number: 10 },
+    starPlayer: { name: "Kylian Mbappé", position: "ST", club: "Real Madrid", number: 10, age: 27, caps: 88, goals: 52, tsdbName: "Kylian Mbappe" },
     manager: { name: "Didier Deschamps", nationality: "French" },
     neonColor: "#1a44ff",
   },
@@ -127,7 +131,7 @@ export const countries: Country[] = [
     isoCode: "ng",
     group: "C",
     confederation: "CAF",
-    starPlayer: { name: "Victor Osimhen", position: "ST", club: "Galatasaray", number: 9 },
+    starPlayer: { name: "Victor Osimhen", position: "ST", club: "Galatasaray", number: 9, age: 27, caps: 30, goals: 20 },
     manager: { name: "Eric Chelle", nationality: "French" },
     neonColor: "#00cc44",
   },
@@ -136,7 +140,7 @@ export const countries: Country[] = [
     isoCode: "br",
     group: "C",
     confederation: "CONMEBOL",
-    starPlayer: { name: "Vinicius Jr", position: "LW", club: "Real Madrid", number: 7 },
+    starPlayer: { name: "Vinicius Jr", position: "LW", club: "Real Madrid", number: 7, age: 25, caps: 38, goals: 11, tsdbName: "Vinicius Junior" },
     manager: { name: "Carlo Ancelotti", nationality: "Italian" },
     neonColor: "#ffe600",
   },
@@ -145,7 +149,7 @@ export const countries: Country[] = [
     isoCode: "cr",
     group: "C",
     confederation: "CONCACAF",
-    starPlayer: { name: "Keylor Navas", position: "GK", club: "UNAM Pumas", number: 1 },
+    starPlayer: { name: "Keylor Navas", position: "GK", club: "UNAM Pumas", number: 1, age: 39, caps: 108, goals: 0 },
     manager: { name: "Miguel Herrera", nationality: "Mexican" },
     neonColor: "#0033ff",
   },
@@ -156,7 +160,7 @@ export const countries: Country[] = [
     isoCode: "es",
     group: "D",
     confederation: "UEFA",
-    starPlayer: { name: "Lamine Yamal", position: "RW", club: "FC Barcelona", number: 19 },
+    starPlayer: { name: "Lamine Yamal", position: "RW", club: "FC Barcelona", number: 19, age: 18, caps: 22, goals: 5 },
     manager: { name: "Luis de la Fuente", nationality: "Spanish" },
     neonColor: "#ff1a1a",
   },
@@ -165,7 +169,7 @@ export const countries: Country[] = [
     isoCode: "jp",
     group: "D",
     confederation: "AFC",
-    starPlayer: { name: "Takefusa Kubo", position: "RW", club: "Real Sociedad", number: 8 },
+    starPlayer: { name: "Takefusa Kubo", position: "RW", club: "Real Sociedad", number: 8, age: 23, caps: 38, goals: 8 },
     manager: { name: "Hajime Moriyasu", nationality: "Japanese" },
     neonColor: "#ff0033",
   },
@@ -174,7 +178,7 @@ export const countries: Country[] = [
     isoCode: "de",
     group: "D",
     confederation: "UEFA",
-    starPlayer: { name: "Jamal Musiala", position: "CAM", club: "Bayern Munich", number: 10 },
+    starPlayer: { name: "Jamal Musiala", position: "CAM", club: "Bayern Munich", number: 10, age: 23, caps: 45, goals: 14 },
     manager: { name: "Julian Nagelsmann", nationality: "German" },
     neonColor: "#ff2200",
   },
@@ -183,7 +187,7 @@ export const countries: Country[] = [
     isoCode: "rs",
     group: "D",
     confederation: "UEFA",
-    starPlayer: { name: "Dušan Vlahović", position: "ST", club: "Juventus", number: 9 },
+    starPlayer: { name: "Dušan Vlahović", position: "ST", club: "Juventus", number: 9, age: 25, caps: 45, goals: 18, tsdbName: "Dusan Vlahovic" },
     manager: { name: "Dragan Stojković", nationality: "Serbian" },
     neonColor: "#cc0022",
   },
@@ -194,7 +198,7 @@ export const countries: Country[] = [
     isoCode: "gb-eng",
     group: "E",
     confederation: "UEFA",
-    starPlayer: { name: "Harry Kane", position: "ST", club: "Bayern Munich", number: 9 },
+    starPlayer: { name: "Harry Kane", position: "ST", club: "Bayern Munich", number: 9, age: 32, caps: 102, goals: 68 },
     manager: { name: "Thomas Tuchel", nationality: "German" },
     neonColor: "#ff2244",
   },
@@ -203,7 +207,7 @@ export const countries: Country[] = [
     isoCode: "sn",
     group: "E",
     confederation: "CAF",
-    starPlayer: { name: "Sadio Mané", position: "LW", club: "Al-Nassr", number: 10 },
+    starPlayer: { name: "Sadio Mané", position: "LW", club: "Al-Nassr", number: 10, age: 34, caps: 98, goals: 36, tsdbName: "Sadio Mane" },
     manager: { name: "Pape Thiaw", nationality: "Senegalese" },
     neonColor: "#00dd55",
   },
@@ -212,7 +216,7 @@ export const countries: Country[] = [
     isoCode: "pt",
     group: "E",
     confederation: "UEFA",
-    starPlayer: { name: "Cristiano Ronaldo", position: "ST", club: "Al Nassr", number: 7 },
+    starPlayer: { name: "Cristiano Ronaldo", position: "ST", club: "Al Nassr", number: 7, age: 41, caps: 219, goals: 137 },
     manager: { name: "Roberto Martínez", nationality: "Spanish" },
     neonColor: "#ff0000",
   },
@@ -221,7 +225,7 @@ export const countries: Country[] = [
     isoCode: "ec",
     group: "E",
     confederation: "CONMEBOL",
-    starPlayer: { name: "Moisés Caicedo", position: "CDM", club: "Chelsea", number: 25 },
+    starPlayer: { name: "Moisés Caicedo", position: "CDM", club: "Chelsea", number: 25, age: 24, caps: 52, goals: 6, tsdbName: "Moises Caicedo" },
     manager: { name: "Sebastián Beccacece", nationality: "Argentine" },
     neonColor: "#ffee00",
   },
@@ -232,7 +236,7 @@ export const countries: Country[] = [
     isoCode: "nl",
     group: "F",
     confederation: "UEFA",
-    starPlayer: { name: "Virgil van Dijk", position: "CB", club: "Liverpool", number: 4 },
+    starPlayer: { name: "Virgil van Dijk", position: "CB", club: "Liverpool", number: 4, age: 34, caps: 72, goals: 8 },
     manager: { name: "Ronald Koeman", nationality: "Dutch" },
     neonColor: "#ff6600",
   },
@@ -241,7 +245,7 @@ export const countries: Country[] = [
     isoCode: "cm",
     group: "F",
     confederation: "CAF",
-    starPlayer: { name: "André Onana", position: "GK", club: "Manchester United", number: 1 },
+    starPlayer: { name: "André Onana", position: "GK", club: "Manchester United", number: 1, age: 29, caps: 52, goals: 0, tsdbName: "Andre Onana" },
     manager: { name: "Marc Brys", nationality: "Belgian" },
     neonColor: "#007a33",
   },
@@ -250,7 +254,7 @@ export const countries: Country[] = [
     isoCode: "be",
     group: "F",
     confederation: "UEFA",
-    starPlayer: { name: "Kevin De Bruyne", position: "CM", club: "Manchester City", number: 7 },
+    starPlayer: { name: "Kevin De Bruyne", position: "CM", club: "Manchester City", number: 7, age: 34, caps: 102, goals: 27 },
     manager: { name: "Rudi Garcia", nationality: "French" },
     neonColor: "#ff2233",
   },
@@ -259,7 +263,7 @@ export const countries: Country[] = [
     isoCode: "ir",
     group: "F",
     confederation: "AFC",
-    starPlayer: { name: "Mehdi Taremi", position: "ST", club: "Olympiacos", number: 9 },
+    starPlayer: { name: "Mehdi Taremi", position: "ST", club: "Olympiacos", number: 9, age: 31, caps: 88, goals: 48 },
     manager: { name: "Amir Ghalenoei", nationality: "Iranian" },
     neonColor: "#00cc44",
   },
@@ -270,7 +274,7 @@ export const countries: Country[] = [
     isoCode: "uy",
     group: "G",
     confederation: "CONMEBOL",
-    starPlayer: { name: "Federico Valverde", position: "CM", club: "Real Madrid", number: 8 },
+    starPlayer: { name: "Federico Valverde", position: "CM", club: "Real Madrid", number: 8, age: 26, caps: 55, goals: 10 },
     manager: { name: "Marcelo Bielsa", nationality: "Argentine" },
     neonColor: "#44ccff",
   },
@@ -279,7 +283,7 @@ export const countries: Country[] = [
     isoCode: "kr",
     group: "G",
     confederation: "AFC",
-    starPlayer: { name: "Son Heung-min", position: "LW", club: "Los Angeles FC", number: 7 },
+    starPlayer: { name: "Son Heung-min", position: "LW", club: "Los Angeles FC", number: 7, age: 34, caps: 128, goals: 38 },
     manager: { name: "Hong Myung-bo", nationality: "South Korean" },
     neonColor: "#ff2233",
   },
@@ -288,7 +292,7 @@ export const countries: Country[] = [
     isoCode: "it",
     group: "G",
     confederation: "UEFA",
-    starPlayer: { name: "Gianluca Scamacca", position: "ST", club: "Atalanta", number: 9 },
+    starPlayer: { name: "Gianluca Scamacca", position: "ST", club: "Atalanta", number: 9, age: 26, caps: 22, goals: 8 },
     manager: { name: "Luciano Spalletti", nationality: "Italian" },
     neonColor: "#0066ff",
   },
@@ -297,7 +301,7 @@ export const countries: Country[] = [
     isoCode: "gh",
     group: "G",
     confederation: "CAF",
-    starPlayer: { name: "Mohammed Kudus", position: "CAM", club: "West Ham United", number: 14 },
+    starPlayer: { name: "Mohammed Kudus", position: "CAM", club: "West Ham United", number: 14, age: 24, caps: 40, goals: 12 },
     manager: { name: "Otto Addo", nationality: "Ghanaian" },
     neonColor: "#ffcc00",
   },
@@ -308,7 +312,7 @@ export const countries: Country[] = [
     isoCode: "au",
     group: "H",
     confederation: "AFC",
-    starPlayer: { name: "Mat Ryan", position: "GK", club: "Levante", number: 1 },
+    starPlayer: { name: "Mat Ryan", position: "GK", club: "Levante", number: 1, age: 33, caps: 86, goals: 0 },
     manager: { name: "Tony Popovic", nationality: "Australian" },
     neonColor: "#ffcc00",
   },
@@ -317,7 +321,7 @@ export const countries: Country[] = [
     isoCode: "cl",
     group: "H",
     confederation: "CONMEBOL",
-    starPlayer: { name: "Alexis Sánchez", position: "LW", club: "Udinese", number: 7 },
+    starPlayer: { name: "Alexis Sánchez", position: "LW", club: "Udinese", number: 7, age: 37, caps: 158, goals: 55, tsdbName: "Alexis Sanchez" },
     manager: { name: "Ricardo Gareca", nationality: "Argentine" },
     neonColor: "#ff0022",
   },
@@ -326,7 +330,7 @@ export const countries: Country[] = [
     isoCode: "hr",
     group: "H",
     confederation: "UEFA",
-    starPlayer: { name: "Luka Modrić", position: "CM", club: "AC Milan", number: 10 },
+    starPlayer: { name: "Luka Modrić", position: "CM", club: "AC Milan", number: 10, age: 40, caps: 175, goals: 24, tsdbName: "Luka Modric" },
     manager: { name: "Zlatko Dalić", nationality: "Croatian" },
     neonColor: "#ff2244",
   },
@@ -335,7 +339,7 @@ export const countries: Country[] = [
     isoCode: "ci",
     group: "H",
     confederation: "CAF",
-    starPlayer: { name: "Sébastien Haller", position: "ST", club: "Borussia Dortmund", number: 9 },
+    starPlayer: { name: "Sébastien Haller", position: "ST", club: "Borussia Dortmund", number: 9, age: 30, caps: 38, goals: 15, tsdbName: "Sebastien Haller" },
     manager: { name: "Emerse Faé", nationality: "Ivorian" },
     neonColor: "#ff7700",
   },
@@ -346,7 +350,7 @@ export const countries: Country[] = [
     isoCode: "ch",
     group: "I",
     confederation: "UEFA",
-    starPlayer: { name: "Granit Xhaka", position: "CDM", club: "Bayer Leverkusen", number: 10 },
+    starPlayer: { name: "Granit Xhaka", position: "CDM", club: "Bayer Leverkusen", number: 10, age: 33, caps: 125, goals: 32 },
     manager: { name: "Murat Yakin", nationality: "Swiss" },
     neonColor: "#ff1111",
   },
@@ -355,7 +359,7 @@ export const countries: Country[] = [
     isoCode: "ve",
     group: "I",
     confederation: "CONMEBOL",
-    starPlayer: { name: "Yangel Herrera", position: "CM", club: "Girona", number: 12 },
+    starPlayer: { name: "Yangel Herrera", position: "CM", club: "Girona", number: 12, age: 26, caps: 50, goals: 8 },
     manager: { name: "Fernando Batista", nationality: "Argentine" },
     neonColor: "#cc1133",
   },
@@ -364,7 +368,7 @@ export const countries: Country[] = [
     isoCode: "se",
     group: "I",
     confederation: "UEFA",
-    starPlayer: { name: "Viktor Gyökeres", position: "ST", club: "Arsenal", number: 17 },
+    starPlayer: { name: "Viktor Gyökeres", position: "ST", club: "Arsenal", number: 17, age: 27, caps: 35, goals: 15, tsdbName: "Viktor Gyokeres" },
     manager: { name: "Jon Dahl Tomasson", nationality: "Danish" },
     neonColor: "#0088dd",
   },
@@ -373,7 +377,7 @@ export const countries: Country[] = [
     isoCode: "dz",
     group: "I",
     confederation: "CAF",
-    starPlayer: { name: "Riyad Mahrez", position: "RW", club: "Al-Ahli", number: 7 },
+    starPlayer: { name: "Riyad Mahrez", position: "RW", club: "Al-Ahli", number: 7, age: 35, caps: 105, goals: 33 },
     manager: { name: "Vladimir Petkovic", nationality: "Bosnian" },
     neonColor: "#00cc44",
   },
@@ -384,12 +388,7 @@ export const countries: Country[] = [
     isoCode: "dk",
     group: "J",
     confederation: "UEFA",
-    starPlayer: {
-      name: "Christian Eriksen",
-      position: "CAM",
-      club: "Manchester United",
-      number: 10,
-    },
+    starPlayer: { name: "Christian Eriksen", position: "CAM", club: "Manchester United", number: 10, age: 34, caps: 129, goals: 43 },
     manager: { name: "Brian Riemer", nationality: "Danish" },
     neonColor: "#ff0022",
   },
@@ -398,7 +397,7 @@ export const countries: Country[] = [
     isoCode: "tn",
     group: "J",
     confederation: "CAF",
-    starPlayer: { name: "Hannibal Mejbri", position: "CM", club: "Burnley", number: 8 },
+    starPlayer: { name: "Hannibal Mejbri", position: "CM", club: "Burnley", number: 8, age: 22, caps: 28, goals: 5 },
     manager: { name: "Sabri Lamouchi", nationality: "French" },
     neonColor: "#ff1122",
   },
@@ -407,7 +406,7 @@ export const countries: Country[] = [
     isoCode: "tr",
     group: "J",
     confederation: "UEFA",
-    starPlayer: { name: "Arda Güler", position: "CAM", club: "Real Madrid", number: 8 },
+    starPlayer: { name: "Arda Güler", position: "CAM", club: "Real Madrid", number: 8, age: 20, caps: 18, goals: 4, tsdbName: "Arda Guler" },
     manager: { name: "Vincenzo Montella", nationality: "Italian" },
     neonColor: "#ff1100",
   },
@@ -416,7 +415,7 @@ export const countries: Country[] = [
     isoCode: "py",
     group: "J",
     confederation: "CONMEBOL",
-    starPlayer: { name: "Miguel Almirón", position: "CAM", club: "Atlanta United FC", number: 10 },
+    starPlayer: { name: "Miguel Almirón", position: "CAM", club: "Atlanta United FC", number: 10, age: 30, caps: 68, goals: 8, tsdbName: "Miguel Almiron" },
     manager: { name: "Gustavo Alfaro", nationality: "Argentine" },
     neonColor: "#cc0011",
   },
@@ -427,7 +426,7 @@ export const countries: Country[] = [
     isoCode: "eg",
     group: "K",
     confederation: "CAF",
-    starPlayer: { name: "Mohamed Salah", position: "RW", club: "Liverpool", number: 11 },
+    starPlayer: { name: "Mohamed Salah", position: "RW", club: "Liverpool", number: 11, age: 34, caps: 102, goals: 57 },
     manager: { name: "Hossam Hassan", nationality: "Egyptian" },
     neonColor: "#ff1133",
   },
@@ -436,7 +435,7 @@ export const countries: Country[] = [
     isoCode: "nz",
     group: "K",
     confederation: "OFC",
-    starPlayer: { name: "Chris Wood", position: "ST", club: "Nottingham Forest", number: 9 },
+    starPlayer: { name: "Chris Wood", position: "ST", club: "Nottingham Forest", number: 9, age: 34, caps: 118, goals: 32 },
     manager: { name: "Darren Bazeley", nationality: "English" },
     neonColor: "#0033cc",
   },
@@ -445,7 +444,7 @@ export const countries: Country[] = [
     isoCode: "at",
     group: "K",
     confederation: "UEFA",
-    starPlayer: { name: "Marcel Sabitzer", position: "CM", club: "Borussia Dortmund", number: 8 },
+    starPlayer: { name: "Marcel Sabitzer", position: "CM", club: "Borussia Dortmund", number: 8, age: 31, caps: 75, goals: 18 },
     manager: { name: "Ralf Rangnick", nationality: "German" },
     neonColor: "#ff2200",
   },
@@ -454,7 +453,7 @@ export const countries: Country[] = [
     isoCode: "hn",
     group: "K",
     confederation: "CONCACAF",
-    starPlayer: { name: "Luis Palma", position: "LW", club: "Celtic", number: 11 },
+    starPlayer: { name: "Luis Palma", position: "LW", club: "Celtic", number: 11, age: 24, caps: 30, goals: 8 },
     manager: { name: "Reinaldo Rueda", nationality: "Colombian" },
     neonColor: "#0066dd",
   },
@@ -465,7 +464,7 @@ export const countries: Country[] = [
     isoCode: "qa",
     group: "L",
     confederation: "AFC",
-    starPlayer: { name: "Akram Afif", position: "LW", club: "Al-Sadd", number: 7 },
+    starPlayer: { name: "Akram Afif", position: "LW", club: "Al-Sadd", number: 7, age: 28, caps: 65, goals: 18 },
     manager: { name: "Julen Lopetegui", nationality: "Spanish" },
     neonColor: "#cc0044",
   },
@@ -474,7 +473,7 @@ export const countries: Country[] = [
     isoCode: "ua",
     group: "L",
     confederation: "UEFA",
-    starPlayer: { name: "Mykhailo Mudryk", position: "LW", club: "Chelsea", number: 10 },
+    starPlayer: { name: "Mykhailo Mudryk", position: "LW", club: "Chelsea", number: 10, age: 24, caps: 42, goals: 8 },
     manager: { name: "Serhiy Rebrov", nationality: "Ukrainian" },
     neonColor: "#ffee00",
   },
@@ -483,7 +482,7 @@ export const countries: Country[] = [
     isoCode: "ro",
     group: "L",
     confederation: "UEFA",
-    starPlayer: { name: "Nicuşor Stanciu", position: "CAM", club: "Wuhan Three Towns", number: 10 },
+    starPlayer: { name: "Nicuşor Stanciu", position: "CAM", club: "Wuhan Three Towns", number: 10, age: 31, caps: 72, goals: 10, tsdbName: "Nicusor Stanciu" },
     manager: { name: "Mircea Lucescu", nationality: "Romanian" },
     neonColor: "#ffcc00",
   },
@@ -492,7 +491,7 @@ export const countries: Country[] = [
     isoCode: "pe",
     group: "L",
     confederation: "CONMEBOL",
-    starPlayer: { name: "André Carrillo", position: "RW", club: "Al-Qadsiah", number: 18 },
+    starPlayer: { name: "André Carrillo", position: "RW", club: "Al-Qadsiah", number: 18, age: 33, caps: 90, goals: 17, tsdbName: "Andre Carrillo" },
     manager: { name: "Jorge Fossati", nationality: "Uruguayan" },
     neonColor: "#dd0022",
   },
@@ -500,7 +499,6 @@ export const countries: Country[] = [
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-/** Returns flagcdn.com URL for the country's flag. Free, no auth required. */
 export function getFlagUrl(isoCode: string): string {
   return `https://flagcdn.com/w160/${isoCode}.png`;
 }
@@ -513,7 +511,6 @@ export function getCountriesByGroup(group: string): Country[] {
   return countries.filter((c) => c.group.toLowerCase() === group.toLowerCase());
 }
 
-/** Returns first + last name initials of a player for avatar display. */
 export function getPlayerInitials(fullName: string): string {
   const parts = fullName.trim().split(/\s+/);
   if (parts.length === 1) return parts[0].charAt(0).toUpperCase();

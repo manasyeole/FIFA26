@@ -2,20 +2,40 @@
 
 import { useState, useMemo } from "react";
 import { matches, GROUPS, STAGES } from "@/data/matches";
+import type { Match } from "@/types";
 import MatchCard from "@/components/ui/MatchCard";
-import { Search, Filter, Trophy, Calendar } from "lucide-react";
+import MatchPosterModal from "@/components/features/match/MatchPosterModal";
+import { Search, Filter, Trophy, Calendar, Globe } from "lucide-react";
 
 const ALL = "All";
+
+// Get unique sorted match dates for day filter
+const MATCH_DAYS = Array.from(new Set(matches.map((m) => m.date))).sort();
+
+// Get unique team names for country filter
+const ALL_TEAMS = Array.from(
+  new Set(
+    matches.flatMap((m) => [m.homeTeam, m.awayTeam]).filter((t) => !t.match(/^[WL]\d+$/) && !t.match(/^\d[A-L]/))
+  )
+).sort();
 
 export default function SchedulePage() {
   const [activeGroup, setActiveGroup] = useState<string>(ALL);
   const [activeStage, setActiveStage] = useState<string>(ALL);
+  const [activeDay, setActiveDay] = useState<string>(ALL);
+  const [activeCountry, setActiveCountry] = useState<string>(ALL);
   const [search, setSearch] = useState("");
+  const [posterMatch, setPosterMatch] = useState<Match | null>(null);
 
   const filtered = useMemo(() => {
     return matches.filter((m) => {
       const matchesGroup = activeGroup === ALL || m.group === activeGroup;
       const matchesStage = activeStage === ALL || m.stage === activeStage;
+      const matchesDay = activeDay === ALL || m.date === activeDay;
+      const matchesCountry =
+        activeCountry === ALL ||
+        m.homeTeam.toLowerCase().includes(activeCountry.toLowerCase()) ||
+        m.awayTeam.toLowerCase().includes(activeCountry.toLowerCase());
       const query = search.toLowerCase();
       const matchesSearch =
         !query ||
@@ -23,11 +43,18 @@ export default function SchedulePage() {
         m.awayTeam.toLowerCase().includes(query) ||
         m.city.toLowerCase().includes(query) ||
         m.venue.toLowerCase().includes(query);
-      return matchesGroup && matchesStage && matchesSearch;
+      return matchesGroup && matchesStage && matchesDay && matchesCountry && matchesSearch;
     });
-  }, [activeGroup, activeStage, search]);
+  }, [activeGroup, activeStage, activeDay, activeCountry, search]);
 
-  // When a stage tab is clicked, clear group filter (they don't mix)
+  function clearAll() {
+    setActiveGroup(ALL);
+    setActiveStage(ALL);
+    setActiveDay(ALL);
+    setActiveCountry(ALL);
+    setSearch("");
+  }
+
   function handleStageClick(stage: string) {
     setActiveStage(stage);
     if (stage !== ALL && stage !== "Group Stage") setActiveGroup(ALL);
@@ -38,35 +65,50 @@ export default function SchedulePage() {
     if (group !== ALL) setActiveStage(ALL);
   }
 
-  const groupCount = GROUPS.reduce<Record<string, number>>((acc, g) => {
-    acc[g] = matches.filter((m) => m.group === g).length;
-    return acc;
-  }, {});
+  const isFiltered =
+    activeGroup !== ALL ||
+    activeStage !== ALL ||
+    activeDay !== ALL ||
+    activeCountry !== ALL ||
+    search.length > 0;
+
+  const STAGE_COLORS: Record<string, string> = {
+    "Group Stage": "#00ff88",
+    "Round of 32": "#00d4ff",
+    "Round of 16": "#bf5fff",
+    Quarterfinal: "#ff9900",
+    Semifinal: "#ff3366",
+    "Third Place": "#7070a0",
+    Final: "#ffd700",
+  };
+
+  function formatDay(dateStr: string) {
+    const d = new Date(dateStr + "T12:00:00");
+    return d.toLocaleDateString("en-IN", { month: "short", day: "numeric", weekday: "short" });
+  }
 
   return (
     <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        {/* ─── Page Header ──────────────────────────────────────── */}
-        <div className="text-center mb-12">
+
+        {/* Header */}
+        <div className="text-center mb-10">
           <div className="flex justify-center mb-4">
             <span className="neon-badge flex items-center gap-2">
               <Calendar size={10} />
-              June 11 — July 19, 2026
+              Jun 11 – Jul 19, 2026
             </span>
           </div>
-          <h1
-            className="font-orbitron font-black text-3xl sm:text-5xl mb-4"
-            style={{ color: "#ffffff" }}
-          >
+          <h1 className="font-orbitron font-black text-3xl sm:text-5xl mb-4" style={{ color: "#ffffff" }}>
             <span className="text-glow-green">Full</span> Schedule
           </h1>
           <p className="text-sm" style={{ color: "#7070a0" }}>
-            All 104 matches · Group Stage through the Final
+            All 104 matches · All times shown in IST 🇮🇳
           </p>
         </div>
 
-        {/* ─── Search ───────────────────────────────────────────── */}
-        <div className="relative max-w-md mx-auto mb-10">
+        {/* Search */}
+        <div className="relative max-w-md mx-auto mb-8">
           <Search size={16} color="#7070a0" className="absolute left-4 top-1/2 -translate-y-1/2" />
           <input
             type="text"
@@ -74,11 +116,7 @@ export default function SchedulePage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full pl-10 pr-4 py-3 rounded-xl font-orbitron text-sm tracking-wide outline-none transition-all duration-300"
-            style={{
-              background: "rgba(13,13,34,0.9)",
-              border: "1px solid rgba(0,255,136,0.2)",
-              color: "#ffffff",
-            }}
+            style={{ background: "rgba(13,13,34,0.9)", border: "1px solid rgba(0,255,136,0.2)", color: "#ffffff" }}
             onFocus={(e) => {
               (e.target as HTMLInputElement).style.borderColor = "rgba(0,255,136,0.6)";
               (e.target as HTMLInputElement).style.boxShadow = "0 0 20px rgba(0,255,136,0.1)";
@@ -90,40 +128,26 @@ export default function SchedulePage() {
           />
         </div>
 
-        {/* ─── Stage Tabs ───────────────────────────────────────── */}
-        <div className="mb-6">
-          <div className="flex items-center gap-2 mb-3">
-            <Trophy size={12} color="#ffd700" />
-            <span
-              className="font-orbitron text-[10px] tracking-[0.2em] uppercase"
-              style={{ color: "#7070a0" }}
-            >
-              Stage
-            </span>
+        {/* ── Stage filter ────────────────────────────────────────────── */}
+        <div className="mb-5">
+          <div className="flex items-center gap-2 mb-2">
+            <Trophy size={11} color="#ffd700" />
+            <span className="font-orbitron text-[10px] tracking-widest uppercase" style={{ color: "#7070a0" }}>Stage</span>
           </div>
           <div className="flex flex-wrap gap-2">
             {[ALL, ...STAGES].map((stage) => {
               const active = activeStage === stage;
-              const stageColors: Record<string, string> = {
-                "Group Stage": "#00ff88",
-                "Round of 32": "#00d4ff",
-                "Round of 16": "#bf5fff",
-                Quarterfinal: "#ff9900",
-                Semifinal: "#ff3366",
-                "Third Place": "#7070a0",
-                Final: "#ffd700",
-              };
-              const color = stage === ALL ? "#7070a0" : (stageColors[stage] ?? "#7070a0");
+              const color = stage === ALL ? "#7070a0" : (STAGE_COLORS[stage] ?? "#7070a0");
               return (
                 <button
                   key={stage}
                   onClick={() => handleStageClick(stage)}
-                  className="px-4 py-2 rounded-lg font-orbitron text-[10px] tracking-widest uppercase transition-all duration-200"
+                  className="px-3 py-1.5 rounded-lg font-orbitron text-[10px] tracking-widest uppercase transition-all duration-200"
                   style={{
                     background: active ? `${color}18` : "rgba(13,13,34,0.8)",
                     border: `1px solid ${active ? color + "60" : "rgba(255,255,255,0.08)"}`,
                     color: active ? color : "#7070a0",
-                    boxShadow: active ? `0 0 15px ${color}20` : "none",
+                    boxShadow: active ? `0 0 12px ${color}20` : "none",
                   }}
                 >
                   {stage}
@@ -133,22 +157,17 @@ export default function SchedulePage() {
           </div>
         </div>
 
-        {/* ─── Group Tabs (only shown when Group Stage is active or ALL) ─ */}
+        {/* ── Group filter ─────────────────────────────────────────────── */}
         {(activeStage === ALL || activeStage === "Group Stage") && (
-          <div className="mb-10">
-            <div className="flex items-center gap-2 mb-3">
-              <Filter size={12} color="#00ff88" />
-              <span
-                className="font-orbitron text-[10px] tracking-[0.2em] uppercase"
-                style={{ color: "#7070a0" }}
-              >
-                Group
-              </span>
+          <div className="mb-5">
+            <div className="flex items-center gap-2 mb-2">
+              <Filter size={11} color="#00ff88" />
+              <span className="font-orbitron text-[10px] tracking-widest uppercase" style={{ color: "#7070a0" }}>Group</span>
             </div>
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={() => handleGroupClick(ALL)}
-                className="px-4 py-2 rounded-lg font-orbitron text-[10px] tracking-widest uppercase transition-all duration-200"
+                className="px-3 py-1.5 rounded-lg font-orbitron text-[10px] tracking-widest uppercase transition-all"
                 style={{
                   background: activeGroup === ALL ? "rgba(0,255,136,0.1)" : "rgba(13,13,34,0.8)",
                   border: `1px solid ${activeGroup === ALL ? "rgba(0,255,136,0.5)" : "rgba(255,255,255,0.08)"}`,
@@ -163,12 +182,12 @@ export default function SchedulePage() {
                   <button
                     key={g}
                     onClick={() => handleGroupClick(g)}
-                    className="w-10 h-10 rounded-lg font-orbitron font-black text-sm transition-all duration-200"
+                    className="w-9 h-9 rounded-lg font-orbitron font-black text-sm transition-all"
                     style={{
                       background: active ? "rgba(0,255,136,0.15)" : "rgba(13,13,34,0.8)",
                       border: `1px solid ${active ? "rgba(0,255,136,0.6)" : "rgba(255,255,255,0.08)"}`,
                       color: active ? "#00ff88" : "#7070a0",
-                      boxShadow: active ? "0 0 15px rgba(0,255,136,0.2)" : "none",
+                      boxShadow: active ? "0 0 14px rgba(0,255,136,0.2)" : "none",
                     }}
                   >
                     {g}
@@ -179,106 +198,118 @@ export default function SchedulePage() {
           </div>
         )}
 
-        {/* ─── Results count ────────────────────────────────────── */}
+        {/* ── Day filter ───────────────────────────────────────────────── */}
+        <div className="mb-5">
+          <div className="flex items-center gap-2 mb-2">
+            <Calendar size={11} color="#00d4ff" />
+            <span className="font-orbitron text-[10px] tracking-widest uppercase" style={{ color: "#7070a0" }}>Match Day</span>
+          </div>
+          <div className="flex flex-wrap gap-2 max-h-24 overflow-y-auto pb-1">
+            <button
+              onClick={() => setActiveDay(ALL)}
+              className="px-3 py-1.5 rounded-lg font-orbitron text-[10px] tracking-widest uppercase transition-all flex-shrink-0"
+              style={{
+                background: activeDay === ALL ? "rgba(0,212,255,0.12)" : "rgba(13,13,34,0.8)",
+                border: `1px solid ${activeDay === ALL ? "rgba(0,212,255,0.5)" : "rgba(255,255,255,0.08)"}`,
+                color: activeDay === ALL ? "#00d4ff" : "#7070a0",
+              }}
+            >
+              All Days
+            </button>
+            {MATCH_DAYS.map((day) => {
+              const active = activeDay === day;
+              return (
+                <button
+                  key={day}
+                  onClick={() => setActiveDay(day)}
+                  className="px-3 py-1.5 rounded-lg font-orbitron text-[10px] tracking-widest uppercase transition-all flex-shrink-0"
+                  style={{
+                    background: active ? "rgba(0,212,255,0.12)" : "rgba(13,13,34,0.8)",
+                    border: `1px solid ${active ? "rgba(0,212,255,0.5)" : "rgba(255,255,255,0.08)"}`,
+                    color: active ? "#00d4ff" : "#7070a0",
+                    boxShadow: active ? "0 0 12px rgba(0,212,255,0.2)" : "none",
+                  }}
+                >
+                  {formatDay(day)}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* ── Country filter ───────────────────────────────────────────── */}
+        <div className="mb-8">
+          <div className="flex items-center gap-2 mb-2">
+            <Globe size={11} color="#bf5fff" />
+            <span className="font-orbitron text-[10px] tracking-widest uppercase" style={{ color: "#7070a0" }}>Country</span>
+          </div>
+          <div className="flex flex-wrap gap-2 max-h-28 overflow-y-auto pb-1">
+            <button
+              onClick={() => setActiveCountry(ALL)}
+              className="px-3 py-1.5 rounded-lg font-orbitron text-[10px] tracking-widest uppercase transition-all flex-shrink-0"
+              style={{
+                background: activeCountry === ALL ? "rgba(191,95,255,0.12)" : "rgba(13,13,34,0.8)",
+                border: `1px solid ${activeCountry === ALL ? "rgba(191,95,255,0.5)" : "rgba(255,255,255,0.08)"}`,
+                color: activeCountry === ALL ? "#bf5fff" : "#7070a0",
+              }}
+            >
+              All Countries
+            </button>
+            {ALL_TEAMS.map((team) => {
+              const active = activeCountry === team;
+              return (
+                <button
+                  key={team}
+                  onClick={() => setActiveCountry(active ? ALL : team)}
+                  className="px-3 py-1.5 rounded-lg font-orbitron text-[10px] tracking-widest uppercase transition-all flex-shrink-0"
+                  style={{
+                    background: active ? "rgba(191,95,255,0.12)" : "rgba(13,13,34,0.8)",
+                    border: `1px solid ${active ? "rgba(191,95,255,0.5)" : "rgba(255,255,255,0.08)"}`,
+                    color: active ? "#bf5fff" : "#7070a0",
+                  }}
+                >
+                  {team}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Results + Clear */}
         <div className="flex items-center justify-between mb-6">
           <p className="font-orbitron text-xs tracking-widest" style={{ color: "#404060" }}>
             <span style={{ color: "#00ff88" }}>{filtered.length}</span> matches found
           </p>
-          {(search || activeGroup !== ALL || activeStage !== ALL) && (
+          {isFiltered && (
             <button
-              onClick={() => {
-                setSearch("");
-                setActiveGroup(ALL);
-                setActiveStage(ALL);
-              }}
-              className="font-orbitron text-[10px] tracking-widest uppercase transition-colors duration-200"
+              onClick={clearAll}
+              className="font-orbitron text-[10px] tracking-widest uppercase transition-colors"
               style={{ color: "#7070a0" }}
               onMouseEnter={(e) => (e.currentTarget.style.color = "#ff3366")}
               onMouseLeave={(e) => (e.currentTarget.style.color = "#7070a0")}
             >
-              Clear filters ✕
+              Clear all filters ✕
             </button>
           )}
         </div>
 
-        {/* ─── Grid ─────────────────────────────────────────────── */}
+        {/* Match grid */}
         {filtered.length === 0 ? (
           <div className="text-center py-24">
-            <p className="font-orbitron text-4xl mb-4" style={{ color: "#404060" }}>
-              404
-            </p>
-            <p className="font-orbitron text-sm tracking-widest" style={{ color: "#7070a0" }}>
-              No matches found
-            </p>
+            <p className="font-orbitron text-4xl mb-4" style={{ color: "#404060" }}>—</p>
+            <p className="font-orbitron text-sm tracking-widest" style={{ color: "#7070a0" }}>No matches found</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {filtered.map((match) => (
-              <MatchCard key={match.id} match={match} />
+              <MatchCard key={match.id} match={match} onPoster={setPosterMatch} />
             ))}
           </div>
         )}
-
-        {/* ─── Group Summary Table ──────────────────────────────── */}
-        {(activeStage === ALL || activeStage === "Group Stage") &&
-          activeGroup === ALL &&
-          !search && (
-            <div className="mt-16">
-              <div className="neon-divider mb-8" />
-              <h2
-                className="font-orbitron font-black text-xl mb-6 text-center"
-                style={{ color: "#ffffff" }}
-              >
-                Group Overview
-              </h2>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-                {GROUPS.map((g) => {
-                  const groupMatches = matches.filter((m) => m.group === g);
-                  const teams = Array.from(
-                    new Set(groupMatches.flatMap((m) => [m.homeTeam, m.awayTeam]))
-                  );
-                  return (
-                    <button
-                      key={g}
-                      onClick={() => handleGroupClick(g)}
-                      className="rounded-xl p-4 text-left transition-all duration-200"
-                      style={{
-                        background: "rgba(13,13,34,0.8)",
-                        border: "1px solid rgba(0,255,136,0.15)",
-                      }}
-                      onMouseEnter={(e) => {
-                        (e.currentTarget as HTMLElement).style.borderColor = "rgba(0,255,136,0.5)";
-                        (e.currentTarget as HTMLElement).style.boxShadow =
-                          "0 0 15px rgba(0,255,136,0.1)";
-                      }}
-                      onMouseLeave={(e) => {
-                        (e.currentTarget as HTMLElement).style.borderColor = "rgba(0,255,136,0.15)";
-                        (e.currentTarget as HTMLElement).style.boxShadow = "none";
-                      }}
-                    >
-                      <p
-                        className="font-orbitron font-black text-lg mb-2"
-                        style={{ color: "#00ff88" }}
-                      >
-                        Group {g}
-                      </p>
-                      <div className="space-y-1">
-                        {teams.map((t) => (
-                          <p key={t} className="text-[10px]" style={{ color: "#7070a0" }}>
-                            {t}
-                          </p>
-                        ))}
-                      </div>
-                      <p className="mt-3 text-[10px] font-orbitron" style={{ color: "#404060" }}>
-                        {groupCount[g]} matches
-                      </p>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
       </div>
+
+      {/* Match Poster Modal */}
+      <MatchPosterModal match={posterMatch} onClose={() => setPosterMatch(null)} />
     </div>
   );
 }
