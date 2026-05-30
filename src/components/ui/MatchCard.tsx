@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import type { Match } from "@/types";
 import { formatMatchDate, STAGE_COLORS, COUNTRY_FLAG } from "@/lib/utils";
-import { useLocalTime } from "@/hooks/useLocalTime";
+import { matchFullIST } from "@/lib/ist";
 import { getCountryByName, getFlagUrl, getPlayerInitials } from "@/data/countries";
 import { MapPin, Calendar, ExternalLink } from "lucide-react";
 
@@ -89,7 +90,16 @@ function TeamCol({ teamName, showPlayer }: { teamName: string; showPlayer: boole
 export default function MatchCard({ match, compact = false, onPoster }: Props) {
   const stageColor = STAGE_COLORS[match.stage] ?? "#7070a0";
   const isKnockout = match.stage !== "Group Stage";
-  const { istTime, isMounted } = useLocalTime(match.date, match.time, match.venue);
+  // Full IST date+time: "Fri, Jun 12 · 08:30 AM IST" — includes IST date so it's never ambiguous
+  const [istDisplay, setIstDisplay] = useState<string | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    const id = setTimeout(() => {
+      setIsMounted(true);
+      setIstDisplay(matchFullIST(match.date, match.time, match.venue));
+    }, 0);
+    return () => clearTimeout(id);
+  }, [match.date, match.time, match.venue]);
 
   return (
     <div
@@ -183,15 +193,15 @@ export default function MatchCard({ match, compact = false, onPoster }: Props) {
           >
             <div className="flex flex-wrap gap-x-3 gap-y-1">
               <div className="flex items-center gap-1.5">
-                <Calendar size={10} color="#7070a0" />
+                <MapPin size={10} color="#7070a0" />
                 <span className="text-[11px]" style={{ color: "#7070a0" }}>
-                  {formatMatchDate(match.date)}
+                  {COUNTRY_FLAG[match.country]} {match.city} · {match.time} local
                 </span>
               </div>
               <div className="flex items-center gap-1.5">
-                <MapPin size={10} color="#7070a0" />
+                <Calendar size={10} color="#7070a0" />
                 <span className="text-[11px]" style={{ color: "#7070a0" }}>
-                  {COUNTRY_FLAG[match.country]} {match.city}
+                  {formatMatchDate(match.date)} (venue date)
                 </span>
               </div>
             </div>
@@ -213,7 +223,11 @@ export default function MatchCard({ match, compact = false, onPoster }: Props) {
                   textShadow: "0 0 10px rgba(0,212,255,0.6)",
                 }}
               >
-                {isMounted ? (istTime ? istTime : `${match.time} (local)`) : "Loading IST..."}
+                {isMounted
+                  ? istDisplay
+                    ? istDisplay
+                    : `${match.time} (venue time)`
+                  : "Calculating IST..."}
               </span>
             </div>
           </div>
@@ -231,11 +245,11 @@ export default function MatchCard({ match, compact = false, onPoster }: Props) {
             <span className="text-[9px]" style={{ color: "#404060" }}>
               {COUNTRY_FLAG[match.country]} {match.city}
             </span>
-            {isMounted && istTime && (
+            {isMounted && istDisplay && (
               <>
                 <span style={{ color: "#404060", fontSize: "9px" }}>·</span>
                 <span className="text-[9px] font-orbitron" style={{ color: "#00d4ff" }}>
-                  🇮🇳 {istTime}
+                  🇮🇳 {istDisplay}
                 </span>
               </>
             )}

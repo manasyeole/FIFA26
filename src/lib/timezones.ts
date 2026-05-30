@@ -15,6 +15,7 @@ export const VENUE_TIMEZONES: Record<string, string> = {
   "NRG Stadium": "America/Chicago",
   "Arrowhead Stadium": "America/Chicago",
   "Lincoln Financial": "America/New_York",
+  "Lincoln Financial Field": "America/New_York",
   "Gillette Stadium": "America/New_York",
   "BC Place": "America/Vancouver",
   "BMO Field": "America/Toronto",
