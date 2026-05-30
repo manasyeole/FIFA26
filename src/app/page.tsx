@@ -5,6 +5,7 @@ import { matches } from "@/data/matches";
 import MatchCard from "@/components/ui/MatchCard";
 import AllCountriesGrid from "@/components/features/countries/AllCountriesGrid";
 import HeroSection from "@/components/sections/HeroSection";
+import SuperstarsSection from "@/components/sections/SuperstarsSection";
 import { Trophy, Calendar, MapPin, Users, ArrowRight, Zap, Globe } from "lucide-react";
 
 const STATS = [
@@ -114,6 +115,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ─── WORLD SUPERSTARS ────────────────────────────────────────── */}
+      <SuperstarsSection />
 
       {/* ─── FEATURED MATCHES ─────────────────────────────────────── */}
       <section className="py-16 px-4 sm:px-6 lg:px-8">
