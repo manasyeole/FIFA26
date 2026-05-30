@@ -138,7 +138,7 @@ export const countries: Country[] = [
     starPlayer: {
       name: "Edin Džeko",
       position: "ST",
-      club: "Fenerbahçe",
+      club: "Schalke 04",
       number: 9,
       age: 40,
       caps: 120,
@@ -370,7 +370,7 @@ export const countries: Country[] = [
     starPlayer: {
       name: "Sébastien Haller",
       position: "ST",
-      club: "Borussia Dortmund",
+      club: "FC Utrecht",
       number: 9,
       age: 30,
       caps: 38,
@@ -591,7 +591,7 @@ export const countries: Country[] = [
       goals: 15,
       tsdbName: "Salem Al Dawsari",
     },
-    manager: { name: "Hervé Renard", nationality: "French" },
+    manager: { name: "Georgios Donis", nationality: "Greek" },
     neonColor: "#00ff55",
   },
   {

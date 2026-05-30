@@ -1,7 +1,18 @@
-﻿/**
+/**
  * Full 26-player squad data for the 12 most prominent FIFA 2026 nations.
  * isStarter: true = starting XI, false = squad/bench player.
  * Approximate caps/goals/age as of June 2026.
+ *
+ * Data corrections applied:
+ * - Axel Witsel removed (retired from professional football, Euro 2024)
+ * - Thomas Müller removed (retired from German NT, Euro 2024)
+ * - Ángel Di María removed (retired from Argentine NT, Copa America 2024)
+ * - Olivier Giroud removed (retired from French NT, 2022 WC era)
+ * - Edin Džeko club updated: Fenerbahçe → Schalke 04
+ * - Sébastien Haller club updated (in countries.ts): Dortmund → FC Utrecht
+ * - Saudi Arabia manager updated (in countries.ts): Renard → Donis
+ * - Belgium duplicate Lois Openda entry removed
+ * - Mexico duplicate jersey #22 fixed
  */
 
 export interface SquadPlayer {
@@ -20,7 +31,7 @@ export interface SquadPlayer {
 export const squads: Record<string, SquadPlayer[]> = {
   Argentina: [
     {
-      name: "Emiliano MartÃ­nez",
+      name: "Emiliano Martínez",
       position: "GK",
       club: "Aston Villa",
       number: 1,
@@ -33,7 +44,7 @@ export const squads: Record<string, SquadPlayer[]> = {
     {
       name: "Nahuel Molina",
       position: "RB",
-      club: "AtlÃ©tico Madrid",
+      club: "Atlético Madrid",
       number: 26,
       age: 26,
       caps: 38,
@@ -53,7 +64,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Cristian Romero",
     },
     {
-      name: "Lisandro MartÃ­nez",
+      name: "Lisandro Martínez",
       position: "CB",
       club: "Manchester United",
       number: 14,
@@ -64,7 +75,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Lisandro Martinez",
     },
     {
-      name: "NicolÃ¡s Tagliafico",
+      name: "Nicolás Tagliafico",
       position: "LB",
       club: "Olympique Lyon",
       number: 3,
@@ -76,7 +87,7 @@ export const squads: Record<string, SquadPlayer[]> = {
     {
       name: "Rodrigo De Paul",
       position: "CDM",
-      club: "AtlÃ©tico Madrid",
+      club: "Atlético Madrid",
       number: 7,
       age: 30,
       caps: 72,
@@ -85,7 +96,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Rodrigo De Paul",
     },
     {
-      name: "Enzo FernÃ¡ndez",
+      name: "Enzo Fernández",
       position: "CM",
       club: "Chelsea",
       number: 24,
@@ -118,9 +129,9 @@ export const squads: Record<string, SquadPlayer[]> = {
       isCaptain: true,
     },
     {
-      name: "JuliÃ¡n Ãlvarez",
+      name: "Julián Álvarez",
       position: "LW",
-      club: "AtlÃ©tico Madrid",
+      club: "Atlético Madrid",
       number: 19,
       age: 24,
       caps: 42,
@@ -129,7 +140,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Julian Alvarez",
     },
     {
-      name: "Lautaro MartÃ­nez",
+      name: "Lautaro Martínez",
       position: "ST",
       club: "Inter Milan",
       number: 22,
@@ -140,9 +151,9 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Lautaro Martinez",
     },
     {
-      name: "GerÃ³nimo Rulli",
+      name: "Gerónimo Rulli",
       position: "GK",
-      club: "AtlÃ©tico Madrid",
+      club: "Atlético Madrid",
       number: 12,
       age: 32,
       caps: 18,
@@ -151,7 +162,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Geronimo Rulli",
     },
     {
-      name: "Walter BenÃ­tez",
+      name: "Walter Benítez",
       position: "GK",
       club: "PSV Eindhoven",
       number: 23,
@@ -172,7 +183,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       isStarter: false,
     },
     {
-      name: "GermÃ¡n Pezzella",
+      name: "Germán Pezzella",
       position: "CB",
       club: "Real Betis",
       number: 6,
@@ -183,7 +194,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "German Pezzella",
     },
     {
-      name: "NicolÃ¡s Otamendi",
+      name: "Nicolás Otamendi",
       position: "CB",
       club: "Benfica",
       number: 17,
@@ -194,7 +205,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Nicolas Otamendi",
     },
     {
-      name: "Marcos AcuÃ±a",
+      name: "Marcos Acuña",
       position: "LB",
       club: "Sevilla",
       number: 8,
@@ -215,7 +226,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       isStarter: false,
     },
     {
-      name: "Guido RodrÃ­guez",
+      name: "Guido Rodríguez",
       position: "CDM",
       club: "Real Betis",
       number: 16,
@@ -246,15 +257,14 @@ export const squads: Record<string, SquadPlayer[]> = {
       isStarter: false,
     },
     {
-      name: "Ãngel Di MarÃ­a",
-      position: "RW",
-      club: "Benfica",
+      name: "Facundo Buonanotte",
+      position: "LW",
+      club: "Brighton & Hove Albion",
       number: 11,
-      age: 38,
-      caps: 137,
-      goals: 31,
+      age: 21,
+      caps: 14,
+      goals: 3,
       isStarter: false,
-      tsdbName: "Angel Di Maria",
     },
     {
       name: "Paulo Dybala",
@@ -277,7 +287,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       isStarter: false,
     },
     {
-      name: "ValentÃ­n Carboni",
+      name: "Valentín Carboni",
       position: "CAM",
       club: "Inter Milan",
       number: 27,
@@ -311,7 +321,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       isStarter: true,
     },
     {
-      name: "Jules KoundÃ©",
+      name: "Jules Koundé",
       position: "RB",
       club: "FC Barcelona",
       number: 5,
@@ -332,7 +342,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       isStarter: true,
     },
     {
-      name: "Ibrahima KonatÃ©",
+      name: "Ibrahima Konaté",
       position: "CB",
       club: "Liverpool",
       number: 17,
@@ -343,7 +353,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Ibrahima Konate",
     },
     {
-      name: "Theo HernÃ¡ndez",
+      name: "Theo Hernández",
       position: "LB",
       club: "AC Milan",
       number: 22,
@@ -354,7 +364,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Theo Hernandez",
     },
     {
-      name: "AurÃ©lien TchouamÃ©ni",
+      name: "Aurélien Tchouaméni",
       position: "CDM",
       club: "Real Madrid",
       number: 8,
@@ -375,7 +385,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       isStarter: true,
     },
     {
-      name: "Ousmane DembÃ©lÃ©",
+      name: "Ousmane Dembélé",
       position: "RW",
       club: "Paris Saint-Germain",
       number: 11,
@@ -388,7 +398,7 @@ export const squads: Record<string, SquadPlayer[]> = {
     {
       name: "Antoine Griezmann",
       position: "CAM",
-      club: "AtlÃ©tico Madrid",
+      club: "Atlético Madrid",
       number: 7,
       age: 34,
       caps: 130,
@@ -397,7 +407,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       isCaptain: true,
     },
     {
-      name: "Kylian MbappÃ©",
+      name: "Kylian Mbappé",
       position: "LW",
       club: "Real Madrid",
       number: 10,
@@ -462,7 +472,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "William Saliba",
     },
     {
-      name: "Lucas HernÃ¡ndez",
+      name: "Lucas Hernández",
       position: "LB",
       club: "Paris Saint-Germain",
       number: 21,
@@ -484,7 +494,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Adrien Rabiot",
     },
     {
-      name: "Warren ZaÃ¯re-Emery",
+      name: "Warren Zaïre-Emery",
       position: "CM",
       club: "Paris Saint-Germain",
       number: 15,
@@ -550,18 +560,18 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Bradley Barcola",
     },
     {
-      name: "Olivier Giroud",
-      position: "ST",
-      club: "Los Angeles FC",
+      name: "Désiré Doué",
+      position: "RW",
+      club: "Paris Saint-Germain",
       number: 12,
-      age: 39,
-      caps: 137,
-      goals: 57,
+      age: 20,
+      caps: 8,
+      goals: 2,
       isStarter: false,
-      tsdbName: "Olivier Giroud",
+      tsdbName: "Desire Doue",
     },
     {
-      name: "N'Golo KantÃ©",
+      name: "N'Golo Kanté",
       position: "CDM",
       club: "Al-Ittihad",
       number: 26,
@@ -618,7 +628,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       isStarter: true,
     },
     {
-      name: "Gabriel MagalhÃ£es",
+      name: "Gabriel Magalhães",
       position: "CB",
       club: "Arsenal",
       number: 5,
@@ -631,7 +641,7 @@ export const squads: Record<string, SquadPlayer[]> = {
     {
       name: "Guilherme Arana",
       position: "LB",
-      club: "AtlÃ©tico Mineiro",
+      club: "Atlético Mineiro",
       number: 6,
       age: 27,
       caps: 28,
@@ -639,7 +649,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       isStarter: true,
     },
     {
-      name: "Bruno GuimarÃ£es",
+      name: "Bruno Guimarães",
       position: "CDM",
       club: "Newcastle United",
       number: 18,
@@ -650,7 +660,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Bruno Guimaraes",
     },
     {
-      name: "Lucas PaquetÃ¡",
+      name: "Lucas Paquetá",
       position: "CM",
       club: "West Ham United",
       number: 10,
@@ -724,7 +734,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Bento",
     },
     {
-      name: "Ã‰der MilitÃ£o",
+      name: "Éder Militão",
       position: "CB",
       club: "Real Madrid",
       number: 3,
@@ -743,7 +753,6 @@ export const squads: Record<string, SquadPlayer[]> = {
       caps: 18,
       goals: 0,
       isStarter: false,
-      tsdbName: "Wendell",
     },
     {
       name: "Yan Couto",
@@ -757,7 +766,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Yan Couto",
     },
     {
-      name: "AndrÃ©",
+      name: "André",
       position: "CDM",
       club: "Wolverhampton Wanderers",
       number: 8,
@@ -776,7 +785,6 @@ export const squads: Record<string, SquadPlayer[]> = {
       caps: 22,
       goals: 2,
       isStarter: false,
-      tsdbName: "Gerson",
     },
     {
       name: "Douglas Luiz",
@@ -792,7 +800,7 @@ export const squads: Record<string, SquadPlayer[]> = {
     {
       name: "Raphinha",
       position: "RW",
-      club: "Barcelona",
+      club: "FC Barcelona",
       number: 19,
       age: 28,
       caps: 51,
@@ -901,7 +909,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       isStarter: true,
     },
     {
-      name: "Marc GuÃ©hi",
+      name: "Marc Guéhi",
       position: "CB",
       club: "Crystal Palace",
       number: 6,
@@ -1060,7 +1068,7 @@ export const squads: Record<string, SquadPlayer[]> = {
     {
       name: "Conor Gallagher",
       position: "CM",
-      club: "Atletico Madrid",
+      club: "Atlético Madrid",
       number: 10,
       age: 25,
       caps: 18,
@@ -1164,7 +1172,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Joshua Kimmich",
     },
     {
-      name: "Antonio RÃ¼diger",
+      name: "Antonio Rüdiger",
       position: "CB",
       club: "Real Madrid",
       number: 2,
@@ -1229,7 +1237,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Serge Gnabry",
     },
     {
-      name: "Leroy SanÃ©",
+      name: "Leroy Sané",
       position: "LW",
       club: "Bayern Munich",
       number: 19,
@@ -1240,7 +1248,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Leroy Sane",
     },
     {
-      name: "Niclas FÃ¼llkrug",
+      name: "Niclas Füllkrug",
       position: "ST",
       club: "West Ham United",
       number: 9,
@@ -1251,18 +1259,17 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Niclas Fullkrug",
     },
     {
-      name: "Thomas MÃ¼ller",
+      name: "Deniz Undav",
       position: "CF",
-      club: "Bayern Munich",
-      number: 13,
-      age: 36,
-      caps: 131,
-      goals: 45,
+      club: "VfB Stuttgart",
+      number: 11,
+      age: 28,
+      caps: 12,
+      goals: 5,
       isStarter: true,
-      tsdbName: "Thomas Muller",
     },
     {
-      name: "Marc-AndrÃ© ter Stegen",
+      name: "Marc-André ter Stegen",
       position: "GK",
       club: "FC Barcelona",
       number: 12,
@@ -1305,7 +1312,7 @@ export const squads: Record<string, SquadPlayer[]> = {
     {
       name: "Jonathan Tah",
       position: "CB",
-      club: "FC Bayern Munich",
+      club: "Bayern Munich",
       number: 16,
       age: 29,
       caps: 32,
@@ -1313,7 +1320,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       isStarter: false,
     },
     {
-      name: "Maximilian MittelstÃ¤dt",
+      name: "Maximilian Mittelstädt",
       position: "LB",
       club: "VfB Stuttgart",
       number: 18,
@@ -1324,7 +1331,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Maximilian Mittelstadt",
     },
     {
-      name: "Pascal GroÃŸ",
+      name: "Pascal Groß",
       position: "CM",
       club: "Borussia Dortmund",
       number: 8,
@@ -1347,7 +1354,7 @@ export const squads: Record<string, SquadPlayer[]> = {
     {
       name: "Aleksandar Pavlovic",
       position: "CDM",
-      club: "FC Bayern Munich",
+      club: "Bayern Munich",
       number: 20,
       age: 20,
       caps: 10,
@@ -1355,7 +1362,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       isStarter: false,
     },
     {
-      name: "Ilkay GÃ¼ndogan",
+      name: "Ilkay Gündogan",
       position: "CAM",
       club: "FC Barcelona",
       number: 21,
@@ -1366,20 +1373,10 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Ilkay Gundogan",
     },
     {
-      name: "Deniz Undav",
-      position: "ST",
-      club: "VfB Stuttgart",
-      number: 11,
-      age: 28,
-      caps: 12,
-      goals: 5,
-      isStarter: false,
-    },
-    {
       name: "Tim Kleindienst",
       position: "ST",
-      club: "Borussia MÃ¶nchengladbach",
-      number: 24,
+      club: "Borussia Mönchengladbach",
+      number: 13,
       age: 29,
       caps: 6,
       goals: 2,
@@ -1397,7 +1394,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       isStarter: false,
     },
     {
-      name: "Chris FÃ¼hrich",
+      name: "Chris Führich",
       position: "RW",
       club: "VfB Stuttgart",
       number: 25,
@@ -1416,6 +1413,17 @@ export const squads: Record<string, SquadPlayer[]> = {
       caps: 8,
       goals: 0,
       isStarter: false,
+    },
+    {
+      name: "Julian Brandt",
+      position: "CAM",
+      club: "Borussia Dortmund",
+      number: 24,
+      age: 29,
+      caps: 52,
+      goals: 9,
+      isStarter: false,
+      tsdbName: "Julian Brandt",
     },
   ],
 
@@ -1452,7 +1460,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       isStarter: true,
     },
     {
-      name: "Pau CubarsÃ­",
+      name: "Pau Cubarsí",
       position: "CB",
       club: "FC Barcelona",
       number: 24,
@@ -1473,7 +1481,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       isStarter: true,
     },
     {
-      name: "MartÃ­n Zubimendi",
+      name: "Martín Zubimendi",
       position: "CDM",
       club: "Arsenal",
       number: 5,
@@ -1515,7 +1523,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Dani Olmo",
     },
     {
-      name: "Ãlvaro Morata",
+      name: "Álvaro Morata",
       position: "ST",
       club: "AC Milan",
       number: 9,
@@ -1537,7 +1545,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Nico Williams",
     },
     {
-      name: "Unai SimÃ³n",
+      name: "Unai Simón",
       position: "GK",
       club: "Athletic Club",
       number: 13,
@@ -1548,7 +1556,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Unai Simon",
     },
     {
-      name: "Ãlex Remiro",
+      name: "Álex Remiro",
       position: "GK",
       club: "Real Sociedad",
       number: 23,
@@ -1569,7 +1577,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       isStarter: false,
     },
     {
-      name: "JesÃºs Navas",
+      name: "Jesús Navas",
       position: "RB",
       club: "Sevilla",
       number: 22,
@@ -1580,9 +1588,9 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Jesus Navas",
     },
     {
-      name: "ÃÃ±igo MartÃ­nez",
+      name: "Íñigo Martínez",
       position: "CB",
-      club: "Barcelona",
+      club: "FC Barcelona",
       number: 6,
       age: 33,
       caps: 40,
@@ -1593,7 +1601,7 @@ export const squads: Record<string, SquadPlayer[]> = {
     {
       name: "Robin Le Normand",
       position: "CB",
-      club: "Atletico Madrid",
+      club: "Atlético Madrid",
       number: 15,
       age: 28,
       caps: 16,
@@ -1603,7 +1611,7 @@ export const squads: Record<string, SquadPlayer[]> = {
     {
       name: "Marcos Alonso",
       position: "LB",
-      club: "Barcelona",
+      club: "FC Barcelona",
       number: 18,
       age: 33,
       caps: 22,
@@ -1622,7 +1630,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Rodri",
     },
     {
-      name: "FabiÃ¡n Ruiz",
+      name: "Fabián Ruiz",
       position: "CM",
       club: "Paris Saint-Germain",
       number: 7,
@@ -1655,7 +1663,7 @@ export const squads: Record<string, SquadPlayer[]> = {
     {
       name: "Ferran Torres",
       position: "LW",
-      club: "Barcelona",
+      club: "FC Barcelona",
       number: 20,
       age: 25,
       caps: 52,
@@ -1663,7 +1671,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       isStarter: false,
     },
     {
-      name: "Ayoze PÃ©rez",
+      name: "Ayoze Pérez",
       position: "RW",
       club: "Villarreal",
       number: 21,
@@ -1676,7 +1684,7 @@ export const squads: Record<string, SquadPlayer[]> = {
     {
       name: "Joselu",
       position: "ST",
-      club: "Atletico Madrid",
+      club: "Atlético Madrid",
       number: 25,
       age: 34,
       caps: 24,
@@ -1707,7 +1715,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       isStarter: true,
     },
     {
-      name: "JoÃ£o Cancelo",
+      name: "João Cancelo",
       position: "RB",
       club: "FC Barcelona",
       number: 20,
@@ -1718,7 +1726,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Joao Cancelo",
     },
     {
-      name: "RÃºben Dias",
+      name: "Rúben Dias",
       position: "CB",
       club: "Manchester City",
       number: 4,
@@ -1729,7 +1737,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Ruben Dias",
     },
     {
-      name: "AntÃ³nio Silva",
+      name: "António Silva",
       position: "CB",
       club: "Benfica",
       number: 26,
@@ -1750,7 +1758,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       isStarter: true,
     },
     {
-      name: "RÃºben Neves",
+      name: "Rúben Neves",
       position: "CDM",
       club: "Al-Hilal",
       number: 15,
@@ -1784,7 +1792,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Bernardo Silva",
     },
     {
-      name: "Rafael LeÃ£o",
+      name: "Rafael Leão",
       position: "LW",
       club: "AC Milan",
       number: 11,
@@ -1815,7 +1823,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       isStarter: true,
     },
     {
-      name: "Rui PatrÃ­cio",
+      name: "Rui Patrício",
       position: "GK",
       club: "AS Roma",
       number: 12,
@@ -1826,7 +1834,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Rui Patricio",
     },
     {
-      name: "JosÃ© SÃ¡",
+      name: "José Sá",
       position: "GK",
       club: "Wolverhampton Wanderers",
       number: 23,
@@ -1857,7 +1865,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       isStarter: false,
     },
     {
-      name: "GonÃ§alo InÃ¡cio",
+      name: "Gonçalo Inácio",
       position: "CB",
       club: "Sporting CP",
       number: 5,
@@ -1868,7 +1876,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Goncalo Inacio",
     },
     {
-      name: "MÃ¡rio Rui",
+      name: "Mário Rui",
       position: "LB",
       club: "Napoli",
       number: 18,
@@ -1879,7 +1887,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Mario Rui",
     },
     {
-      name: "JoÃ£o Palhinha",
+      name: "João Palhinha",
       position: "CDM",
       club: "Bayern Munich",
       number: 16,
@@ -1910,7 +1918,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       isStarter: false,
     },
     {
-      name: "JoÃ£o FÃ©lix",
+      name: "João Félix",
       position: "CAM",
       club: "Chelsea",
       number: 21,
@@ -1921,7 +1929,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Joao Felix",
     },
     {
-      name: "GonÃ§alo Ramos",
+      name: "Gonçalo Ramos",
       position: "ST",
       club: "Paris Saint-Germain",
       number: 9,
@@ -1942,7 +1950,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       isStarter: false,
     },
     {
-      name: "Francisco ConceiÃ§Ã£o",
+      name: "Francisco Conceição",
       position: "RW",
       club: "Juventus",
       number: 19,
@@ -1953,7 +1961,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Francisco Conceicao",
     },
     {
-      name: "AndrÃ© Horta",
+      name: "André Horta",
       position: "CM",
       club: "Braga",
       number: 24,
@@ -2020,7 +2028,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Stefan de Vrij",
     },
     {
-      name: "Nathan AkÃ©",
+      name: "Nathan Aké",
       position: "LB",
       club: "Manchester City",
       number: 5,
@@ -2156,7 +2164,7 @@ export const squads: Record<string, SquadPlayer[]> = {
     {
       name: "Frenkie de Jong",
       position: "CDM",
-      club: "Barcelona",
+      club: "FC Barcelona",
       number: 21,
       age: 28,
       caps: 62,
@@ -2166,7 +2174,7 @@ export const squads: Record<string, SquadPlayer[]> = {
     {
       name: "Mats Wieffer",
       position: "CDM",
-      club: "Brighton & Hove Albion",
+      club: "Brighton",
       number: 16,
       age: 25,
       caps: 15,
@@ -2299,13 +2307,13 @@ export const squads: Record<string, SquadPlayer[]> = {
       isStarter: true,
     },
     {
-      name: "Axel Witsel",
+      name: "Amadou Onana",
       position: "CDM",
-      club: "AtlÃ©tico Madrid",
+      club: "Aston Villa",
       number: 6,
-      age: 35,
-      caps: 138,
-      goals: 12,
+      age: 23,
+      caps: 31,
+      goals: 2,
       isStarter: true,
     },
     {
@@ -2355,8 +2363,8 @@ export const squads: Record<string, SquadPlayer[]> = {
       club: "RB Leipzig",
       number: 20,
       age: 24,
-      caps: 22,
-      goals: 12,
+      caps: 28,
+      goals: 14,
       isStarter: true,
       tsdbName: "Lois Openda",
     },
@@ -2399,7 +2407,6 @@ export const squads: Record<string, SquadPlayer[]> = {
       caps: 19,
       goals: 2,
       isStarter: false,
-      tsdbName: "Arthur ThÃ©ate",
     },
     {
       name: "Thomas Meunier",
@@ -2429,16 +2436,6 @@ export const squads: Record<string, SquadPlayer[]> = {
       age: 28,
       caps: 77,
       goals: 18,
-      isStarter: false,
-    },
-    {
-      name: "Amadou Onana",
-      position: "CDM",
-      club: "Aston Villa",
-      number: 18,
-      age: 23,
-      caps: 31,
-      goals: 2,
       isStarter: false,
     },
     {
@@ -2472,17 +2469,6 @@ export const squads: Record<string, SquadPlayer[]> = {
       isStarter: false,
     },
     {
-      name: "LoÃ¯s Openda",
-      position: "CF",
-      club: "RB Leipzig",
-      number: 13,
-      age: 24,
-      caps: 26,
-      goals: 9,
-      isStarter: false,
-      tsdbName: "Lois Openda",
-    },
-    {
       name: "Jeremy Doku",
       position: "LW",
       club: "Manchester City",
@@ -2491,7 +2477,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       caps: 27,
       goals: 3,
       isStarter: false,
-      tsdbName: "JÃ©rÃ©my Doku",
+      tsdbName: "Jeremy Doku",
     },
     {
       name: "Orel Mangala",
@@ -2506,10 +2492,30 @@ export const squads: Record<string, SquadPlayer[]> = {
     {
       name: "Sebastiaan Bornauw",
       position: "CB",
-      club: "Wolfsburg",
+      club: "VfL Wolfsburg",
       number: 26,
       age: 25,
       caps: 11,
+      goals: 0,
+      isStarter: false,
+    },
+    {
+      name: "Odilon Kossounou",
+      position: "CB",
+      club: "Bayer Leverkusen",
+      number: 18,
+      age: 24,
+      caps: 16,
+      goals: 0,
+      isStarter: false,
+    },
+    {
+      name: "Alexis De Sart",
+      position: "CM",
+      club: "Standard Liège",
+      number: 13,
+      age: 25,
+      caps: 8,
       goals: 0,
       isStarter: false,
     },
@@ -2527,7 +2533,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       isStarter: true,
     },
     {
-      name: "SergiÃ±o Dest",
+      name: "Sergiño Dest",
       position: "RB",
       club: "PSV Eindhoven",
       number: 2,
@@ -2560,7 +2566,7 @@ export const squads: Record<string, SquadPlayer[]> = {
     {
       name: "Joe Scally",
       position: "LB",
-      club: "Borussia MÃ¶nchengladbach",
+      club: "Borussia Mönchengladbach",
       number: 3,
       age: 21,
       caps: 8,
@@ -2789,7 +2795,7 @@ export const squads: Record<string, SquadPlayer[]> = {
     {
       name: "Guillermo Ochoa",
       position: "GK",
-      club: "Club AmÃ©rica",
+      club: "Club América",
       number: 13,
       age: 38,
       caps: 148,
@@ -2798,17 +2804,17 @@ export const squads: Record<string, SquadPlayer[]> = {
       isCaptain: true,
     },
     {
-      name: "Jorge SÃ¡nchez",
+      name: "Jorge Sánchez",
       position: "RB",
-      club: "Club AmÃ©rica",
-      number: 22,
+      club: "Club América",
+      number: 26,
       age: 26,
       caps: 28,
       goals: 0,
       isStarter: true,
     },
     {
-      name: "CÃ©sar Montes",
+      name: "César Montes",
       position: "CB",
       club: "Monterrey",
       number: 3,
@@ -2818,7 +2824,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       isStarter: true,
     },
     {
-      name: "Johan VÃ¡squez",
+      name: "Johan Vásquez",
       position: "CB",
       club: "Genoa",
       number: 4,
@@ -2828,7 +2834,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       isStarter: true,
     },
     {
-      name: "JesÃºs Gallardo",
+      name: "Jesús Gallardo",
       position: "LB",
       club: "Monterrey",
       number: 23,
@@ -2838,7 +2844,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       isStarter: true,
     },
     {
-      name: "Edson Ãlvarez",
+      name: "Edson Álvarez",
       position: "CDM",
       club: "West Ham United",
       number: 6,
@@ -2849,7 +2855,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Edson Alvarez",
     },
     {
-      name: "Ã‰rick GutiÃ©rrez",
+      name: "Érick Gutiérrez",
       position: "CM",
       club: "PSV Eindhoven",
       number: 14,
@@ -2870,7 +2876,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Hirving Lozano",
     },
     {
-      name: "Santiago GimÃ©nez",
+      name: "Santiago Giménez",
       position: "ST",
       club: "AC Milan",
       number: 7,
@@ -2881,7 +2887,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Santiago Gimenez",
     },
     {
-      name: "RaÃºl JimÃ©nez",
+      name: "Raúl Jiménez",
       position: "CF",
       club: "Fulham",
       number: 9,
@@ -2904,7 +2910,7 @@ export const squads: Record<string, SquadPlayer[]> = {
     {
       name: "Rodolfo Cota",
       position: "GK",
-      club: "Club LeÃ³n",
+      club: "Club León",
       number: 1,
       age: 36,
       caps: 18,
@@ -2924,9 +2930,9 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Carlos Acevedo",
     },
     {
-      name: "Kevin Ãlvarez",
+      name: "Kevin Álvarez",
       position: "RB",
-      club: "Club AmÃ©rica",
+      club: "Club América",
       number: 2,
       age: 24,
       caps: 14,
@@ -2946,9 +2952,9 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Gerardo Arteaga",
     },
     {
-      name: "NÃ©stor Araujo",
+      name: "Néstor Araujo",
       position: "CB",
-      club: "Club AmÃ©rica",
+      club: "Club América",
       number: 15,
       age: 33,
       caps: 58,
@@ -2957,7 +2963,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Nestor Araujo",
     },
     {
-      name: "Luis ChÃ¡vez",
+      name: "Luis Chávez",
       position: "CM",
       club: "Pachuca",
       number: 8,
@@ -2968,7 +2974,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Luis Chavez",
     },
     {
-      name: "OrbelÃ­n Pineda",
+      name: "Orbelin Pineda",
       position: "CAM",
       club: "AEK Athens",
       number: 10,
@@ -2976,10 +2982,9 @@ export const squads: Record<string, SquadPlayer[]> = {
       caps: 63,
       goals: 10,
       isStarter: false,
-      tsdbName: "OrbelÃ­n Pineda",
     },
     {
-      name: "Carlos RodrÃ­guez",
+      name: "Carlos Rodríguez",
       position: "CDM",
       club: "Cruz Azul",
       number: 16,
@@ -2990,7 +2995,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Carlos Rodriguez",
     },
     {
-      name: "SebastiÃ¡n CÃ³rdova",
+      name: "Sebastián Córdova",
       position: "CM",
       club: "Tigres UANL",
       number: 17,
@@ -3001,9 +3006,9 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Sebastian Cordova",
     },
     {
-      name: "Henry MartÃ­n",
+      name: "Henry Martín",
       position: "ST",
-      club: "Club AmÃ©rica",
+      club: "Club América",
       number: 19,
       age: 32,
       caps: 30,
@@ -3034,7 +3039,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Uriel Antuna",
     },
     {
-      name: "Fernando BeltrÃ¡n",
+      name: "Fernando Beltrán",
       position: "CM",
       club: "Chivas Guadalajara",
       number: 21,
@@ -3045,9 +3050,9 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Fernando Beltran",
     },
     {
-      name: "JuliÃ¡n QuiÃ±ones",
+      name: "Julián Quiñones",
       position: "CF",
-      club: "Club AmÃ©rica",
+      club: "Club América",
       number: 24,
       age: 28,
       caps: 12,
@@ -3056,7 +3061,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Julian Quinones",
     },
     {
-      name: "HÃ©ctor Moreno",
+      name: "Héctor Moreno",
       position: "CB",
       club: "Al-Gharafa",
       number: 25,
@@ -3092,9 +3097,9 @@ export const squads: Record<string, SquadPlayer[]> = {
       isCaptain: true,
     },
     {
-      name: "Romain SaÃ¯ss",
+      name: "Romain Saïss",
       position: "CB",
-      club: "BeÅŸiktaÅŸ",
+      club: "Beşiktaş",
       number: 5,
       age: 34,
       caps: 72,
@@ -3155,7 +3160,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       isStarter: true,
     },
     {
-      name: "Brahim DÃ­az",
+      name: "Brahim Díaz",
       position: "CAM",
       club: "AC Milan",
       number: 10,
@@ -3168,7 +3173,7 @@ export const squads: Record<string, SquadPlayer[]> = {
     {
       name: "Youssef En-Nesyri",
       position: "ST",
-      club: "FenerbahÃ§e",
+      club: "Fenerbahçe",
       number: 9,
       age: 27,
       caps: 48,
@@ -3251,7 +3256,7 @@ export const squads: Record<string, SquadPlayer[]> = {
     {
       name: "Selim Amallah",
       position: "CM",
-      club: "Standard LiÃ¨ge",
+      club: "Standard Liège",
       number: 14,
       age: 28,
       caps: 30,
@@ -3270,7 +3275,7 @@ export const squads: Record<string, SquadPlayer[]> = {
       tsdbName: "Bilal El Khannous",
     },
     {
-      name: "FayÃ§al Fajr",
+      name: "Fayçal Fajr",
       position: "CM",
       club: "Getafe CF",
       number: 18,
@@ -3293,7 +3298,7 @@ export const squads: Record<string, SquadPlayer[]> = {
     {
       name: "Abdessamad Ezzalzouli",
       position: "LW",
-      club: "Betis",
+      club: "Real Betis",
       number: 19,
       age: 23,
       caps: 18,
