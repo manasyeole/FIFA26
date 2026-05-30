@@ -1,8 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import type { Match } from "@/types";
 import { formatMatchDate, STAGE_COLORS, COUNTRY_FLAG } from "@/lib/utils";
 import { useLocalTime } from "@/hooks/useLocalTime";
+import { getCountryByName, getFlagUrl, getPlayerInitials } from "@/data/countries";
 import { MapPin, Clock, Calendar } from "lucide-react";
 
 interface Props {
@@ -10,134 +12,204 @@ interface Props {
   compact?: boolean;
 }
 
+// Sub-component: one side of the VS matchup (flag + name + player avatar)
+function TeamCol({ teamName, showPlayer }: { teamName: string; showPlayer: boolean }) {
+  const country = getCountryByName(teamName);
+  const initials = country ? getPlayerInitials(country.starPlayer.name) : null;
+
+  return (
+    <div className="flex-1 flex flex-col items-center gap-1.5">
+      {/* Flag image */}
+      {country ? (
+        <div
+          className="relative rounded-md overflow-hidden"
+          style={{ width: "66px", height: "44px", flexShrink: 0 }}
+        >
+          <Image
+            src={getFlagUrl(country.isoCode)}
+            alt={`${teamName} flag`}
+            fill
+            sizes="66px"
+            className="object-cover"
+            unoptimized
+          />
+        </div>
+      ) : (
+        <div
+          className="rounded-md flex items-center justify-center"
+          style={{
+            width: "66px", height: "44px",
+            background: "rgba(255,255,255,0.02)",
+            border: "1px dashed rgba(255,255,255,0.1)",
+          }}
+        >
+          <span style={{ color: "#404060", fontSize: "9px" }}>TBD</span>
+        </div>
+      )}
+
+      {/* Team name */}
+      <p
+        className="font-orbitron font-bold text-center text-xs leading-tight"
+        style={{ color: "#ffffff" }}
+      >
+        {teamName}
+      </p>
+
+      {/* Star player initials avatar */}
+      {showPlayer && country && initials && (
+        <div className="flex items-center gap-1">
+          <div
+            className="flex-shrink-0 flex items-center justify-center rounded-full font-orbitron font-black"
+            style={{
+              width: "18px", height: "18px",
+              background: `${country.neonColor}20`,
+              border: `1px solid ${country.neonColor}55`,
+              color: country.neonColor,
+              fontSize: "7px",
+            }}
+          >
+            {initials}
+          </div>
+          <span className="text-[9px]" style={{ color: "#7070a0", maxWidth: "58px", overflow: "hidden", whiteSpace: "nowrap" }}>
+            {country.starPlayer.name.split(" ").pop()}
+          </span>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function MatchCard({ match, compact = false }: Props) {
-  const stageColor = STAGE_COLORS[match.stage] ?? "#7070a0";
-  const isKnockout = match.stage !== "Group Stage";
+  const stageColor               = STAGE_COLORS[match.stage] ?? "#7070a0";
+  const isKnockout               = match.stage !== "Group Stage";
   const { localTime, isMounted } = useLocalTime(match.date, match.time, match.venue);
 
   return (
     <div
-      className="relative rounded-xl overflow-hidden transition-all duration-300 group cursor-default"
+      className="relative rounded-xl overflow-hidden transition-all duration-300 cursor-default"
       style={{
-        background: "rgba(13,13,34,0.8)",
-        border: `1px solid ${stageColor}25`,
+        background:     "rgba(13,13,34,0.85)",
+        border:         `1px solid ${stageColor}25`,
         backdropFilter: "blur(10px)",
       }}
       onMouseEnter={(e) => {
-        (e.currentTarget as HTMLElement).style.borderColor = `${stageColor}60`;
-        (e.currentTarget as HTMLElement).style.boxShadow =
-          `0 0 25px ${stageColor}15, 0 8px 30px rgba(0,0,0,0.4)`;
-        (e.currentTarget as HTMLElement).style.transform = "translateY(-3px)";
+        const el = e.currentTarget as HTMLElement;
+        el.style.borderColor = `${stageColor}60`;
+        el.style.boxShadow   = `0 0 25px ${stageColor}15, 0 8px 30px rgba(0,0,0,0.4)`;
+        el.style.transform   = "translateY(-3px)";
       }}
       onMouseLeave={(e) => {
-        (e.currentTarget as HTMLElement).style.borderColor = `${stageColor}25`;
-        (e.currentTarget as HTMLElement).style.boxShadow = "none";
-        (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+        const el = e.currentTarget as HTMLElement;
+        el.style.borderColor = `${stageColor}25`;
+        el.style.boxShadow   = "none";
+        el.style.transform   = "translateY(0)";
       }}
     >
-      {/* Top accent line */}
+      {/* Neon top line */}
       <div
         className="h-[2px]"
         style={{ background: `linear-gradient(90deg, transparent, ${stageColor}, transparent)` }}
       />
 
-      <div className={compact ? "p-3" : "p-5"}>
-        {/* Header row */}
-        <div className="flex items-center justify-between mb-3">
+      <div className={compact ? "p-3" : "p-4"}>
+
+        {/* Header: stage badge + match number */}
+        <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             <span
               className="neon-badge"
-              style={{
-                borderColor: `${stageColor}50`,
-                color: stageColor,
-                background: `${stageColor}10`,
-              }}
+              style={{ borderColor: `${stageColor}50`, color: stageColor, background: `${stageColor}10` }}
             >
               {match.group ? `Group ${match.group}` : match.stage}
             </span>
-            {isKnockout && (
-              <span className="neon-badge neon-badge-gold">{match.stage}</span>
-            )}
+            {isKnockout && <span className="neon-badge neon-badge-gold">{match.stage}</span>}
           </div>
           <span className="text-xs font-orbitron" style={{ color: "#404060" }}>
             #{match.matchNumber}
           </span>
         </div>
 
-        {/* Teams */}
-        <div className="flex items-center justify-between gap-2 my-4">
-          {/* Home */}
-          <div className="flex-1 text-center">
-            <p
-              className={`font-orbitron font-bold tracking-wide ${compact ? "text-sm" : "text-base"}`}
-              style={{ color: "#ffffff" }}
-            >
-              {match.homeTeam}
-            </p>
+        {/* Teams row: [flag+name+player] VS [flag+name+player] */}
+        <div className="flex items-center justify-between gap-1 my-3">
+          <TeamCol teamName={match.homeTeam} showPlayer={!compact} />
+
+          <div
+            className="font-orbitron font-black text-xs tracking-widest flex-shrink-0 px-1"
+            style={{ color: stageColor, textShadow: `0 0 10px ${stageColor}` }}
+          >
+            VS
           </div>
 
-          {/* VS */}
-          <div className="flex flex-col items-center px-3">
-            <span
-              className="font-orbitron font-black text-xs tracking-widest"
-              style={{ color: stageColor, textShadow: `0 0 10px ${stageColor}` }}
-            >
-              VS
-            </span>
-          </div>
-
-          {/* Away */}
-          <div className="flex-1 text-center">
-            <p
-              className={`font-orbitron font-bold tracking-wide ${compact ? "text-sm" : "text-base"}`}
-              style={{ color: "#ffffff" }}
-            >
-              {match.awayTeam}
-            </p>
-          </div>
+          <TeamCol teamName={match.awayTeam} showPlayer={!compact} />
         </div>
 
-        {/* Meta info */}
+        {/* Full meta (non-compact) */}
         {!compact && (
           <div
-            className="flex flex-wrap gap-3 pt-3 mt-3"
+            className="pt-3 mt-1 space-y-2"
             style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
           >
-            <div className="flex items-center gap-1.5">
-              <Calendar size={11} color="#7070a0" />
-              <span className="text-xs" style={{ color: "#7070a0" }}>
-                {formatMatchDate(match.date)}
-              </span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <Clock size={11} color="#7070a0" />
-              <span className="text-xs" style={{ color: "#7070a0" }}>
-                {match.time} local
-              </span>
-            </div>
-            {isMounted && localTime && (
+            {/* Date / venue time / city */}
+            <div className="flex flex-wrap gap-x-3 gap-y-1">
               <div className="flex items-center gap-1.5">
-                <Clock size={11} color="#00d4ff" />
-                <span className="text-xs" style={{ color: "#00d4ff" }} title="Your local time">
-                  {localTime} your time
+                <Calendar size={10} color="#7070a0" />
+                <span className="text-[11px]" style={{ color: "#7070a0" }}>
+                  {formatMatchDate(match.date)}
                 </span>
               </div>
-            )}
-            <div className="flex items-center gap-1.5">
-              <MapPin size={11} color="#7070a0" />
-              <span className="text-xs" style={{ color: "#7070a0" }}>
-                {COUNTRY_FLAG[match.country]} {match.city}
+              <div className="flex items-center gap-1.5">
+                <Clock size={10} color="#7070a0" />
+                <span className="text-[11px]" style={{ color: "#7070a0" }}>
+                  {match.time} venue time
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <MapPin size={10} color="#7070a0" />
+                <span className="text-[11px]" style={{ color: "#7070a0" }}>
+                  {COUNTRY_FLAG[match.country]} {match.city}
+                </span>
+              </div>
+            </div>
+
+            {/* User local time — always visible after mount */}
+            <div
+              className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg"
+              style={{
+                background: "rgba(0,212,255,0.06)",
+                border:     "1px solid rgba(0,212,255,0.18)",
+              }}
+            >
+              <Clock size={10} color="#00d4ff" />
+              <span className="text-[11px] font-orbitron" style={{ color: "#00d4ff" }}>
+                {isMounted
+                  ? localTime
+                    ? `${localTime} — your local time`
+                    : `${match.time} (calculating...)`
+                  : "Your local time loading..."}
               </span>
             </div>
           </div>
         )}
 
+        {/* Compact meta */}
         {compact && (
-          <div className="flex items-center gap-1.5 mt-2">
-            <Calendar size={10} color="#404060" />
-            <span className="text-[10px]" style={{ color: "#404060" }}>
-              {formatMatchDate(match.date)} · {COUNTRY_FLAG[match.country]} {match.city}
+          <div className="flex flex-wrap items-center gap-x-2 mt-1.5">
+            <div className="flex items-center gap-1">
+              <Calendar size={9} color="#404060" />
+              <span className="text-[9px]" style={{ color: "#404060" }}>
+                {formatMatchDate(match.date)}
+              </span>
+            </div>
+            <span style={{ color: "#404060", fontSize: "9px" }}>·</span>
+            <span className="text-[9px]" style={{ color: "#404060" }}>
+              {COUNTRY_FLAG[match.country]} {match.city}
             </span>
+            {isMounted && localTime && (
+              <>
+                <span style={{ color: "#404060", fontSize: "9px" }}>·</span>
+                <span className="text-[9px]" style={{ color: "#00d4ff" }}>{localTime}</span>
+              </>
+            )}
           </div>
         )}
       </div>
