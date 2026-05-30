@@ -12,11 +12,7 @@ interface ISTState {
  * Returns the IST (Indian Standard Time) for a given venue match time.
  * `isMounted` is false during SSR to avoid hydration mismatch.
  */
-export function useLocalTime(
-  dateStr: string,
-  timeStr: string,
-  venueName: string
-): ISTState {
+export function useLocalTime(dateStr: string, timeStr: string, venueName: string): ISTState {
   const [state, setState] = useState<ISTState>({ istTime: null, isMounted: false });
 
   useEffect(() => {

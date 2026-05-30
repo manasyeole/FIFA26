@@ -15,7 +15,9 @@ const MATCH_DAYS = Array.from(new Set(matches.map((m) => m.date))).sort();
 // Get unique team names for country filter
 const ALL_TEAMS = Array.from(
   new Set(
-    matches.flatMap((m) => [m.homeTeam, m.awayTeam]).filter((t) => !t.match(/^[WL]\d+$/) && !t.match(/^\d[A-L]/))
+    matches
+      .flatMap((m) => [m.homeTeam, m.awayTeam])
+      .filter((t) => !t.match(/^[WL]\d+$/) && !t.match(/^\d[A-L]/))
   )
 ).sort();
 
@@ -90,7 +92,6 @@ export default function SchedulePage() {
   return (
     <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-
         {/* Header */}
         <div className="text-center mb-10">
           <div className="flex justify-center mb-4">
@@ -99,7 +100,10 @@ export default function SchedulePage() {
               Jun 11 – Jul 19, 2026
             </span>
           </div>
-          <h1 className="font-orbitron font-black text-3xl sm:text-5xl mb-4" style={{ color: "#ffffff" }}>
+          <h1
+            className="font-orbitron font-black text-3xl sm:text-5xl mb-4"
+            style={{ color: "#ffffff" }}
+          >
             <span className="text-glow-green">Full</span> Schedule
           </h1>
           <p className="text-sm" style={{ color: "#7070a0" }}>
@@ -116,7 +120,11 @@ export default function SchedulePage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full pl-10 pr-4 py-3 rounded-xl font-orbitron text-sm tracking-wide outline-none transition-all duration-300"
-            style={{ background: "rgba(13,13,34,0.9)", border: "1px solid rgba(0,255,136,0.2)", color: "#ffffff" }}
+            style={{
+              background: "rgba(13,13,34,0.9)",
+              border: "1px solid rgba(0,255,136,0.2)",
+              color: "#ffffff",
+            }}
             onFocus={(e) => {
               (e.target as HTMLInputElement).style.borderColor = "rgba(0,255,136,0.6)";
               (e.target as HTMLInputElement).style.boxShadow = "0 0 20px rgba(0,255,136,0.1)";
@@ -132,7 +140,12 @@ export default function SchedulePage() {
         <div className="mb-5">
           <div className="flex items-center gap-2 mb-2">
             <Trophy size={11} color="#ffd700" />
-            <span className="font-orbitron text-[10px] tracking-widest uppercase" style={{ color: "#7070a0" }}>Stage</span>
+            <span
+              className="font-orbitron text-[10px] tracking-widest uppercase"
+              style={{ color: "#7070a0" }}
+            >
+              Stage
+            </span>
           </div>
           <div className="flex flex-wrap gap-2">
             {[ALL, ...STAGES].map((stage) => {
@@ -162,7 +175,12 @@ export default function SchedulePage() {
           <div className="mb-5">
             <div className="flex items-center gap-2 mb-2">
               <Filter size={11} color="#00ff88" />
-              <span className="font-orbitron text-[10px] tracking-widest uppercase" style={{ color: "#7070a0" }}>Group</span>
+              <span
+                className="font-orbitron text-[10px] tracking-widest uppercase"
+                style={{ color: "#7070a0" }}
+              >
+                Group
+              </span>
             </div>
             <div className="flex flex-wrap gap-2">
               <button
@@ -202,7 +220,12 @@ export default function SchedulePage() {
         <div className="mb-5">
           <div className="flex items-center gap-2 mb-2">
             <Calendar size={11} color="#00d4ff" />
-            <span className="font-orbitron text-[10px] tracking-widest uppercase" style={{ color: "#7070a0" }}>Match Day</span>
+            <span
+              className="font-orbitron text-[10px] tracking-widest uppercase"
+              style={{ color: "#7070a0" }}
+            >
+              Match Day
+            </span>
           </div>
           <div className="flex flex-wrap gap-2 max-h-24 overflow-y-auto pb-1">
             <button
@@ -241,7 +264,12 @@ export default function SchedulePage() {
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-2">
             <Globe size={11} color="#bf5fff" />
-            <span className="font-orbitron text-[10px] tracking-widest uppercase" style={{ color: "#7070a0" }}>Country</span>
+            <span
+              className="font-orbitron text-[10px] tracking-widest uppercase"
+              style={{ color: "#7070a0" }}
+            >
+              Country
+            </span>
           </div>
           <div className="flex flex-wrap gap-2 max-h-28 overflow-y-auto pb-1">
             <button
@@ -296,8 +324,12 @@ export default function SchedulePage() {
         {/* Match grid */}
         {filtered.length === 0 ? (
           <div className="text-center py-24">
-            <p className="font-orbitron text-4xl mb-4" style={{ color: "#404060" }}>—</p>
-            <p className="font-orbitron text-sm tracking-widest" style={{ color: "#7070a0" }}>No matches found</p>
+            <p className="font-orbitron text-4xl mb-4" style={{ color: "#404060" }}>
+              —
+            </p>
+            <p className="font-orbitron text-sm tracking-widest" style={{ color: "#7070a0" }}>
+              No matches found
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

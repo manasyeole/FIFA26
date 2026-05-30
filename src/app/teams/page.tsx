@@ -56,12 +56,15 @@ export default function TeamsPage() {
                         border: `1px solid ${country.neonColor}20`,
                       }}
                       onMouseEnter={(e) => {
-                        (e.currentTarget as HTMLElement).style.borderColor = `${country.neonColor}50`;
+                        (e.currentTarget as HTMLElement).style.borderColor =
+                          `${country.neonColor}50`;
                         (e.currentTarget as HTMLElement).style.transform = "translateY(-3px)";
-                        (e.currentTarget as HTMLElement).style.boxShadow = `0 0 20px ${country.neonColor}15`;
+                        (e.currentTarget as HTMLElement).style.boxShadow =
+                          `0 0 20px ${country.neonColor}15`;
                       }}
                       onMouseLeave={(e) => {
-                        (e.currentTarget as HTMLElement).style.borderColor = `${country.neonColor}20`;
+                        (e.currentTarget as HTMLElement).style.borderColor =
+                          `${country.neonColor}20`;
                         (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
                         (e.currentTarget as HTMLElement).style.boxShadow = "none";
                       }}
@@ -79,7 +82,8 @@ export default function TeamsPage() {
                         <div
                           className="absolute inset-0"
                           style={{
-                            background: "linear-gradient(to bottom, transparent 30%, rgba(13,13,34,0.95))",
+                            background:
+                              "linear-gradient(to bottom, transparent 30%, rgba(13,13,34,0.95))",
                           }}
                         />
                         <div

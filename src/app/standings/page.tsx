@@ -84,8 +84,7 @@ function GroupTable({ group }: { group: string }) {
               <tr
                 key={row.name}
                 style={{
-                  borderBottom:
-                    i < rows.length - 1 ? "1px solid rgba(255,255,255,0.04)" : "none",
+                  borderBottom: i < rows.length - 1 ? "1px solid rgba(255,255,255,0.04)" : "none",
                 }}
               >
                 <td className="px-3 py-2.5">
@@ -111,17 +110,15 @@ function GroupTable({ group }: { group: string }) {
                     </span>
                   </div>
                 </td>
-                {[row.mp, row.w, row.d, row.l, row.gf, row.ga, gd(row)].map(
-                  (val, j) => (
-                    <td
-                      key={j}
-                      className="text-center px-2 py-2.5 font-orbitron"
-                      style={{ color: "#7070a0" }}
-                    >
-                      {val}
-                    </td>
-                  )
-                )}
+                {[row.mp, row.w, row.d, row.l, row.gf, row.ga, gd(row)].map((val, j) => (
+                  <td
+                    key={j}
+                    className="text-center px-2 py-2.5 font-orbitron"
+                    style={{ color: "#7070a0" }}
+                  >
+                    {val}
+                  </td>
+                ))}
                 <td
                   className="text-center px-2 py-2.5 font-orbitron font-black"
                   style={{ color: "#ffd700" }}
@@ -140,19 +137,13 @@ function GroupTable({ group }: { group: string }) {
         style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
       >
         <div className="flex items-center gap-1.5">
-          <div
-            className="w-2 h-2 rounded-full"
-            style={{ background: "#00ff88" }}
-          />
+          <div className="w-2 h-2 rounded-full" style={{ background: "#00ff88" }} />
           <span className="text-[9px] font-orbitron" style={{ color: "#7070a0" }}>
             Advance (top 2)
           </span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div
-            className="w-2 h-2 rounded-full"
-            style={{ background: "#ff9900" }}
-          />
+          <div className="w-2 h-2 rounded-full" style={{ background: "#ff9900" }} />
           <span className="text-[9px] font-orbitron" style={{ color: "#7070a0" }}>
             Best 3rd place eligible
           </span>
@@ -198,8 +189,8 @@ export default function StandingsPage() {
             <span className="font-orbitron" style={{ color: "#00d4ff" }}>
               Tournament starts June 11, 2026.
             </span>{" "}
-            All standings are currently 0 — this table will update as matches are
-            played. Live score integration is planned for Phase 3.
+            All standings are currently 0 — this table will update as matches are played. Live score
+            integration is planned for Phase 3.
           </p>
         </div>
 
@@ -216,10 +207,7 @@ export default function StandingsPage() {
           className="rounded-xl p-6"
           style={{ background: "rgba(13,13,34,0.8)", border: "1px solid rgba(255,215,0,0.15)" }}
         >
-          <h2
-            className="font-orbitron font-bold text-sm mb-4"
-            style={{ color: "#ffd700" }}
-          >
+          <h2 className="font-orbitron font-bold text-sm mb-4" style={{ color: "#ffd700" }}>
             How qualification works — FIFA 2026 (48 teams)
           </h2>
           <div

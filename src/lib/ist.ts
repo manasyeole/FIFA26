@@ -30,11 +30,7 @@ export function utcToIST(utcDate: Date): string {
  * @param timeStr  "HH:MM" venue local time
  * @param venueName  Exact venue name from matches.ts
  */
-export function matchTimeToIST(
-  dateStr: string,
-  timeStr: string,
-  venueName: string
-): string | null {
+export function matchTimeToIST(dateStr: string, timeStr: string, venueName: string): string | null {
   const ianaTimezone = VENUE_TIMEZONES[venueName];
   if (!ianaTimezone) return null;
   try {
@@ -49,11 +45,7 @@ export function matchTimeToIST(
  * Returns full IST date+time for a match.
  * Output: "Thu, Jun 11 · 08:30 PM IST"
  */
-export function matchFullIST(
-  dateStr: string,
-  timeStr: string,
-  venueName: string
-): string | null {
+export function matchFullIST(dateStr: string, timeStr: string, venueName: string): string | null {
   const ianaTimezone = VENUE_TIMEZONES[venueName];
   if (!ianaTimezone) return null;
   try {

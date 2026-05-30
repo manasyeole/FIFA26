@@ -13,13 +13,7 @@ interface Props {
   onPoster?: (match: Match) => void;
 }
 
-function TeamCol({
-  teamName,
-  showPlayer,
-}: {
-  teamName: string;
-  showPlayer: boolean;
-}) {
+function TeamCol({ teamName, showPlayer }: { teamName: string; showPlayer: boolean }) {
   const country = getCountryByName(teamName);
   const initials = country ? getPlayerInitials(country.starPlayer.name) : null;
 
@@ -139,9 +133,7 @@ export default function MatchCard({ match, compact = false, onPoster }: Props) {
             >
               {match.group ? `Group ${match.group}` : match.stage}
             </span>
-            {isKnockout && (
-              <span className="neon-badge neon-badge-gold">{match.stage}</span>
-            )}
+            {isKnockout && <span className="neon-badge neon-badge-gold">{match.stage}</span>}
           </div>
           <div className="flex items-center gap-2">
             {onPoster && !compact && (
@@ -154,12 +146,10 @@ export default function MatchCard({ match, compact = false, onPoster }: Props) {
                   color: "#ffd700",
                 }}
                 onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.background =
-                    "rgba(255,215,0,0.18)";
+                  (e.currentTarget as HTMLElement).style.background = "rgba(255,215,0,0.18)";
                 }}
                 onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.background =
-                    "rgba(255,215,0,0.08)";
+                  (e.currentTarget as HTMLElement).style.background = "rgba(255,215,0,0.08)";
                 }}
                 title="View match poster"
               >
@@ -223,11 +213,7 @@ export default function MatchCard({ match, compact = false, onPoster }: Props) {
                   textShadow: "0 0 10px rgba(0,212,255,0.6)",
                 }}
               >
-                {isMounted
-                  ? istTime
-                    ? istTime
-                    : `${match.time} (local)`
-                  : "Loading IST..."}
+                {isMounted ? (istTime ? istTime : `${match.time} (local)`) : "Loading IST..."}
               </span>
             </div>
           </div>

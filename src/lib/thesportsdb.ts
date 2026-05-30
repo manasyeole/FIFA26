@@ -13,8 +13,8 @@ export interface TSDBPlayer {
   strNationality: string;
   strTeam: string;
   dateBorn: string;
-  strThumb: string;   // Headshot — use in squad cards
-  strCutout: string;  // Full-body transparent PNG — use in match posters
+  strThumb: string; // Headshot — use in squad cards
+  strCutout: string; // Full-body transparent PNG — use in match posters
   strStatus: string;
 }
 
