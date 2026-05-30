@@ -23,10 +23,7 @@ const ALL_TEAMS = Array.from(
     matches
       .flatMap((m) => [m.homeTeam, m.awayTeam])
       .filter(
-        (t) =>
-          !t.match(/^[WL]\d+$/) &&
-          !t.match(/^\d+(st|nd|rd|th) Group/) &&
-          !t.match(/^Best 3rd/)
+        (t) => !t.match(/^[WL]\d+$/) && !t.match(/^\d+(st|nd|rd|th) Group/) && !t.match(/^Best 3rd/)
       )
   )
 ).sort();
