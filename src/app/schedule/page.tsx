@@ -2,28 +2,39 @@
 
 import { useState, useMemo } from "react";
 import { matches } from "@/data/matches";
+import { countries, getFlagUrl } from "@/data/countries";
 import type { Match } from "@/types";
 import MatchCard from "@/components/ui/MatchCard";
 import MatchPosterModal from "@/components/features/match/MatchPosterModal";
-import { Calendar, Globe } from "lucide-react";
+import { Search, Calendar, Globe } from "lucide-react";
 
 const ALL = "All";
+
+const COUNTRY_ISO: Record<string, string> = Object.fromEntries(
+  countries.map((c) => [c.name, c.isoCode])
+);
 
 // Get unique sorted match dates for day filter
 const MATCH_DAYS = Array.from(new Set(matches.map((m) => m.date))).sort();
 
-// Get unique team names for country filter
+// Get unique real country names only (exclude knockout placeholders)
 const ALL_TEAMS = Array.from(
   new Set(
     matches
       .flatMap((m) => [m.homeTeam, m.awayTeam])
-      .filter((t) => !t.match(/^[WL]\d+$/) && !t.match(/^\d[A-L]/))
+      .filter(
+        (t) =>
+          !t.match(/^[WL]\d+$/) &&
+          !t.match(/^\d+(st|nd|rd|th) Group/) &&
+          !t.match(/^Best 3rd/)
+      )
   )
 ).sort();
 
 export default function SchedulePage() {
   const [activeDay, setActiveDay] = useState<string>(ALL);
   const [activeCountry, setActiveCountry] = useState<string>(ALL);
+  const [search, setSearch] = useState("");
   const [posterMatch, setPosterMatch] = useState<Match | null>(null);
 
   const filtered = useMemo(() => {
@@ -33,16 +44,24 @@ export default function SchedulePage() {
         activeCountry === ALL ||
         m.homeTeam.toLowerCase().includes(activeCountry.toLowerCase()) ||
         m.awayTeam.toLowerCase().includes(activeCountry.toLowerCase());
-      return matchesDay && matchesCountry;
+      const query = search.toLowerCase();
+      const matchesSearch =
+        !query ||
+        m.homeTeam.toLowerCase().includes(query) ||
+        m.awayTeam.toLowerCase().includes(query) ||
+        m.city.toLowerCase().includes(query) ||
+        m.venue.toLowerCase().includes(query);
+      return matchesDay && matchesCountry && matchesSearch;
     });
-  }, [activeDay, activeCountry]);
+  }, [activeDay, activeCountry, search]);
 
   function clearAll() {
     setActiveDay(ALL);
     setActiveCountry(ALL);
+    setSearch("");
   }
 
-  const isFiltered = activeDay !== ALL || activeCountry !== ALL;
+  const isFiltered = activeDay !== ALL || activeCountry !== ALL || search.length > 0;
 
   function formatDay(dateStr: string) {
     const d = new Date(dateStr + "T12:00:00");
@@ -69,6 +88,31 @@ export default function SchedulePage() {
           <p className="text-sm" style={{ color: "#7070a0" }}>
             All 104 matches · All times shown in IST 🇮🇳
           </p>
+        </div>
+
+        {/* Search */}
+        <div className="relative max-w-md mx-auto mb-8">
+          <Search size={16} color="#7070a0" className="absolute left-4 top-1/2 -translate-y-1/2" />
+          <input
+            type="text"
+            placeholder="Search team, city, or venue..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full pl-10 pr-4 py-3 rounded-xl font-orbitron text-sm tracking-wide outline-none transition-all duration-300"
+            style={{
+              background: "rgba(13,13,34,0.9)",
+              border: "1px solid rgba(0,255,136,0.2)",
+              color: "#ffffff",
+            }}
+            onFocus={(e) => {
+              (e.target as HTMLInputElement).style.borderColor = "rgba(0,255,136,0.6)";
+              (e.target as HTMLInputElement).style.boxShadow = "0 0 20px rgba(0,255,136,0.1)";
+            }}
+            onBlur={(e) => {
+              (e.target as HTMLInputElement).style.borderColor = "rgba(0,255,136,0.2)";
+              (e.target as HTMLInputElement).style.boxShadow = "none";
+            }}
+          />
         </div>
 
         {/* ── Day filter ───────────────────────────────────────────────── */}
@@ -126,7 +170,7 @@ export default function SchedulePage() {
               Country
             </span>
           </div>
-          <div className="flex flex-wrap gap-2 max-h-28 overflow-y-auto pb-1">
+          <div className="flex flex-wrap gap-2 max-h-36 overflow-y-auto pb-1">
             <button
               onClick={() => setActiveCountry(ALL)}
               className="px-3 py-1.5 rounded-lg font-orbitron text-[10px] tracking-widest uppercase transition-all flex-shrink-0"
@@ -140,17 +184,25 @@ export default function SchedulePage() {
             </button>
             {ALL_TEAMS.map((team) => {
               const active = activeCountry === team;
+              const iso = COUNTRY_ISO[team];
               return (
                 <button
                   key={team}
                   onClick={() => setActiveCountry(active ? ALL : team)}
-                  className="px-3 py-1.5 rounded-lg font-orbitron text-[10px] tracking-widest uppercase transition-all flex-shrink-0"
+                  className="px-3 py-1.5 rounded-lg font-orbitron text-[10px] tracking-widest uppercase transition-all flex-shrink-0 flex items-center gap-1.5"
                   style={{
                     background: active ? "rgba(191,95,255,0.12)" : "rgba(13,13,34,0.8)",
                     border: `1px solid ${active ? "rgba(191,95,255,0.5)" : "rgba(255,255,255,0.08)"}`,
                     color: active ? "#bf5fff" : "#7070a0",
                   }}
                 >
+                  {iso && (
+                    <img
+                      src={getFlagUrl(iso)}
+                      alt=""
+                      className="w-4 h-3 object-cover rounded-sm flex-shrink-0"
+                    />
+                  )}
                   {team}
                 </button>
               );
