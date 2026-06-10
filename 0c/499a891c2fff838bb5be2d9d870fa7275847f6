@@ -1,0 +1,26 @@
+src/app/admin/page.tsx
+  s_3875b094178d66::t_5ac2d5630b6673 120,123-137
+src/components/sections/SuperstarsSection.tsx
+  s_3875b094178d66::t_871669b47e976d 467,470-473
+  s_3875b094178d66::t_5d924267d6f9b5 236,239-241,243
+  s_3875b094178d66::t_063e123cc9f320 391,394-397
+src/app/schedule/page.tsx
+  s_3875b094178d66::t_89a6ee2b8b72b4 198,201-204
+  s_3875b094178d66::t_0e3854e04b18fc 4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "0c499a891c2fff838bb5be2d9d870fa7275847f6",
+  "prompts": {},
+  "sessions": {
+    "s_3875b094178d66": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "da54c18d-df4d-4d6a-849d-305784f58d30",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "manasyeole <manasyeoleoct9905@gmail.com>"
+    }
+  }
+}
