@@ -1,0 +1,26 @@
+src/app/api/track/route.ts
+  s_3875b094178d66::t_cdf5839e8bd08c 1
+src/app/api/visits/route.ts
+  s_3875b094178d66::t_7c62884077f77d 1
+src/app/admin/page.tsx
+  s_3875b094178d66::t_47d3544e1b901a 4
+  s_3875b094178d66::t_82cfa4ca04ae2b 98,115
+  s_3875b094178d66::t_3e7ec4cbbc670c 518,521-524
+  s_3875b094178d66::t_9e1dfec3339e60 316,319-322
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "73618a5e7110c5542a4dbf0a59d06bf35472c2e7",
+  "prompts": {},
+  "sessions": {
+    "s_3875b094178d66": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "da54c18d-df4d-4d6a-849d-305784f58d30",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "manasyeole <manasyeoleoct9905@gmail.com>"
+    }
+  }
+}
