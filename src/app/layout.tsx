@@ -3,6 +3,7 @@ import { Orbitron, Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import VisitorTracker from "@/components/VisitorTracker";
 
 const orbitron = Orbitron({
   subsets: ["latin"],
@@ -40,6 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         className="scanlines"
         style={{ background: "#050510", color: "#ffffff", fontFamily: "var(--font-inter)" }}
       >
+        <VisitorTracker />
         <Header />
         <main style={{ paddingTop: "66px" }}>{children}</main>
         <Footer />
