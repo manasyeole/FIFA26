@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
+import { getSupabase } from "@/lib/supabase";
 
 export interface Visit {
   id: string;
@@ -19,6 +20,7 @@ export interface Visit {
   device: string;
 }
 
+// ── File-based fallback (used when Supabase is not configured) ───────────────
 const VISITS_FILE = path.join(process.cwd(), "visits.json");
 
 function readVisits(): Visit[] {
@@ -34,6 +36,7 @@ function writeVisits(visits: Visit[]) {
   fs.writeFileSync(VISITS_FILE, JSON.stringify(visits, null, 2), "utf-8");
 }
 
+// ── Helpers ──────────────────────────────────────────────────────────────────
 function parseUserAgent(ua: string): { browser: string; os: string; device: string } {
   const browser = ua.includes("Chrome")
     ? "Chrome"
@@ -73,6 +76,7 @@ function getIp(req: NextRequest): string {
   return req.headers.get("x-real-ip") ?? "unknown";
 }
 
+// ── POST handler ─────────────────────────────────────────────────────────────
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json().catch(() => ({}));
@@ -80,7 +84,6 @@ export async function POST(req: NextRequest) {
     const ua = req.headers.get("user-agent") ?? "";
     const { browser, os, device } = parseUserAgent(ua);
 
-    // Skip localhost/bots
     const isLocal = ip === "unknown" || ip === "::1" || ip.startsWith("127.");
     let geo = {
       country: "Unknown",
@@ -129,10 +132,30 @@ export async function POST(req: NextRequest) {
       device,
     };
 
-    const visits = readVisits();
-    visits.unshift(visit); // newest first
-    if (visits.length > 5000) visits.splice(5000); // cap at 5k entries
-    writeVisits(visits);
+    const sb = getSupabase();
+    if (sb) {
+      await sb.from("visits").insert({
+        id: visit.id,
+        timestamp: visit.timestamp,
+        ip: visit.ip,
+        country: visit.country,
+        country_code: visit.countryCode,
+        city: visit.city,
+        region: visit.region,
+        org: visit.org,
+        page: visit.page,
+        referrer: visit.referrer,
+        user_agent: visit.userAgent,
+        browser: visit.browser,
+        os: visit.os,
+        device: visit.device,
+      });
+    } else {
+      const visits = readVisits();
+      visits.unshift(visit);
+      if (visits.length > 5000) visits.splice(5000);
+      writeVisits(visits);
+    }
 
     return NextResponse.json({ ok: true });
   } catch {

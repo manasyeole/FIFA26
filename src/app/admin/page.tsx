@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import Image from "next/image";
 import { getFlagUrl } from "@/data/countries";
 import {
@@ -89,17 +89,12 @@ export default function AdminPage() {
   const [error, setError] = useState("");
   const [visits, setVisits] = useState<Visit[]>([]);
   const [loading, setLoading] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [filterCountry, setFilterCountry] = useState("All");
   const [filterDevice, setFilterDevice] = useState("All");
 
-  // Persist auth in sessionStorage
-  useEffect(() => {
-    const saved = sessionStorage.getItem("admin_pw");
-    if (saved) loadVisits(saved);
-  }, []);
-
-  async function loadVisits(pw: string) {
-    setLoading(true);
+  const loadVisits = useCallback(async (pw: string, silent = false) => {
+    if (!silent) setLoading(true);
     try {
       const res = await fetch(`/api/visits?password=${encodeURIComponent(pw)}`);
       if (res.status === 401) {
@@ -115,11 +110,25 @@ export default function AdminPage() {
       setPassword(pw);
       sessionStorage.setItem("admin_pw", pw);
       setError("");
+      setLastUpdated(new Date());
     } catch {
       setError("Failed to load data");
     }
-    setLoading(false);
-  }
+    if (!silent) setLoading(false);
+  }, []);
+
+  // Restore session on mount
+  useEffect(() => {
+    const saved = sessionStorage.getItem("admin_pw");
+    if (saved) loadVisits(saved);
+  }, [loadVisits]);
+
+  // Auto-refresh every 30 seconds
+  useEffect(() => {
+    if (!authed || !password) return;
+    const interval = setInterval(() => loadVisits(password, true), 30_000);
+    return () => clearInterval(interval);
+  }, [authed, password, loadVisits]);
 
   async function clearVisits() {
     if (!confirm("Delete all visitor records?")) return;
@@ -242,9 +251,30 @@ export default function AdminPage() {
             >
               Admin Dashboard
             </p>
-            <h1 className="font-orbitron font-black text-2xl sm:text-3xl" style={{ color: "#fff" }}>
-              Visitor Analytics
-            </h1>
+            <div className="flex items-center gap-3">
+              <h1
+                className="font-orbitron font-black text-2xl sm:text-3xl"
+                style={{ color: "#fff" }}
+              >
+                Visitor Analytics
+              </h1>
+              {/* Live pulse dot */}
+              <span className="relative flex h-2.5 w-2.5">
+                <span
+                  className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"
+                  style={{ background: NEON }}
+                />
+                <span
+                  className="relative inline-flex rounded-full h-2.5 w-2.5"
+                  style={{ background: NEON }}
+                />
+              </span>
+            </div>
+            {lastUpdated && (
+              <p className="font-orbitron text-[9px] mt-1" style={{ color: "#404060" }}>
+                Updated {lastUpdated.toLocaleTimeString()} · auto-refreshes every 30s
+              </p>
+            )}
           </div>
           <div className="flex gap-3">
             <button
