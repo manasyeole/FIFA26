@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
+import Image from "next/image";
 import { getFlagUrl } from "@/data/countries";
 import {
   Globe,
@@ -94,10 +95,7 @@ export default function AdminPage() {
   // Persist auth in sessionStorage
   useEffect(() => {
     const saved = sessionStorage.getItem("admin_pw");
-    if (saved) {
-      setPassword(saved);
-      loadVisits(saved);
-    }
+    if (saved) loadVisits(saved);
   }, []);
 
   async function loadVisits(pw: string) {
@@ -114,6 +112,7 @@ export default function AdminPage() {
       const data = await res.json();
       setVisits(data.visits ?? []);
       setAuthed(true);
+      setPassword(pw);
       sessionStorage.setItem("admin_pw", pw);
       setError("");
     } catch {
@@ -314,10 +313,13 @@ export default function AdminPage() {
             <div className="space-y-2">
               {stats.topCountries.map(([country, { count, code }]) => (
                 <div key={country} className="flex items-center gap-2">
-                  <img
+                  <Image
                     src={getFlagUrl(code)}
                     alt={country}
-                    className="w-5 h-3.5 object-cover rounded-sm flex-shrink-0"
+                    width={20}
+                    height={14}
+                    className="object-cover rounded-sm flex-shrink-0"
+                    unoptimized
                   />
                   <p className="font-orbitron text-xs flex-1 truncate" style={{ color: "#c0c0e0" }}>
                     {country}
@@ -513,10 +515,13 @@ export default function AdminPage() {
                   </div>
                   <div className="flex items-center gap-2 min-w-0">
                     {v.countryCode !== "xx" && v.countryCode !== "lo" ? (
-                      <img
+                      <Image
                         src={getFlagUrl(v.countryCode)}
                         alt={v.country}
-                        className="w-5 h-3.5 object-cover rounded-sm flex-shrink-0"
+                        width={20}
+                        height={14}
+                        className="object-cover rounded-sm flex-shrink-0"
+                        unoptimized
                       />
                     ) : (
                       <MapPin size={12} color="#7070a0" className="flex-shrink-0" />
