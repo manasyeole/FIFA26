@@ -117,11 +117,24 @@ export default function AdminPage() {
     if (!silent) setLoading(false);
   }, []);
 
-  // Restore session on mount
+  // Restore session on mount — setState only inside .then() to satisfy the no-sync-setState rule
   useEffect(() => {
     const saved = sessionStorage.getItem("admin_pw");
-    if (saved) loadVisits(saved);
-  }, [loadVisits]);
+    if (!saved) return;
+    fetch(`/api/visits?password=${encodeURIComponent(saved)}`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (!data) {
+          sessionStorage.removeItem("admin_pw");
+          return;
+        }
+        setVisits(data.visits ?? []);
+        setAuthed(true);
+        setPassword(saved);
+        setLastUpdated(new Date());
+      })
+      .catch(() => {});
+  }, []);
 
   // Auto-refresh every 30 seconds
   useEffect(() => {

@@ -233,11 +233,14 @@ function StarCard({ star }: { star: (typeof GLOBAL_STARS)[number] }) {
         )}
         {/* Country flag overlay */}
         <div className="absolute top-2 right-2">
-          <img
+          <Image
             src={getFlagUrl(star.isoCode)}
             alt={star.country}
-            className="w-6 h-4 object-cover rounded-sm"
+            width={24}
+            height={16}
+            className="object-cover rounded-sm"
             style={{ boxShadow: "0 1px 4px rgba(0,0,0,0.5)" }}
+            unoptimized
           />
         </div>
         {/* Gradient */}
@@ -385,10 +388,13 @@ export default function SuperstarsSection() {
                       border: `1px solid ${conf.color}25`,
                     }}
                   >
-                    <img
+                    <Image
                       src={getFlagUrl(p.isoCode)}
                       alt={p.country}
-                      className="w-4 h-3 object-cover rounded-sm flex-shrink-0"
+                      width={16}
+                      height={12}
+                      className="object-cover rounded-sm flex-shrink-0"
+                      unoptimized
                     />
                     <span
                       className="font-orbitron text-[9px] tracking-wide whitespace-nowrap"
@@ -458,10 +464,13 @@ export default function SuperstarsSection() {
                   (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,215,0,0.15)";
                 }}
               >
-                <img
+                <Image
                   src={getFlagUrl(p.isoCode)}
                   alt={p.country}
-                  className="w-4 h-3 object-cover rounded-sm"
+                  width={16}
+                  height={12}
+                  className="object-cover rounded-sm"
+                  unoptimized
                 />
                 <span
                   className="font-orbitron text-[9px] tracking-wide"

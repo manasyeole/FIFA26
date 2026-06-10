@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import Image from "next/image";
 import { matches } from "@/data/matches";
 import { countries, getFlagUrl } from "@/data/countries";
 import type { Match } from "@/types";
@@ -194,10 +195,13 @@ export default function SchedulePage() {
                   }}
                 >
                   {iso && (
-                    <img
+                    <Image
                       src={getFlagUrl(iso)}
                       alt=""
-                      className="w-4 h-3 object-cover rounded-sm flex-shrink-0"
+                      width={16}
+                      height={12}
+                      className="object-cover rounded-sm flex-shrink-0"
+                      unoptimized
                     />
                   )}
                   {team}
